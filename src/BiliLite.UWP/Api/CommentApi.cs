@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Web.Http.Filters;
 
 namespace BiliLite.Api
 {
@@ -57,11 +58,23 @@ namespace BiliLite.Api
 
         public ApiModel Like(string oid, string root, int action, int type)
         {
+            var fiter = new HttpBaseProtocolFilter();
+            var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
+            var csrf = "";
+            //没有Cookie
+            if (cookies == null || cookies.Count == 0)
+            {
+
+            }
+            else
+            {
+                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+            }
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/action",
-                body =  $"&oid={oid}&rpid={root}&action={action}&type={type}"
+                body =  $"&oid={oid}&rpid={root}&action={action}&type={type}&csrf={csrf}"
             };
             //api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
