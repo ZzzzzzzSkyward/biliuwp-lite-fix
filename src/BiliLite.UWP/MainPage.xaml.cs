@@ -77,9 +77,9 @@ namespace BiliLite
                     Utils.ShowMessageToast("无法打开链接:" + e.Parameter.ToString());
                 }
             }
-//#if !DEBUG
-            //await Utils.CheckVersion();
-//#endif
+            //#if !DEBUG
+            //await Utils.CheckVersion();//参考https://raw.githubusercontent.com/ywmoyue/biliuwp-lite/master
+            //#endif
         }
         private void MessageCenter_ChangeTitleEvent(object sender, string e)
         {
