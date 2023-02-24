@@ -14,6 +14,8 @@
 
 `appkey`统一改成TV版，以应付B站的`appkey`与`access_key`检验
 
+修复评论相关API缺少`csrf`字段，方案来自@ywmoyue
+
 ## 其他fork
 
 https://github.com/ywmoyue/biliuwp-lite
@@ -26,7 +28,9 @@ https://github.com/ywmoyue/biliuwp-lite
 
 ## 截图
 
-![QQ截图20200730165337.png](https://vip1.loli.net/2020/08/02/rGLMwtVSYmaKgxi.png)
+[QQ截图20200730165337.png](https://vip1.loli.net/2020/08/02/rGLMwtVSYmaKgxi.png)
+
+![](./screenshot/ui.png)
 
 ## 说明
 
