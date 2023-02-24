@@ -82,33 +82,71 @@ namespace BiliLite.Api
 
         public ApiModel ReplyComment(string oid, string root, string parent, string message, int type)
         {
+            var fiter = new HttpBaseProtocolFilter();
+            var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
+            var csrf = "";
+            //没有Cookie
+            if (cookies == null || cookies.Count == 0)
+            {
+
+            }
+            else
+            {
+                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+            }
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/add",
-                body =  $"&oid={oid}&root={root}&parent={parent}&type={type}&message={message}"
+                body =  $"&oid={oid}&root={root}&parent={parent}&type={type}&message={message}&csrf={csrf}"
             };
            // api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
         }
         public ApiModel DeleteComment(string oid, string rpid, int type)
         {
+            var fiter = new HttpBaseProtocolFilter();
+            var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
+            var csrf = "";
+            //没有Cookie
+            if (cookies == null || cookies.Count == 0)
+            {
+
+            }
+            else
+            {
+                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+            }
+
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/del",
-                body =  $"&oid={oid}&rpid={rpid}&type={type}"
+                body =  $"&oid={oid}&rpid={rpid}&type={type}&csrf={csrf}"
             };
            // api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
         }
         public ApiModel AddComment(string oid, CommentType type,string message)
         {
+            var fiter = new HttpBaseProtocolFilter();
+            var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
+            var csrf = "";
+            //没有Cookie
+            if (cookies == null || cookies.Count == 0)
+            {
+
+            }
+            else
+            {
+                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+            }
+
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/add",
-                body = $"&oid={oid}&type={(int)type}&message={Uri.EscapeDataString(message)}"
+                body = $"&oid={oid}&type={(int)type}&message={Uri.EscapeDataString(message)}&csrf={csrf}"
             };
             //api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
