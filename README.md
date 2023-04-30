@@ -16,6 +16,18 @@
 
 修复评论相关API缺少`csrf`字段，方案来自@ywmoyue
 
+修复评论里面出现了超过`int`范围的数字
+
+## bug增加
+
+动态页面可能发生`Not Implemented`崩溃，但是我不会修，因为我找不到到底是哪个函数
+
+无法使用密码、手机登录，因为验证码显示不出来
+
+日志文件的路径显示错误
+
+退出直播界面崩溃
+
 ## 其他fork
 
 https://github.com/ywmoyue/biliuwp-lite
