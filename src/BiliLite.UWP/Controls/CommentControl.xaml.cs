@@ -301,9 +301,9 @@ namespace BiliLite.Controls
                     Utils.ShowMessageToast(re.message);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Utils.ShowMessageToast("加载评论失败");
+                Utils.ShowMessageToast("加载评论失败",e.ToString());
                 //throw;
             }
             finally
@@ -354,9 +354,9 @@ namespace BiliLite.Controls
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Utils.ShowMessageToast("操作失败");
+                Utils.ShowMessageToast("操作失败",e.ToString());
                 // throw;
             }
 
@@ -500,9 +500,9 @@ namespace BiliLite.Controls
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Utils.ShowMessageToast("发送评论失败");
+                Utils.ShowMessageToast("发送评论失败",e.ToString());
                 // throw;
             }
 
@@ -557,9 +557,9 @@ namespace BiliLite.Controls
                 }
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Utils.ShowMessageToast("发送评论失败");
+                Utils.ShowMessageToast("发送评论失败",e.ToString());
                 // throw;
             }
 
@@ -625,9 +625,9 @@ namespace BiliLite.Controls
                     Utils.ShowMessageToast(re.message);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Utils.ShowMessageToast("删除评论失败");
+                Utils.ShowMessageToast("删除评论失败",e.ToString());
                 // throw;
             }
 

@@ -354,27 +354,90 @@ namespace BiliLite.Helpers
         public string message { get; set; }
         public string results { get; set; }
         public bool status { get; set; }
-        public async Task<T> GetJson<T>()
+
+        public JObject FindLongestValidJsonString(string input)
+        {
+            JObject obj=null;
+            int start = 0;
+            int end = 0;
+            int maxLength = 0;
+            int depth = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '{' || input[i] == '[')
+                {
+                    depth++;
+
+                    if (depth == 1)
+                    {
+                        start = i;
+                    }
+                }
+                else if (input[i] == '}' || input[i] == ']')
+                {
+                    depth--;
+
+                    if (depth <= 0)
+                    {
+                        end = i;
+
+                        try
+                        {
+                            string substring = input.Substring(start, end - start + 1);
+                            obj = JObject.Parse(substring);
+
+                            if (substring.Length > maxLength)
+                            {
+                                maxLength = substring.Length;
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            // Ignore invalid JSON strings
+                        }
+                    }
+                }
+            }
+
+            return obj;
+        }
+    public async Task<T> GetJson<T>()
         {
             return await Task.Run<T>(() =>
              {
-                 return JsonConvert.DeserializeObject<T>(results);
+                 T j;
+                 results = FindLongestValidJsonString(results).ToString();
+                 j = JsonConvert.DeserializeObject<T>(results);
+                 return j;
              });
 
         }
         public JObject GetJObject()
         {
+            JObject obj=JObject.Parse("{}");
             try
             {
-                var obj = JObject.Parse(results);
+                obj = JObject.Parse(results);
+                var serialized = obj.ToString();
                 return obj;
             }
             catch (Exception e)
             {
+            }
+            try
+            {
+                obj = FindLongestValidJsonString(results);
+                var serialized = obj.ToString();
+                return obj;
+            }
+            catch(Exception e)
+            {
                 Utils.ShowMessageToast("解析json对象失败", e.ToString());
+                Console.WriteLine(e.ToString());
+                Console.WriteLine(obj.ToString());
                 return null;
             }
-
         }
         public async Task<ApiDataModel<T>> GetData<T>()
         {

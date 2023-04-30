@@ -40,7 +40,7 @@ namespace BiliLite.Models.Dynamic
 
     public class DynamicCardDescUserProfilePendantModel
     {
-        public int pid { get; set; }
+        public long pid { get; set; }
         public string name { get; set; }
         public string image { get; set; }
         public int expire { get; set; }
@@ -56,7 +56,7 @@ namespace BiliLite.Models.Dynamic
     }
     public class DynamicCardDescUserProfileDecorateCardModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string big_card_url { get; set; }
         public string jump_url { get; set; }

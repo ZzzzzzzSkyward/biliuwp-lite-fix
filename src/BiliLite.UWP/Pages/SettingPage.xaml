@@ -13,14 +13,18 @@
     <Page.Resources>
         <SolidColorBrush x:Key="PivotHeaderBackground" Color="{ThemeResource TopPaneBackground}"></SolidColorBrush>
         <SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="White"></SolidColorBrush>
-  
+
         <Style x:Key="DanmuFilterStyle" TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
         </Style>
         <covert:ColorConvert x:Key="color"/>
     </Page.Resources>
     <Grid>
-        <Pivot>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="569*"/>
+            <ColumnDefinition Width="1352*"/>
+        </Grid.ColumnDefinitions>
+        <Pivot Grid.ColumnSpan="2">
             <PivotItem Margin="0" >
                 <PivotItem.Header>
                     <TextBlock FontSize="15">个性化</TextBlock>
@@ -55,7 +59,7 @@
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-                             
+
                             </ComboBox>
                         </StackPanel>
                         <StackPanel x:Name="DisplayMode" Margin="0 0 0 8">
@@ -115,7 +119,7 @@
                                                 <TextBlock Margin="8 0 0 0" Text="{x:Bind Title}"></TextBlock>
                                             </StackPanel>
                                         </Grid>
-                                      
+
                                     </DataTemplate>
                                 </GridView.ItemTemplate>
 
@@ -202,7 +206,7 @@
                     </StackPanel>
 
                 </ScrollViewer>
-                
+
             </PivotItem>
             <PivotItem Margin="0">
                 <PivotItem.Header>
@@ -267,7 +271,7 @@
                         <TextBlock>部分自动生成的AI字幕会与视频自带字幕冲突</TextBlock>
                         <TextBlock Margin="0 0 0 16">建议关闭，有需要时再手动打开字幕</TextBlock>
                         <TextBlock  Margin="0 16 0 8" FontSize="16">替换CDN链接</TextBlock>
-                      
+
                         <ComboBox x:Name="cbPlayerReplaceCDN" SelectedIndex="0" MinWidth="200">
                             <ComboBox.Items>
                                 <ComboBoxItem Content="不替换"></ComboBoxItem>
@@ -278,10 +282,10 @@
                         </ComboBox>
                         <TextBlock Margin="0 8 0 0">替换CDN链接可以有效的提升视频加载速度</TextBlock>
                         <TextBlock >开启替换后读取播放地址可能需要更长时间</TextBlock>
-                       
+
 
                         <TextBlock  Margin="0 16 0 8"  FontSize="16">替换CDN服务器选择</TextBlock>
-                      
+
                         <Button x:Name="RoamingSettingTestCDN"  Click="RoamingSettingTestCDN_Click">测试服务器延迟</Button>
                         <ComboBox x:Name="RoamingSettingCDNServer" 
                                   ItemsSource="{x:Bind Path=settingVM.CDNServers,Mode=OneWay}"
@@ -363,7 +367,7 @@
                             <Button x:Name="DanmuSettingAddWord" Click="DanmuSettingAddWord_Click" Margin="4 0">添加</Button>
                         </StackPanel>
                         <ListView x:Name="DanmuSettingListWords" ItemContainerStyle="{StaticResource DanmuFilterStyle}" Margin="0 8 0 0" SelectionMode="None" IsItemClickEnabled="False" Width="320" Height="160" HorizontalAlignment="Left" Background="{ThemeResource TopPaneBackground}">
-                           
+
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -377,7 +381,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
-                        
+
                         <TextBlock  Margin="0 16 0 8" FontSize="16">正则屏蔽</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox x:Name="DanmuSettingTxtRegex" PlaceholderText="请输入正则表达式" Width="200"></TextBox>
@@ -428,7 +432,7 @@
                     <StackPanel>
                         <TextBlock  Margin="0 16 0 8" FontSize="16">默认弹幕状态</TextBlock>
                         <ToggleSwitch x:Name="LiveDanmuSettingState" OnContent="打开" OffContent="关闭"></ToggleSwitch>
-                   
+
                         <TextBlock  Margin="0 8 0 8" FontSize="16">关键词屏蔽</TextBlock>
                         <StackPanel Orientation="Horizontal">
                             <TextBox x:Name="LiveDanmuSettingTxtWord" PlaceholderText="请输入关键词" Width="200"></TextBox>
@@ -485,7 +489,7 @@
                         <Button x:Name="DownloadChangeOldPath" Margin="0 8">导入旧版目录</Button>
                         <TextBlock  Margin="0 8 0 0"  FontSize="16">加载旧版下载的视频</TextBlock>
                         <ToggleSwitch x:Name="swDownloadLoadOld"></ToggleSwitch>
-                        
+
                         <TextBlock  Margin="0 8 0 4"  FontSize="16">优先下载视频类型</TextBlock>
                         <TextBlock>当选择FLV时不支持4K视频下载，部分视频不支持M4S</TextBlock>
                         <ComboBox x:Name="cbDownloadVideoType" Margin="0 8"  MinWidth="200">
@@ -523,6 +527,7 @@
                         <TextBlock  Margin="0 0 0 8"  FontSize="14" x:Name="version">版本 1.0.0</TextBlock>
                         <TextBlock  Margin="0 8"  FontSize="16">开发</TextBlock>
                         <TextBlock  Margin="0 0 0 8"  FontSize="14">开发者 : xiaoyaocz</TextBlock>
+                        <TextBlock  Margin="0 0 0 8"  FontSize="14" Text="修复：ZzzzzzzSkyward"/>
                         <TextBlock  Margin="0 0 0 8"  FontSize="14">Logo绘制 : xiaoyaomengo</TextBlock>
                         <TextBlock  Margin="0 8"  FontSize="16">反馈</TextBlock>
                         <TextBlock  Margin="0 0 0 8"  FontSize="14" IsTextSelectionEnabled="True">Email : biliuwp@iill.moe</TextBlock>
