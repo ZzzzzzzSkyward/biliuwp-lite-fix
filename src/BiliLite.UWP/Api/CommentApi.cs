@@ -8,7 +8,7 @@ namespace BiliLite.Api
 {
     public class CommentApi
     {
-        private string GetCSRF()
+        private string GetCSRF(bool isparam=false)
         {
             var fiter = new HttpBaseProtocolFilter();
             var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
@@ -21,6 +21,10 @@ namespace BiliLite.Api
             else
             {
                 csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+                if (isparam)
+                {
+                    csrf = "&csrf=" + csrf;
+                }
             }
             return csrf;
         }
@@ -55,7 +59,7 @@ namespace BiliLite.Api
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply",
-                parameter =  $"oid={oid}&plat=2&pn={pn}&ps={ps}&sort={(int)sort}&type={type}&csrf={csrf}"
+                parameter =  $"oid={oid}&plat=2&pn={pn}&ps={ps}&sort={(int)sort}&type={type}"//&csrf={csrf}"
             };
             //api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
@@ -67,7 +71,7 @@ namespace BiliLite.Api
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/reply",
-                parameter =  $"oid={oid}&plat=2&pn={pn}&ps={ps}&root={root}&type={type}&csrf={csrf}"
+                parameter = $"oid={oid}&plat=2&pn={pn}&ps={ps}&root={root}&type={type}&csrf={csrf}",
             };
             //api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;

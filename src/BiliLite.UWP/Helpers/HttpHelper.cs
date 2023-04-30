@@ -369,8 +369,9 @@ namespace BiliLite.Helpers
                 var obj = JObject.Parse(results);
                 return obj;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Utils.ShowMessageToast("解析json对象失败", e.ToString());
                 return null;
             }
 

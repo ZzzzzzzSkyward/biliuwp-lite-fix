@@ -172,7 +172,16 @@ namespace BiliLite.Controls
                 var re = await commentApi.Comment(_loadCommentInfo.Oid, _loadCommentInfo.CommentSort, _page, _loadCommentInfo.CommentMode).Request();
                 if (re.status)
                 {
-                    dataCommentModel m = JsonConvert.DeserializeObject<dataCommentModel>(re.results);
+                    dataCommentModel m;
+                    try
+                    {
+                        m = JsonConvert.DeserializeObject<dataCommentModel>(re.results);
+                    }
+                    catch(Exception e)
+                    {
+                        Utils.ShowMessageToast("解析评论失败",e.ToString());
+                        return;
+                    }
                     if (m.code == 0)
                     {
 
@@ -225,19 +234,20 @@ namespace BiliLite.Controls
                         }
                         else
                         {
-                            Utils.ShowMessageToast(m.message);
+                            Utils.ShowMessageToast(m.message,"");
                         }
                     }
                 }
                 else
                 {
-                    Utils.ShowMessageToast("加载评论失败");
+                    Utils.ShowMessageToast("加载评论失败" , re.results.ToString());
                 }
 
             }
             catch (Exception ex)
             {
-                Utils.ShowMessageToast("加载评论失败");
+                string exception_string = ex.ToString();
+                Utils.ShowMessageToast("加载评论失败" , exception_string);
             }
             finally
             {
@@ -1147,7 +1157,7 @@ namespace BiliLite.Controls
     }
     public class CommentMemberUserSailingCardbgModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string image { get; set; }
         public string jump_url { get; set; }

@@ -104,9 +104,18 @@ namespace BiliLite.Helpers
             var result = CryptographicBuffer.EncodeToHexString(hashed);
             return result;
         }
-        public static void ShowMessageToast(string message, int seconds = 2)
+        public static void ShowMessageToast(string message, int seconds = 2, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string filePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
-            MessageToast ms = new MessageToast(message, TimeSpan.FromSeconds(seconds));
+            string Message = $"{message}";
+            MessageToast ms = new MessageToast(Message, TimeSpan.FromSeconds(seconds));
+            ms.Show();
+        }
+        public static void ShowMessageToast(string message,string longmsg, int seconds = 10, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string filePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
+        {
+            //当有错误时延长时间
+            longmsg = longmsg.Length > 50 ? longmsg.Substring(longmsg.Length - 50) : longmsg;
+            string errorMessage = $"{memberName}@{filePath}:{lineNumber}\n{message}\n{longmsg}";
+            MessageToast ms = new MessageToast(errorMessage, TimeSpan.FromSeconds(seconds));
             ms.Show();
         }
         public static void ShowMessageToast(string message, List<MyUICommand> commands, int seconds = 15)

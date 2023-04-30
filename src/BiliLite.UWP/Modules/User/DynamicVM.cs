@@ -365,7 +365,7 @@ namespace BiliLite.Modules.User
                 if (results.status)
                 {
                     var data = results.GetJObject();
-                    if (data["code"].ToInt32() == 0)
+                    if (data!=null && (data["code"].ToInt32() == 0))
                     {
                         var items = JsonConvert.DeserializeObject<List<DynamicCardModel>>(data["data"]?["cards"]?.ToString() ?? "[]");
                         if (items.Count > 0)
