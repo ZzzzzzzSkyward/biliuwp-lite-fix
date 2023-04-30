@@ -134,7 +134,7 @@ namespace BiliLite.Modules.Live
     }
     public class LiveTagItemModel:INotifyPropertyChanged
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public string sort_type { get; set; }
         public string sort { get; set; }

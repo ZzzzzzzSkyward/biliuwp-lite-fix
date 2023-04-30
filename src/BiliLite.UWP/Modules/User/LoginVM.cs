@@ -614,7 +614,7 @@ namespace BiliLite.Modules.User
     }
     public class CountryItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string country_code { get; set; }
         public string countryCode { get { return country_code; } }
         public string cname { get; set; }

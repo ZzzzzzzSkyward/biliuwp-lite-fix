@@ -377,7 +377,7 @@ namespace BiliLite.Modules
     }
     public class RecommendBannerItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string title { get; set; }
         public string image { get; set; }
 
@@ -417,7 +417,7 @@ namespace BiliLite.Modules
     }
     public class RecommendThreePointV2ItemReasonsModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
 
     }

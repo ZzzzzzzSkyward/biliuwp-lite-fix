@@ -364,7 +364,7 @@ namespace BiliLite.Modules
 
         public string cover { get; set; }
         public int duration { get; set; }
-        public int id { get; set; }
+        public long id { get; set; }
         public string index_show { get; set; }
     }
     public class FollowSeasonProgressModel

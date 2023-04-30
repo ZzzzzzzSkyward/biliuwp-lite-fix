@@ -49,6 +49,7 @@ namespace BiliLite.Helpers
                     {
                         client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
                     }
+                    Console.WriteLine(url);
                     var response = await client.GetAsync(new Uri(url));
                     if (!response.IsSuccessStatusCode)
                     {
@@ -406,10 +407,23 @@ namespace BiliLite.Helpers
         {
             return await Task.Run<T>(() =>
              {
-                 T j;
-                 results = FindLongestValidJsonString(results).ToString();
-                 j = JsonConvert.DeserializeObject<T>(results);
-                 return j;
+                 try
+                 {
+                     return JsonConvert.DeserializeObject<T>(results);
+                 }
+                 catch
+                 {
+
+                 }
+                 try
+                 {
+                     return FindLongestValidJsonString(results).ToObject<T>();
+                 }
+                 catch(Exception e)
+                 {
+                     Console.WriteLine("解析json失败", e.ToString());
+                 }
+                 return default(T);
              });
 
         }

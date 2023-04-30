@@ -1556,7 +1556,7 @@ namespace BiliLite.Modules
         [Serializable]
         public class LiveGiftItem
         {
-            public int id { get; set; }
+            public long id { get; set; }
             public int bag_id { get; set; }
             public string name { get; set; }
             public int price { get; set; }
@@ -1627,7 +1627,7 @@ namespace BiliLite.Modules
         {
             public int position { get; set; }
             public int gift_id { get; set; }
-            public int id { get; set; }
+            public long id { get; set; }
             public int plan_id { get; set; }
         }
         public class LiveWalletInfo
@@ -1768,7 +1768,7 @@ namespace BiliLite.Modules
             public int gift_num { get; set; }
             public int gift_price { get; set; }
             public int goaway_time { get; set; }
-            public int id { get; set; }
+            public long id { get; set; }
             public int join_type { get; set; }
             public int lot_status { get; set; }
             public int max_time { get; set; }
@@ -1786,7 +1786,7 @@ namespace BiliLite.Modules
 
         public class LiveRoomEndAnchorLotteryInfoModel
         {
-            public int id { get; set; }
+            public long id { get; set; }
             public int lot_status { get; set; }
             public string award_image { get; set; }
             public string award_name { get; set; }
@@ -1819,7 +1819,7 @@ namespace BiliLite.Modules
 
         public class LiveRoomSuperChatModel
         {
-            public int id { get; set; }
+            public long id { get; set; }
             public long uid { get; set; }
             public string background_image { get; set; }
             public string background_color { get; set; }

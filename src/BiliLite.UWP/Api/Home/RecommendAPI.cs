@@ -22,7 +22,7 @@ namespace BiliLite.Api.Home
             return api;
         }
 
-        public ApiModel Dislike(string _goto,string id,string mid,int reason_id,int rid,int tag_id)
+        public ApiModel Dislike(string _goto,string id,string mid,long reason_id,int rid,int tag_id)
         {
             ApiModel api = new ApiModel()
             {
@@ -33,7 +33,7 @@ namespace BiliLite.Api.Home
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
         }
-        public ApiModel Feedback(string _goto, string id, string mid, int feedback_id, int rid, int tag_id)
+        public ApiModel Feedback(string _goto, string id, string mid, long feedback_id, int rid, int tag_id)
         {
             ApiModel api = new ApiModel()
             {

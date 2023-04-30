@@ -107,7 +107,7 @@ namespace BiliLite.Api
         /// <param name="graph_version"></param>
         /// <param name="edge_id"></param>
         /// <returns></returns>
-        public ApiModel InteractionEdgeInfo(string aid,int graph_version,int edge_id=0)
+        public ApiModel InteractionEdgeInfo(string aid,int graph_version,long edge_id=0)
         {
             ApiModel api = new ApiModel()
             {

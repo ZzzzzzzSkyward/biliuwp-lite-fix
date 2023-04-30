@@ -714,7 +714,7 @@ namespace BiliLite.Modules.Player.Playurl
 
     public class DashItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public int bandwidth { get; set; }
         public string baseUrl { get; set; }
         public List<string> backupUrl { get; set; }

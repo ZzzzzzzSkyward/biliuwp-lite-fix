@@ -22,8 +22,22 @@ namespace BiliLite.Api
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
-        }
        
+        }
+        
+        public ApiModel Detail_Web(string season_id,bool proxy=false)
+        {
+            var baseUrl = ApiHelper.API_BASE_URL;
+
+            ApiModel api = new ApiModel()
+            {
+                method = RestSharp.Method.Get,
+                baseUrl = $"{baseUrl}/pgc/view/web/season",
+                parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + $"&season_id={season_id}"
+            };
+            api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
+            return api;
+        }
         public ApiModel DetailWeb(string season_id)
         {
             ApiModel api = new ApiModel()

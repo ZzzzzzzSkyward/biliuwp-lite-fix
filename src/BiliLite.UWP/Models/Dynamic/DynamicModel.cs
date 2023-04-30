@@ -70,7 +70,7 @@ namespace BiliLite.Models.Dynamic
     }
     public class DynamicCardDisplayEmojiInfoItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public int package_id { get; set; }
         public string emoji_name { get; set; }
         public string url { get; set; }

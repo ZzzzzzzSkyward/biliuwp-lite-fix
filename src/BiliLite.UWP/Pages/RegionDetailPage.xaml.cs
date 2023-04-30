@@ -181,7 +181,7 @@ namespace BiliLite.Pages
         /// <summary>
         /// 分区ID
         /// </summary>
-        public int id { get; set; } = 1;
+        public long id { get; set; } = 1;
         /// <summary>
         /// 子分区ID
         /// </summary>

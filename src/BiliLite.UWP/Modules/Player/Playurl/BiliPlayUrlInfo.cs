@@ -137,7 +137,7 @@ namespace BiliLite.Modules.Player.Playurl
         /// 替换过CDN
         /// </summary>
         public bool ReplaceCDN { get; set; } = false;
-        public int ID { get; set; }
+        public long ID { get; set; }
         public int CodecID { get; set; }
         public string Url { get; set; }
 

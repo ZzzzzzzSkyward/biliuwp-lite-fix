@@ -162,7 +162,7 @@ namespace BiliLite.Modules.User.UserDetail
 
     public class SubmitArticleItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string title { get; set; }
         public string summary { get; set; }
         public List<string> image_urls { get; set; }
@@ -189,7 +189,7 @@ namespace BiliLite.Modules.User.UserDetail
     }
     public class SubmitArticleCategoryModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public int parent_id { get; set; }
         public string name { get; set; }
        

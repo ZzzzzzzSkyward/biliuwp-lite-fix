@@ -70,7 +70,7 @@ namespace BiliLite.Modules.Live
     }
     public class LiveAreaModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string name { get; set; }
         public List<LiveAreaItemModel> list { get; set; }
     }

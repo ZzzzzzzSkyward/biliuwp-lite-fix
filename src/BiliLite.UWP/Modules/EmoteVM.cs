@@ -75,7 +75,7 @@ namespace BiliLite.Modules
 
     public class EmotePackageModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string text { get; set; }
         public string url { get; set; }
         public int type { get; set; }
@@ -85,7 +85,7 @@ namespace BiliLite.Modules
     }
     public class EmotePackageItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string text { get; set; }
         public string url { get; set; }
         public int package_id { get; set; }

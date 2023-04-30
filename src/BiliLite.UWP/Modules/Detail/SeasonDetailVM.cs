@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using System.Reflection;
 namespace BiliLite.Modules
 {
     public class SeasonDetailVM : IModules
@@ -99,11 +99,28 @@ namespace BiliLite.Modules
                 Loading = true;
                 ShowError = false;
                 var results = await seasonApi.Detail(season_id).Request();
+                if (!results.status)
+                {
+                    //尝试使用Web端
+                    results = await seasonApi.Detail_Web(season_id).Request();
+                }
                 if (results.status)
                 {
 
                     //通过代理访问番剧详情
+                    //尝试不兼容获取
                     var data = await results.GetJson<ApiResultModel<SeasonDetailModel>>();
+                    if (false && (data == null || !data.success))
+                    {
+                        var data3=await results.GetJson<ApiResultModel<SeasonDetailModel_Web>>();
+                        if(data3!=null && data3.success)
+                        {
+                            data = new ApiResultModel<SeasonDetailModel>();
+                            data.result = new SeasonDetailModel();
+                            data.result.convert(data3.result);
+                            data.code = 0;
+                        }
+                    }
                     //if (!data.success)
                     //{
                     //    var result_proxy = await seasonApi.Detail(season_id,true).Request();
@@ -113,9 +130,27 @@ namespace BiliLite.Modules
                     //    }
                     //}
                     //代理访问失败，使用Web的Api访问
-                    if (!data.success)
+                    //尝试不兼容的备用方案
+                    ApiResultModel<SeasonDetailModel_Web> data2=null;
+                    if (data==null || !data.success)
                     {
-                        data = await GetWebSeasonDetail(season_id);
+                        data2 = await GetWebSeasonDetail(season_id);
+                        if(data2==null || !data2.success)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            //复制过来
+                            data = new ApiResultModel<SeasonDetailModel>();
+                            data.result = new SeasonDetailModel();
+                            data.result.convert(data2.result);
+                            data.code = 0;
+                        }
+                    }
+                    else
+                    {
+                        
                     }
                    
                     if (data.success)
@@ -137,7 +172,9 @@ namespace BiliLite.Modules
                             try
                             {
                                 //build 6235200
+                                if(data.result.episodes==null)
                                 data.result.episodes = JsonConvert.DeserializeObject<List<SeasonDetailEpisodeModel>>(data.result.modules.FirstOrDefault(x => x["style"].ToString() == "positive")?["data"]?["episodes"]?.ToString()??"[]");
+                                if(data.result.seasons==null)
                                 data.result.seasons = JsonConvert.DeserializeObject<List<SeasonDetailSeasonItemModel>>(data.result.modules.FirstOrDefault(x => x["style"].ToString() == "season")?["data"]?["seasons"]?.ToString() ?? "[]");
                                 var pv = JsonConvert.DeserializeObject<List<SeasonDetailEpisodeModel>>(data.result.modules.FirstOrDefault(x => x["style"].ToString() == "section")?["data"]?["episodes"]?.ToString() ?? "[]");
                                 foreach (var item in pv)
@@ -201,7 +238,7 @@ namespace BiliLite.Modules
             }
         }
 
-        public async Task<ApiResultModel<SeasonDetailModel>> GetWebSeasonDetail(string season_id)
+        public async Task<ApiResultModel<SeasonDetailModel_Web>> GetWebSeasonDetail(string season_id)
         {
             var reulsts_web = await seasonApi.DetailWeb(season_id).Request();
             if (reulsts_web.status)
@@ -211,18 +248,18 @@ namespace BiliLite.Modules
                 {
                     var objText = data["result"].ToString();
                     //处理下会出错的字段
-                    objText = objText.Replace("\"staff\"", "staff1");
-                    var model= JsonConvert.DeserializeObject<SeasonDetailModel>(objText);
+                    //objText = objText.Replace("\"staff\"", "staff1");
+                    var model= JsonConvert.DeserializeObject<SeasonDetailModel_Web>(objText);
                     model.episodes = await Utils.DeserializeJson<List<SeasonDetailEpisodeModel>>(data["result"]["episodes"].ToString());
                     model.user_status = new SeasonDetailUserStatusModel()
                     {
                         follow_status=0,
                         follow=0
                     };
-                    return new ApiResultModel<SeasonDetailModel>() { code=0,message="",result=model,};
+                    return new ApiResultModel<SeasonDetailModel_Web>() { code=0,message="",result=model,};
                 }
             }
-            return new ApiResultModel<SeasonDetailModel>() { 
+            return new ApiResultModel<SeasonDetailModel_Web>() { 
                 code=-101,
                 message="无法读取内容"
             };
@@ -363,7 +400,6 @@ namespace BiliLite.Modules
                 }
             }
         }
-
         public List<SeasonDetailStyleItemModel> styles { get; set; }
         public SeasonDetailStatModel stat { get; set; }
         public int total { get; set; }
@@ -380,6 +416,60 @@ namespace BiliLite.Modules
                 return payment != null && payment.dialog != null;
             }
         }
+        public void convert(SeasonDetailModel_Web sw)
+        {
+            actor = new SeasonDetailActorModel();
+            staff = new SeasonDetailActorModel();
+            actor.title = "";
+            actor.info = sw.actor;
+            staff.title = "STAFF";
+            staff.info = sw.staff;
+            //copy all keys to myself
+            sw.actor = null;
+            sw.staff = null;
+            this.episodes = sw.episodes;
+            this.rating = sw.rating;
+            this.publish = sw.publish;
+            this.seasons = sw.seasons;
+            this.stat = sw.stat;
+            var otherFields = this.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            var allProperties = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // Copy values of fields
+            foreach (var field in otherFields)
+            {
+                var value = field.GetValue(sw);
+                var thisField = this.GetType().GetField(field.Name, BindingFlags.Public | BindingFlags.Instance);
+                if (thisField == null && value != null)
+                {
+                    //Console.WriteLine(field + " is not null");
+                }
+                else if (thisField != null && value != null)
+                {
+                    thisField.SetValue(this, value);
+                }
+            }
+            foreach (var property in allProperties)
+            {
+                var value = property.GetValue(sw);
+                if (value != null)
+                {
+                    try
+                    {
+                        this.GetType().GetProperty(property.Name).SetValue(this, value);
+                    }
+                    catch(Exception e) {
+                        Console.WriteLine(e.ToString());
+                    }
+                }
+            }
+            //fix
+            this.modules = new JArray();
+        }
+    }
+    public class SeasonDetailModel_Web : SeasonDetailModel
+    {
+        public new string actor { get; set; }
+        public new string staff { get; set; }
     }
     public class SeasonDetailUpInfoModel
     {
@@ -401,7 +491,7 @@ namespace BiliLite.Modules
     public class SeasonDetailSectionItemModel
     {
         public string title { get; set; }
-        public int id { get; set; }
+        public long id { get; set; }
         public int type { get; set; }
         public List<SeasonDetailEpisodeModel> episodes { get; set; }
     }

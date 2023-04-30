@@ -20,7 +20,7 @@ namespace BiliLite.Api
             return api;
         }
 
-        public ApiModel RegionDynamic(int rid)
+        public ApiModel RegionDynamic(long rid)
         {
             ApiModel api = new ApiModel()
             {
@@ -31,7 +31,7 @@ namespace BiliLite.Api
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
         }
-        public ApiModel RegionDynamic(int rid,string next_aid)
+        public ApiModel RegionDynamic(long rid,string next_aid)
         {
             ApiModel api = new ApiModel()
             {
@@ -44,7 +44,7 @@ namespace BiliLite.Api
         }
 
 
-        public ApiModel RegionChildDynamic(int rid, int tag_id=0)
+        public ApiModel RegionChildDynamic(long rid, long tag_id=0)
         {
             ApiModel api = new ApiModel()
             {
@@ -56,7 +56,7 @@ namespace BiliLite.Api
             return api;
         }
 
-        public ApiModel RegionChildDynamic(int rid,string next, int tag_id = 0)
+        public ApiModel RegionChildDynamic(long rid,string next, int tag_id = 0)
         {
             ApiModel api = new ApiModel()
             {
@@ -67,7 +67,7 @@ namespace BiliLite.Api
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
         }
-        public ApiModel RegionChildList(int rid,string order, int page , int tag_id = 0)
+        public ApiModel RegionChildList(long rid,string order, int page , int tag_id = 0)
         {
             ApiModel api = new ApiModel()
             {

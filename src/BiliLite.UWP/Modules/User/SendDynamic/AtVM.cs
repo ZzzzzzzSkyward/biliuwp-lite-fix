@@ -140,7 +140,7 @@ namespace BiliLite.Modules.User
 }
 public class AtUserModel
 {
-    public int ID { get; set; }
+    public long ID { get; set; }
     public string UserName { get; set; }
     public string Face { get; set; }
     public string Display { get { return "@" + UserName; } }

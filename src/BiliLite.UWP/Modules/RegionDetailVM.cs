@@ -33,7 +33,7 @@ namespace BiliLite.Modules
             set { _SelectRegion = value; DoPropertyChanged("SelectRegion"); }
         }
 
-        public void InitRegion(int id, int tid)
+        public void InitRegion(long id, long tid)
         {
             var ls = new ObservableCollection<IRegionVM>();
             var region = AppHelper.Regions.FirstOrDefault(x => x.tid == id);
@@ -58,13 +58,13 @@ namespace BiliLite.Modules
     {
         ICommand RefreshCommand { get; set; }
         ICommand LoadMoreCommand { get; set; }
-        int ID { get; set; }
+        long ID { get; set; }
         string RegionName { get; set; }
         bool Loading { get; set; }
     }
     public class RegionDetailHomeVM : IModules, IRegionVM
     {
-        public int ID { get; set; }
+        public long ID { get; set; }
         public string RegionName { get; set; } = "推荐";
 
         public ICommand RefreshCommand { get; set; }
@@ -178,7 +178,7 @@ namespace BiliLite.Modules
     public class RegionDetailChildVM : IModules, IRegionVM
     {
         public string RegionName { get; set; }
-        public int ID { get; set; }
+        public long ID { get; set; }
         private bool _loading = false;
         public bool Loading
         {
@@ -406,7 +406,7 @@ namespace BiliLite.Modules
 
     public class RegionHomeBannerItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string title { get; set; }
         public string image { get; set; }
         public string uri { get; set; }
@@ -432,7 +432,7 @@ namespace BiliLite.Modules
     }
     public class RegionVideoItemModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string title { get; set; }
         public string cover { get; set; }
         public string param { get; set; }

@@ -60,7 +60,7 @@ namespace BiliLite
             try
             {
                 LogHelper.Log("程序运行出现错误", LogType.ERROR, e.Exception);
-                Utils.ShowMessageToast("程序出现一个错误，已记录");
+                Utils.ShowMessageToast("程序出现一个错误，已记录",e.Exception.ToString());
             }
             catch (Exception)
             {

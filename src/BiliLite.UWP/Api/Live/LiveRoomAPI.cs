@@ -140,7 +140,7 @@ namespace BiliLite.Api.Live
         /// 赠送背包礼物
         /// </summary>
         /// <returns></returns>
-        public ApiModel SendBagGift(long ruid,int gift_id,int num,int bag_id,int roomId)
+        public ApiModel SendBagGift(long ruid,long gift_id,long num,long bag_id,long roomId)
         {
             ApiModel api = new ApiModel()
             {
@@ -157,7 +157,7 @@ namespace BiliLite.Api.Live
         /// 赠送礼物
         /// </summary>
         /// <returns></returns>
-        public ApiModel SendGift(long ruid, int gift_id, int num, int roomId,string coin_type,int price)
+        public ApiModel SendGift(long ruid, long gift_id, long num, long roomId,string coin_type,int price)
         {
             ApiModel api = new ApiModel()
             {

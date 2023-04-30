@@ -162,7 +162,7 @@ namespace BiliLite.Modules
     }
     public class LiveHomeItemsModuleInfoModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string link { get; set; }
         public string pic { get; set; }
         public string title { get; set; }
@@ -209,14 +209,14 @@ namespace BiliLite.Modules
     }
     public class LiveHomeBannerModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public string link { get; set; }
         public string pic { get; set; }
         public string title { get; set; }
     }
     public class LiveHomeAreaModel
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public int area_v2_id { get; set; }
         public int area_v2_parent_id { get; set; }
         public int tag_type { get; set; }

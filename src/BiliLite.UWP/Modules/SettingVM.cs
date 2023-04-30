@@ -243,7 +243,7 @@ namespace BiliLite.Modules
     }
     public class DanmuFilterItem
     {
-        public int id { get; set; }
+        public long id { get; set; }
         public long mid { get; set; }
         public int type { get; set; }
         public string filter { get; set; }
