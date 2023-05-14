@@ -27,6 +27,8 @@ using BiliLite.Api;
 using static BiliLite.Api.CommentApi;
 using BiliLite.Modules;
 using BiliLite.Dialogs;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using BiliLite.Models.Common;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
 
@@ -639,7 +641,18 @@ namespace BiliLite.Controls
             selectComment = (sender as Button).DataContext as CommentModel;
             FaceFlyout.ShowAt(sender as Button);
         }
-
+        private void NotePicturesView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var notePicture = e.ClickedItem as NotePicture;
+            var notePicturesView = sender as AdaptiveGridView;
+            if (notePicture == null || notePicturesView == null) return;
+            var comment = notePicturesView.DataContext as CommentModel;
+            if (comment == null) return;
+            var notePictures = comment.content.pictures;
+            var index = notePictures.IndexOf(notePicture);
+            var pictures = notePictures.Select(x => x.ImgSrc).ToList();
+            MessageCenter.OpenImageViewer(pictures, index);
+        }
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             selectComment.replyText += (e.ClickedItem as EmotePackageItemModel).text.ToString();
@@ -942,12 +955,12 @@ namespace BiliLite.Controls
 
         private async void ButtonClick(object paramenter)
         {
-
             await MessageCenter.HandelUrl(paramenter.ToString());
             return;
 
 
         }
+
 
 
     }
@@ -958,7 +971,7 @@ namespace BiliLite.Controls
     }
     public class CommentContentModel
     {
-
+        public List<NotePicture> pictures { get; set; }
         public string message { get; set; }
         public int plat { get; set; }
         public string plat_str
