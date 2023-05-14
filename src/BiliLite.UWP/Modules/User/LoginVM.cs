@@ -31,6 +31,7 @@ namespace BiliLite.Modules.User
             RefreshQRCommand = new RelayCommand(RefreshQRCode);
             smsTimer = new Timer(1000);
             smsTimer.Elapsed += SmsTimer_Elapsed;
+            Manual = false;
         }
         public event EventHandler<Uri> OpenWebView;
         public event EventHandler<bool> SetWebViewVisibility;
@@ -63,9 +64,20 @@ namespace BiliLite.Modules.User
         {
             get { return _primaryButtonEnable; }
             set { _primaryButtonEnable = value; DoPropertyChanged("PrimaryButtonEnable"); }
+        }        
+        private bool _Manual = false;
+
+        public bool Manual
+        {
+            get { return _Manual; }
+            set { _Manual = value; DoPropertyChanged("Manual"); }
         }
 
-
+        public void OpenManualPage()
+        {
+            var url= "https://l78z.nsapps.cn/bili_gt.html";
+            Launcher.LaunchUriAsync(new Uri(url));
+        }
 
         public void ChangeLoginType(int type)
         {
@@ -81,6 +93,7 @@ namespace BiliLite.Modules.User
                         qrTimer.Dispose();
                     }
                     Utils.ShowMessageToast("为了您的账号安全,建议扫描二维码登录");
+                    Manual = true;
                     break;
                 case 1:
                     Title = "短信登录";
@@ -89,10 +102,12 @@ namespace BiliLite.Modules.User
                         qrTimer.Stop();
                         qrTimer.Dispose();
                     }
+                    Manual = true;
                     break;
                 case 2:
                     Title = "二维码登录";
                     GetQRAuthInfo();
+                    Manual = false;
                     break;
                 default:
                     break;
@@ -268,7 +283,9 @@ namespace BiliLite.Modules.User
                             var uri = new Uri(data.data.recaptcha_url);
                             SetWebViewVisibility?.Invoke(this, true);
                             var newuri = new Uri("ms-appx-web:///Asset/JiYan/%E6%9E%81%E9%AA%8C.html" + uri.Query + "&app=uwp");
+                            if(Manual)
                             Launcher.LaunchUriAsync(newuri);
+                            else
                             OpenWebView?.Invoke(this, newuri);
                         }
                         else
@@ -314,8 +331,10 @@ namespace BiliLite.Modules.User
                             Utils.ShowMessageToast(uri.AbsoluteUri);
                             SetWebViewVisibility?.Invoke(this, true);
                             var newuri = new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp");
-                            Launcher.LaunchUriAsync(newuri);
-                            OpenWebView?.Invoke(this, newuri);
+                            if (Manual)
+                                Launcher.LaunchUriAsync(newuri);
+                            else
+                                OpenWebView?.Invoke(this, newuri);
 
                         }
                         else
@@ -608,8 +627,10 @@ namespace BiliLite.Modules.User
                     //验证码重定向
                     //源码:https://github.com/xiaoyaocz/some_web
                     var newuri = new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp");
-                    Launcher.LaunchUriAsync(newuri);
-                    OpenWebView?.Invoke(this, newuri);
+                    if (Manual)
+                        Launcher.LaunchUriAsync(newuri);
+                    else
+                        OpenWebView?.Invoke(this, newuri);
                     break;
                 case LoginStatus.NeedValidate:
                     SetWebViewVisibility?.Invoke(this, true);

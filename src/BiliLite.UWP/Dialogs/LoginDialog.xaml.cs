@@ -96,7 +96,38 @@ namespace BiliLite.Dialogs
         {
             hide.Visibility = Visibility.Collapsed;
         }
-
+        private List<string> ParseJiYan(string uri)
+        {
+            var challenge = Regex.Match(uri, "geetest_challenge=(.*?)&").Groups[1].Value;
+            var validate = Regex.Match(uri, "geetest_validate=(.*?)&").Groups[1].Value;
+            var seccode = Regex.Match(uri, "geetest_seccode=(.*?)&").Groups[1].Value;
+            var recaptcha_token = Regex.Match(uri, "recaptcha_token=(.*?)&").Groups[1].Value;
+            var ret = new List<string>();
+            ret.Add(challenge);
+            ret.Add(validate);
+            ret.Add(seccode);
+            ret.Add(recaptcha_token);
+            return ret;
+        }
+        private void TryRelogin(string uri)
+        {
+            var parsed = ParseJiYan(uri);
+            var challenge = parsed[0];
+            var validate = parsed[1];
+            var seccode = parsed[2];
+            var recaptcha_token = parsed[3];
+            //重新登录
+            if (loginVM.LoginType == 0)
+            {
+                loginVM.DoPasswordLogin(seccode, validate, challenge, recaptcha_token);
+            }
+            //发送短信
+            if (loginVM.LoginType == 1)
+            {
+                loginVM.SendSMSCodeWithCaptcha(seccode, validate, challenge, recaptcha_token);
+            }
+            //Login(seccode, validate, challenge, recaptcha_token);
+        }
         private async void webView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             if (args.Uri.AbsoluteUri.Contains("access_key="))
@@ -120,21 +151,7 @@ namespace BiliLite.Dialogs
                 {
                     webView.Visibility = Visibility.Collapsed;
                     //验证成功
-                    var challenge = Regex.Match(args.Uri.AbsoluteUri, "geetest_challenge=(.*?)&").Groups[1].Value;
-                    var validate = Regex.Match(args.Uri.AbsoluteUri, "geetest_validate=(.*?)&").Groups[1].Value;
-                    var seccode = Regex.Match(args.Uri.AbsoluteUri, "geetest_seccode=(.*?)&").Groups[1].Value;
-                    var recaptcha_token = Regex.Match(args.Uri.AbsoluteUri, "recaptcha_token=(.*?)&").Groups[1].Value;
-                    //重新登录
-                    if (loginVM.LoginType == 0)
-                    {
-                        loginVM.DoPasswordLogin(seccode, validate, challenge, recaptcha_token);
-                    }
-                    //发送短信
-                    if (loginVM.LoginType==1)
-                    {
-                        loginVM.SendSMSCodeWithCaptcha(seccode, validate, challenge, recaptcha_token);
-                    }
-                    //Login(seccode, validate, challenge, recaptcha_token);
+                    TryRelogin(args.Uri.AbsoluteUri);
                 }
                 else if (success == 2)
                 {
@@ -173,6 +190,15 @@ namespace BiliLite.Dialogs
                     Utils.ShowMessageToast("登录失败，请重试");
                 }
                 return;
+            }
+        }
+
+        private void ManualLogin(object sender, TextChangedEventArgs e)
+        {
+            var result = ManualResult.Text;
+            if (result != "" && Regex.Match(result, "geetest").Success)
+            {
+                TryRelogin(result);
             }
         }
     }

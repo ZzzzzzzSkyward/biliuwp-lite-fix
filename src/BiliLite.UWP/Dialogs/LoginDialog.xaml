@@ -101,7 +101,7 @@
             </StackPanel>
             <!--二维码登录-->
             <StackPanel Visibility="{x:Bind Path=loginVM.LoginType,Mode=OneWay,Converter={StaticResource display},ConverterParameter=2}">
-                <Grid>
+                <Grid Visibility="Visible">
                     <Image x:Name="imgQR" Width="200" Height="200" Source="{x:Bind Path=loginVM.QRImageSource,Mode=OneWay}" ></Image>
                     <ProgressRing Visibility="{x:Bind Path=loginVM.QRLoadding,Mode=OneWay}" Width="48" Height="48" IsActive="True"></ProgressRing>
                 </Grid>
@@ -126,10 +126,18 @@
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>
-
+            <!--手动登录-->
+            <StackPanel Visibility="{x:Bind Path=loginVM.Manual,Mode=OneWay}">
+                <RichTextBlock Margin="4 0" FocusVisualPrimaryBrush="#E4D12A2A" Foreground="#E44035A6" >
+                    <Paragraph TextDecorations="Strikethrough">由于WebView无法加载证书过期的网站</Paragraph>
+                    <Paragraph TextDecorations="Strikethrough">请使用打开的网页手动加载验证码，然后把网址复制过来</Paragraph>
+                    <Paragraph >会发生密匙错误，不知道怎么回事</Paragraph>
+                </RichTextBlock>
+                <TextBox Margin="4 0" x:Name="ManualResult" PlaceholderText="形如geetest.result?..." Foreground="#E43D4FC1" TextChanged="ManualLogin"></TextBox>
+            </StackPanel>
         </StackPanel>
         <!--WebView-->
-        <!--muxc:WebView2 x:Name="webView2" AllowDrop="True" AllowFocusOnInteraction="True" IsDoubleTapEnabled="True" Source="ms-appx-web:///Asset/JiYan/极验.html" Width="320" Visibility="Visible" Margin="150,48,0,0" Opacity="0.5"/-->
+        <!--muxc:WebView2 x:Name="webView2" AllowDrop="True" AllowFocusOnInteraction="True" IsDoubleTapEnabled="True" Source="ms-appx-web:///Asset/JiYan/极验.htm" Width="320" Visibility="Visible" Margin="150,48,0,0" Opacity="0.5"/-->
         <WebView x:Name="webView" NavigationStarting="webView_NavigationStarting" NavigationCompleted="WebView_NavigationCompleted"  Height="360" Width="320" Visibility="Collapsed" ></WebView>
     </Grid>
 
