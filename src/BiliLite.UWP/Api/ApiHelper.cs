@@ -103,35 +103,43 @@ namespace BiliLite.Api
 
             if (keys.Count >= 4 && !string.IsNullOrEmpty(keys[2]) && !string.IsNullOrEmpty(keys[3]))
             {
-                AndroidVideoKey = new ApiKeyInfo(keys[2], keys[3]);
+                LoginKey = new ApiKeyInfo(keys[2], keys[3]);
             }
             else
             {
-                AndroidTVKey = DefaultKey;
+                LoginKey = DefaultKey;
             }
 
             if (keys.Count >= 6 && !string.IsNullOrEmpty(keys[4]) && !string.IsNullOrEmpty(keys[5]))
             {
-                AndroidTVKey = new ApiKeyInfo(keys[4], keys[5]);
+                AndroidVideoKey = new ApiKeyInfo(keys[4], keys[5]);
             }
             else
             {
-                AndroidTVKey = DefaultKey;
+                AndroidVideoKey = DefaultKey;
             }
 
             if (keys.Count >= 8 && !string.IsNullOrEmpty(keys[6]) && !string.IsNullOrEmpty(keys[7]))
             {
-                WebVideoKey = new ApiKeyInfo(keys[6], keys[7]);
+                AndroidTVKey = new ApiKeyInfo(keys[6], keys[7]);
             }
             else
             {
                 AndroidTVKey = DefaultKey;
-            }
-
+            }   
             if (keys.Count >= 10 && !string.IsNullOrEmpty(keys[8]) && !string.IsNullOrEmpty(keys[9]))
             {
-                API_BASE_URL = keys[8];
-                api2 = keys[9];
+                WebVideoKey = new ApiKeyInfo(keys[8], keys[9]);
+            }
+            else
+            {
+                WebVideoKey = DefaultKey;
+            }
+
+            if (keys.Count >= 12 && !string.IsNullOrEmpty(keys[10]) && !string.IsNullOrEmpty(keys[11]))
+            {
+                API_BASE_URL = keys[10];
+                api2 = keys[11];
             }
             else
             {

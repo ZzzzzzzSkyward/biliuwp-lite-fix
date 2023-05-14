@@ -282,7 +282,7 @@ namespace BiliLite.Modules.User
                         {
                             var uri = new Uri(data.data.recaptcha_url);
                             SetWebViewVisibility?.Invoke(this, true);
-                            var newuri = new Uri("ms-appx-web:///Asset/JiYan/%E6%9E%81%E9%AA%8C.html" + uri.Query + "&app=uwp");
+                            var newuri = new Uri("ms-appx-web:///Asset/JiYan/%E6%9E%81%E9%AA%8C.htm" + uri.Query + "&app=uwp");
                             if(Manual)
                             Launcher.LaunchUriAsync(newuri);
                             else

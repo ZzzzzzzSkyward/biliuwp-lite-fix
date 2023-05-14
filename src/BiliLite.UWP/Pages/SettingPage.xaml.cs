@@ -559,6 +559,8 @@ namespace BiliLite.Pages
         {
             appkey_android_1.Text = SettingHelper.GetValue("appkey_android_1", "");
             appkey_android_2.Text = SettingHelper.GetValue("appkey_android_2", "");
+            appkey_login_1.Text = SettingHelper.GetValue("appkey_login_1", "");
+            appkey_login_2.Text = SettingHelper.GetValue("appkey_login_2", "");
             appkey_video_1.Text = SettingHelper.GetValue("appkey_video_1", "");
             appkey_video_2.Text = SettingHelper.GetValue("appkey_video_2", "");
             appkey_tv_1.Text = SettingHelper.GetValue("appkey_tv_1", "");
@@ -572,6 +574,8 @@ namespace BiliLite.Pages
         {
             SettingHelper.SetValue("appkey_android_1", appkey_android_1.Text);
             SettingHelper.SetValue("appkey_android_2", appkey_android_2.Text);
+            SettingHelper.SetValue("appkey_login_1", appkey_login_1.Text);
+            SettingHelper.SetValue("appkey_login_2", appkey_login_2.Text);
             SettingHelper.SetValue("appkey_video_1", appkey_video_1.Text);
             SettingHelper.SetValue("appkey_video_2", appkey_video_2.Text);
             SettingHelper.SetValue("appkey_tv_1", appkey_tv_1.Text);
@@ -590,6 +594,8 @@ namespace BiliLite.Pages
 
             lst.Add(appkey_android_1.Text);
             lst.Add(appkey_android_2.Text);
+            lst.Add(appkey_login_1.Text);
+            lst.Add(appkey_login_2.Text);
             lst.Add(appkey_video_1.Text);
             lst.Add(appkey_video_2.Text);
             lst.Add(appkey_tv_1.Text);
