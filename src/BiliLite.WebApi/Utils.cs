@@ -15,7 +15,7 @@ namespace BiliLite.WebApi
         public static string GetSign(string url)
         {
             string result;
-            string str = url.Substring(url.IndexOf("?", 4) + 1);
+            string str = url[(url.IndexOf("?", 4) + 1)..];
             List<string> list = str.Split('&').ToList();
             list.Sort();
             StringBuilder stringBuilder = new StringBuilder();

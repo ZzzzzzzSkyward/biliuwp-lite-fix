@@ -41,6 +41,7 @@ namespace BiliLite.Pages
             Title = "设置";
             settingVM = new SettingVM();
             LoadUI();
+            LoadAPI();
             LoadPlayer();
             LoadRoaming();
             LoadDanmu();
@@ -549,6 +550,58 @@ namespace BiliLite.Pages
             //弹幕关键词
             LiveDanmuSettingListWords.ItemsSource = settingVM.LiveWords;
         }
+        private void LoadAPI()
+        {
+            LoadSettings();
+            InitApi();
+        }
+        private void LoadSettings()
+        {
+            appkey_android_1.Text = SettingHelper.GetValue("appkey_android_1", "");
+            appkey_android_2.Text = SettingHelper.GetValue("appkey_android_2", "");
+            appkey_video_1.Text = SettingHelper.GetValue("appkey_video_1", "");
+            appkey_video_2.Text = SettingHelper.GetValue("appkey_video_2", "");
+            appkey_tv_1.Text = SettingHelper.GetValue("appkey_tv_1", "");
+            appkey_tv_2.Text = SettingHelper.GetValue("appkey_tv_2", "");
+            appkey_web_1.Text = SettingHelper.GetValue("appkey_web_1", "");
+            appkey_web_2.Text = SettingHelper.GetValue("appkey_web_2", "");
+            api_web_top.Text = SettingHelper.GetValue("api_web_top", "");
+            api_web_secondary.Text = SettingHelper.GetValue("api_web_top", "");
+        }
+        private void SaveSettings()
+        {
+            SettingHelper.SetValue("appkey_android_1", appkey_android_1.Text);
+            SettingHelper.SetValue("appkey_android_2", appkey_android_2.Text);
+            SettingHelper.SetValue("appkey_video_1", appkey_video_1.Text);
+            SettingHelper.SetValue("appkey_video_2", appkey_video_2.Text);
+            SettingHelper.SetValue("appkey_tv_1", appkey_tv_1.Text);
+            SettingHelper.SetValue("appkey_tv_2", appkey_tv_2.Text);
+            SettingHelper.SetValue("appkey_web_1", appkey_web_1.Text);
+            SettingHelper.SetValue("appkey_web_2", appkey_web_2.Text);
+            SettingHelper.SetValue("api_web_top", api_web_top.Text);
+            SettingHelper.SetValue("api_web_secondary", api_web_secondary.Text);
+        }
+        private void ApplyAPI_Click(object sender, RoutedEventArgs e)
+        {
+            InitApi();
+        }
+        private void InitApi() { 
+            var lst = new List<string>();
+
+            lst.Add(appkey_android_1.Text);
+            lst.Add(appkey_android_2.Text);
+            lst.Add(appkey_video_1.Text);
+            lst.Add(appkey_video_2.Text);
+            lst.Add(appkey_tv_1.Text);
+            lst.Add(appkey_tv_2.Text);
+            lst.Add(appkey_web_1.Text);
+            lst.Add(appkey_web_2.Text);
+            lst.Add(api_web_top.Text);
+            lst.Add(api_web_secondary.Text);
+
+            ApiHelper.Init(lst);
+            SaveSettings();
+        }
         private void LoadDownlaod()
         {
             //下载路径
@@ -830,6 +883,11 @@ namespace BiliLite.Pages
         private void RoamingSettingTestCDN_Click(object sender, RoutedEventArgs e)
         {
             settingVM.CDNServerDelayTest();
+        }
+
+        private void TextBlock_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

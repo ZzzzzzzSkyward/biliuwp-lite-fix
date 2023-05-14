@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Web.Http.Filters;
 
 namespace BiliLite.Api
 {
@@ -17,11 +18,13 @@ namespace BiliLite.Api
         public const string GIT_RAW_URL = "https://git.nsapps.cn/xiaoyaocz/BiliLite/raw/master/";
 
         // 哔哩哔哩API
-        public const string API_BASE_URL = "https://api.bilibili.com";
+        public static string Default_API_BASE_URL = "https://api.bilibili.com";
+        public static string API_BASE_URL = "https://api.bilibili.com";
 
         //漫游默认的服务器
         public const string ROMAING_PROXY_URL = "https://b.chuchai.vip";
 
+        public static ApiKeyInfo DefaultKey = new ApiKeyInfo("4409e2ce8ffd12b8", "59b43e04ad6965f34319062b478f83dd");
         public static ApiKeyInfo AndroidKey = new ApiKeyInfo("4409e2ce8ffd12b8", "59b43e04ad6965f34319062b478f83dd");
         public static ApiKeyInfo AndroidVideoKey = new ApiKeyInfo("4409e2ce8ffd12b8", "59b43e04ad6965f34319062b478f83dd");
         public static ApiKeyInfo WebVideoKey = new ApiKeyInfo("4409e2ce8ffd12b8", "59b43e04ad6965f34319062b478f83dd");
@@ -31,6 +34,46 @@ namespace BiliLite.Api
         private const string _mobi_app = "android";
         private const string _platform = "android";
         public static string deviceId = "";
+        public static string customcookie = "";
+        //二级网址
+        public static string default_api2 = "/x/v2";
+        public static string api2 = "/x/v2";
+        //api
+        public static string readcomment = "/reply";
+        public static string comment = "/reply/add";
+        public static string replycomment = "/reply/add";
+        public static string replyreply = "/reply/reply";
+        //csrf
+        public static string _csrf = "";
+        public static string GetCSRF(bool isparam = false)
+        {
+            if (_csrf != "")
+            {
+                if (isparam) return "&csrf=" + _csrf;
+                else return _csrf;
+            }
+            var fiter = new HttpBaseProtocolFilter();
+            var cookies =  fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
+            var csrf = "";
+            //没有Cookie
+            if (cookies == null || cookies.Count == 0)
+            {
+
+            }
+            else
+            {
+                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
+                if (csrf!=null&&csrf!="")
+                {
+                    _csrf = csrf;
+                    if (isparam)
+                    {
+                        csrf = "&csrf=" + csrf;
+                    }
+                }
+            }
+            return csrf;
+        }
         public static string GetSign(string url, ApiKeyInfo apiKeyInfo, string par = "&sign=")
         {
             string result;
@@ -47,7 +90,55 @@ namespace BiliLite.Api
             result = Utils.ToMD5(stringBuilder.ToString()).ToLower();
             return par + result;
         }
+        public static void Init(List<string> keys)
+        {
+            if (!string.IsNullOrEmpty(keys[0]) && !string.IsNullOrEmpty(keys[1]))
+            {
+                AndroidKey = new ApiKeyInfo(keys[0], keys[1]);
+            }
+            else
+            {
+                AndroidKey = DefaultKey;
+            }
 
+            if (keys.Count >= 4 && !string.IsNullOrEmpty(keys[2]) && !string.IsNullOrEmpty(keys[3]))
+            {
+                AndroidVideoKey = new ApiKeyInfo(keys[2], keys[3]);
+            }
+            else
+            {
+                AndroidTVKey = DefaultKey;
+            }
+
+            if (keys.Count >= 6 && !string.IsNullOrEmpty(keys[4]) && !string.IsNullOrEmpty(keys[5]))
+            {
+                AndroidTVKey = new ApiKeyInfo(keys[4], keys[5]);
+            }
+            else
+            {
+                AndroidTVKey = DefaultKey;
+            }
+
+            if (keys.Count >= 8 && !string.IsNullOrEmpty(keys[6]) && !string.IsNullOrEmpty(keys[7]))
+            {
+                WebVideoKey = new ApiKeyInfo(keys[6], keys[7]);
+            }
+            else
+            {
+                AndroidTVKey = DefaultKey;
+            }
+
+            if (keys.Count >= 10 && !string.IsNullOrEmpty(keys[8]) && !string.IsNullOrEmpty(keys[9]))
+            {
+                API_BASE_URL = keys[8];
+                api2 = keys[9];
+            }
+            else
+            {
+                API_BASE_URL = Default_API_BASE_URL;
+                api2 = default_api2;
+            }
+        }
         public static string GetSign(IDictionary<string, string> pars, ApiKeyInfo apiKeyInfo)
         {
             StringBuilder sb = new StringBuilder();

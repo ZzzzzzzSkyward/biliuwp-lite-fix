@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using Windows.System;
+using Windows.UI.Xaml.Controls;
 
 namespace BiliLite.Modules.User
 {
@@ -265,7 +267,9 @@ namespace BiliLite.Modules.User
                         {
                             var uri = new Uri(data.data.recaptcha_url);
                             SetWebViewVisibility?.Invoke(this, true);
-                            OpenWebView?.Invoke(this, new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp"));
+                            var newuri = new Uri("ms-appx-web:///Asset/JiYan/%E6%9E%81%E9%AA%8C.html" + uri.Query + "&app=uwp");
+                            Launcher.LaunchUriAsync(newuri);
+                            OpenWebView?.Invoke(this, newuri);
                         }
                         else
                         {
@@ -307,8 +311,11 @@ namespace BiliLite.Modules.User
                         if (data.data.recaptcha_url != null && data.data.recaptcha_url.Length > 0)
                         {
                             var uri = new Uri(data.data.recaptcha_url);
+                            Utils.ShowMessageToast(uri.AbsoluteUri);
                             SetWebViewVisibility?.Invoke(this, true);
-                            OpenWebView?.Invoke(this, new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp"));
+                            var newuri = new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp");
+                            Launcher.LaunchUriAsync(newuri);
+                            OpenWebView?.Invoke(this, newuri);
 
                         }
                         else
@@ -600,7 +607,9 @@ namespace BiliLite.Modules.User
                     SetWebViewVisibility?.Invoke(this, true);
                     //验证码重定向
                     //源码:https://github.com/xiaoyaocz/some_web
-                    OpenWebView?.Invoke(this, new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp"));
+                    var newuri = new Uri("https://l78z.nsapps.cn/bili_gt.html" + uri.Query + "&app=uwp");
+                    Launcher.LaunchUriAsync(newuri);
+                    OpenWebView?.Invoke(this, newuri);
                     break;
                 case LoginStatus.NeedValidate:
                     SetWebViewVisibility?.Invoke(this, true);

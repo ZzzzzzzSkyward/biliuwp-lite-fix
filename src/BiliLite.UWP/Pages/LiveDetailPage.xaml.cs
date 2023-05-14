@@ -401,7 +401,14 @@ namespace BiliLite.Pages
             }
             if (interopMSS != null)
             {
-                interopMSS.Dispose();
+                try
+                {
+                    interopMSS.Dispose();
+                }
+                catch(Exception ex)
+                {
+                    LogHelper.Log("直播关闭失败",LogType.ERROR,ex);
+                }
                 interopMSS = null;
             }
             liveRoomVM?.Dispose();

@@ -134,7 +134,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/history/report",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history/report",
                 body = ApiHelper.MustParameter(ApiHelper.AndroidVideoKey, true) + $"&aid={aid}&cid={cid}&epid={epid}&sid={sid}&progress={progress}&realtime={progress}&sub_type=1&type={type}"
             };
             api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidVideoKey);
@@ -156,7 +156,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/dm/post",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/dm/post",
                 parameter= ApiHelper.MustParameter(ApiHelper.AndroidVideoKey, true)+$"&aid={aid}",
                 body =   $"msg={Uri.EscapeDataString(msg)}&mode={mode}&screen_state=1&color={color}&pool=0&progress={Convert.ToInt32(position*1000)}&fontsize=25&rnd={Utils.GetTimestampS()}&from=7&oid={cid}&plat={plat}&type=1"
             };
@@ -239,7 +239,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"http://api.bilibili.com/x/v2/dm/list/seg.so",
+                baseUrl = $"http://api.bilibili.com{ApiHelper.api2}/dm/list/seg.so",
                 parameter = $"type=1&oid={oid}&segment_index={segment_index}"
             };
             return api;

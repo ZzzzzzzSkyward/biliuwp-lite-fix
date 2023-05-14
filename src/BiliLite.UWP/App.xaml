@@ -8,7 +8,6 @@
     xmlns:Custom="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:convert="using:BiliLite.Converters">
     <Application.Resources>
-        <!--XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" /><-->
         <ResourceDictionary >
 
             <ResourceDictionary.MergedDictionaries>

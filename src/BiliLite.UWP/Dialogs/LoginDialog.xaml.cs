@@ -1,5 +1,6 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Modules.User;
+using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -146,6 +147,7 @@ namespace BiliLite.Dialogs
             }
             try
             {
+                //await webView.CoreWebView2.ExecuteScriptAsync(text);
                 this.webView.AddWebAllowedObject("biliapp", _biliapp);
                 this.webView.AddWebAllowedObject("secure", _secure);
             }
@@ -157,6 +159,7 @@ namespace BiliLite.Dialogs
 
         private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
+            //await webView.AddScriptToExecuteOnDocumentCreatedAsync("window.chrome.webview.postMessage({'command': 'trustAllCertificates'})");
             if (args.Uri.AbsoluteUri == "https://passport.bilibili.com/ajax/miniLogin/redirect" || args.Uri.AbsoluteUri == "https://www.bilibili.com/")
             {
                 var results = await HttpHelper.GetString("https://passport.bilibili.com/login/app/third?appkey=27eb53fc9058f8c3&api=http%3A%2F%2Flink.acg.tv%2Fforum.php&sign=67ec798004373253d60114caaad89a8c");

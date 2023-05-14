@@ -24,7 +24,7 @@ namespace BiliLite.Api.Live
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://api.live.bilibili.com/xlive/app-interface/v1/relation/unliveAnchor",
+                baseUrl = $"https://api.live.bilibili.com/xlive/app-interface/v1/relation/unliveAnchor",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + $"&page={page}&pagesize=30",
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
@@ -35,7 +35,7 @@ namespace BiliLite.Api.Live
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://app.bilibili.com/x/v2/history/liveList",
+                baseUrl = "https://app.bilibili.com{ApiHelper.api2}/history/liveList",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + $"&pn={page}&ps=20",
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);

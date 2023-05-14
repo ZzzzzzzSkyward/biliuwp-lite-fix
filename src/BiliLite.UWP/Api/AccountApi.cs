@@ -155,7 +155,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://app.bilibili.com/x/v2/account/myinfo",
+                baseUrl = $"https://app.bilibili.com{ApiHelper.api2}/account/myinfo",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey,true)
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
@@ -172,7 +172,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://app.bilibili.com/x/v2/account/mine",
+                baseUrl = $"https://app.bilibili.com{ApiHelper.api2}/account/mine",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true)
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
@@ -188,7 +188,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "http://app.biliapi.net/x/v2/space",
+                baseUrl = $"http://app.biliapi.net{ApiHelper.api2}/space",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true)+ $"&vmid={mid}"
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
@@ -200,7 +200,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/history",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + $"&pn={pn}&ps={ps}"
             };
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
@@ -211,7 +211,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/history/delete",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history/delete",
                 body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + $"&kid={id}"
             };
             api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);

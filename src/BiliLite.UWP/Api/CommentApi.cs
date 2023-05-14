@@ -8,26 +8,7 @@ namespace BiliLite.Api
 {
     public class CommentApi
     {
-        private string GetCSRF(bool isparam=false)
-        {
-            var fiter = new HttpBaseProtocolFilter();
-            var cookies = fiter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
-            var csrf = "";
-            //没有Cookie
-            if (cookies == null || cookies.Count == 0)
-            {
-
-            }
-            else
-            {
-                csrf = cookies.FirstOrDefault(x => x.Name == "bili_jct")?.Value;
-                if (isparam)
-                {
-                    csrf = "&csrf=" + csrf;
-                }
-            }
-            return csrf;
-        }
+        
         public enum CommentType
         {
             Video=1,
@@ -54,24 +35,26 @@ namespace BiliLite.Api
         /// <returns></returns>
         public ApiModel Comment(string oid, CommentSort sort,int pn, int type, int ps = 30)
         {
-            string csrf = GetCSRF();
+            //string csrf = ApiHelper.GetCSRF(true);
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply",
-                parameter =  $"oid={oid}&plat=2&pn={pn}&ps={ps}&sort={(int)sort}&type={type}"//&csrf={csrf}"
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}{ApiHelper.readcomment}",
+                parameter =  $"oid={oid}&plat=2&pn={pn}&ps={ps}&sort={(int)sort}&type={type}"
+                //{csrf}",不需要
             };
             //api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
         }
         public ApiModel Reply(string oid,string root, int pn, int type, int ps = 30)
         {
-            string csrf = GetCSRF();
+            string csrf = ApiHelper.GetCSRF(true);
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/reply",
-                parameter = $"oid={oid}&plat=2&pn={pn}&ps={ps}&root={root}&type={type}&csrf={csrf}",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}{ApiHelper.replyreply}",
+                parameter = $"oid={oid}&plat=2&pn={pn}&ps={ps}&root={root}&type={type}{csrf}",
+                need_cookie=true
             };
             //api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
             return api;
@@ -79,12 +62,13 @@ namespace BiliLite.Api
 
         public ApiModel Like(string oid, string root, int action, int type)
         {
-            string csrf = GetCSRF();
+            string csrf = ApiHelper.GetCSRF(true);
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/action",
-                body =  $"&oid={oid}&rpid={root}&action={action}&type={type}&csrf={csrf}"
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/reply/action",
+                body =  $"&oid={oid}&rpid={root}&action={action}&type={type}{csrf}",
+                need_cookie = true
             };
             //api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
@@ -92,23 +76,23 @@ namespace BiliLite.Api
 
         public ApiModel ReplyComment(string oid, string root, string parent, string message, int type)
         {
-            string csrf = GetCSRF();
+            string csrf = ApiHelper.GetCSRF(true);
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/add",
-                body =  $"&oid={oid}&root={root}&parent={parent}&type={type}&message={message}&csrf={csrf}"
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}{ApiHelper.replycomment}",
+                body =  $"&oid={oid}&root={root}&parent={parent}&type={type}&message={message}{csrf}"
             };
            // api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
         }
         public ApiModel DeleteComment(string oid, string rpid, int type)
         {
-            string csrf = GetCSRF();
+            string csrf = ApiHelper.GetCSRF();
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/del",
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/reply/del",
                 body =  $"&oid={oid}&rpid={rpid}&type={type}&csrf={csrf}"
             };
            // api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
@@ -116,12 +100,12 @@ namespace BiliLite.Api
         }
         public ApiModel AddComment(string oid, CommentType type,string message)
         {
-            string csrf = GetCSRF();
+            string csrf = ApiHelper.GetCSRF(true);
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/v2/reply/add",
-                body = $"&oid={oid}&type={(int)type}&message={Uri.EscapeDataString(message)}&csrf={csrf}"
+                baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}{ApiHelper.comment}",
+                body = $"&oid={oid}&type={(int)type}&message={Uri.EscapeDataString(message)}{csrf}"
             };
             //api.body += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;

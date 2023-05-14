@@ -13,7 +13,7 @@ namespace BiliLite.Api.Home
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"https://app.bilibili.com/x/v2/feed/index",
+                baseUrl = $"https://app.bilibili.com{ApiHelper.api2}/feed/index",
                 //baseUrl = $"https://api.bilibili.com/x/web-interface/index/top/rcmd",
                 parameter =ApiHelper.MustParameter(ApiHelper.AndroidKey,true)+$"&flush=0&idx={idx}&login_event=2&network=wifi&open_event=&pull={(idx == "0").ToString().ToLower()}&qn=32&style=2"
                 //parameter=$"version=1&ps=32"

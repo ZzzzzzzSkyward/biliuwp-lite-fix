@@ -528,7 +528,7 @@ namespace BiliLite.Controls
             }
             try
             {
-                //string url = $"{ApiHelper.API_BASE_URL}/x/v2/reply/add";
+                //string url = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}{ApiHelper.reply}";
 
                 var txt = "回复 @" + m.member.uname + ":" + m.replyText;
                 //string content =
@@ -600,7 +600,7 @@ namespace BiliLite.Controls
 
             try
             {
-                //string url = $"{ApiHelper.API_BASE_URL}/x/v2/reply/del";
+                //string url = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/reply/del";
 
                 //string content =
                 //    string.Format("access_key={0}&appkey={1}&platform=android&type={2}&oid={3}&ts={4}&rpid={5}",

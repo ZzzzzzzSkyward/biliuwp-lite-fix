@@ -1,4 +1,5 @@
 ﻿<ContentDialog
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     x:Class="BiliLite.Dialogs.LoginDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -104,7 +105,7 @@
                     <Image x:Name="imgQR" Width="200" Height="200" Source="{x:Bind Path=loginVM.QRImageSource,Mode=OneWay}" ></Image>
                     <ProgressRing Visibility="{x:Bind Path=loginVM.QRLoadding,Mode=OneWay}" Width="48" Height="48" IsActive="True"></ProgressRing>
                 </Grid>
-                
+
                 <TextBlock HorizontalAlignment="Center">请使用哔哩哔哩手机客户端扫描上方二维码登录</TextBlock>
                 <HyperlinkButton x:Name="btnRefreshQR" HorizontalAlignment="Center" Command="{x:Bind Path=loginVM.RefreshQRCommand}">
                     <TextBlock>刷新二维码</TextBlock>
@@ -125,10 +126,11 @@
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>
-         
+
         </StackPanel>
         <!--WebView-->
-        <WebView x:Name="webView" NavigationStarting="webView_NavigationStarting" NavigationCompleted="WebView_NavigationCompleted"  Height="360" Width="320" Visibility="Collapsed"></WebView>
+        <!--muxc:WebView2 x:Name="webView2" AllowDrop="True" AllowFocusOnInteraction="True" IsDoubleTapEnabled="True" Source="ms-appx-web:///Asset/JiYan/极验.html" Width="320" Visibility="Visible" Margin="150,48,0,0" Opacity="0.5"/-->
+        <WebView x:Name="webView" NavigationStarting="webView_NavigationStarting" NavigationCompleted="WebView_NavigationCompleted"  Height="360" Width="320" Visibility="Collapsed" ></WebView>
     </Grid>
-  
+
 </ContentDialog>

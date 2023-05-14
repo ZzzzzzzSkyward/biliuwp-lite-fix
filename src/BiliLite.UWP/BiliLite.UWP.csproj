@@ -501,6 +501,9 @@
     <Content Include="Assets\Icon\纪录片.png" />
     <Content Include="Assets\Icon\综艺.png" />
     <Content Include="Assets\Image\background.jpg" />
+    <Content Include="Assets\JiYan\极验.htm" />
+    <Content Include="Assets\JiYan\极验_files\fullpage.0.0.0.js" />
+    <Content Include="Assets\JiYan\极验_files\gt.js" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -881,6 +884,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.8.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Web.WebView2">
+      <Version>1.0.1774.30</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>

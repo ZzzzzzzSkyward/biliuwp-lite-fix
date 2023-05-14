@@ -24,7 +24,7 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"https://app.bilibili.com/x/v2/search",
+                baseUrl = $"https://app.bilibili.com{ApiHelper.api2}/search",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + "&fnval=16&fnver=0&force_host=0&fourk=1&from_source=app_search&highlight=0&is_org_query=0&qn=112&recommend=1"
             };
             api.parameter += $"&keyword={Uri.EscapeDataString(keyword)}&local_time={Utils.GetTimestampS()}&pn={pn}&ps={ps}";
