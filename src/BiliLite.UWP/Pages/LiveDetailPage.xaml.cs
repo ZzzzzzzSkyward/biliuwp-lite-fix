@@ -384,7 +384,7 @@ namespace BiliLite.Pages
                     break;
                 //增加刷新
                 case VirtualKey.F5:
-                    liveRoomVM.LoadLiveRoomDetail(roomid);
+                    //liveRoomVM.LoadLiveRoomDetail(roomid);
                     break;
 
                 default:

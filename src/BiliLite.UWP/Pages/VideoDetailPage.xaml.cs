@@ -60,12 +60,36 @@ namespace BiliLite.Pages
             this.RightInfo.Width = new GridLength(SettingHelper.GetValue<double>(SettingHelper.UI.RIGHT_DETAIL_WIDTH, 320), GridUnitType.Pixel);
 
         }
+        private async void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
+        {
+            var elent = FocusManager.GetFocusedElement();
+            if (elent is TextBox || elent is AutoSuggestBox)
+            {
+                args.Handled = false;
+                return;
+            }
+            args.Handled = true;
+            switch (args.VirtualKey)
+            {
+                case VirtualKey.F5:
+                    {
+                        if (videoDetailVM.Loading) return;
+                        await InitializeVideo(_id);
+                        break;
+                    }
+                default:
+                    Utils.ShowMessageToast("按键", args.VirtualKey.ToString());
+                    break;
+            }
+        }
+
 
         private void VideoDetailPage_Loaded(object sender, RoutedEventArgs e)
         {
 
             if (this.Parent is MyFrame)
             {
+                Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
                 (this.Parent as MyFrame).ClosedPage -= VideoDetailPage_ClosedPage;
                 (this.Parent as MyFrame).ClosedPage += VideoDetailPage_ClosedPage;
             }
