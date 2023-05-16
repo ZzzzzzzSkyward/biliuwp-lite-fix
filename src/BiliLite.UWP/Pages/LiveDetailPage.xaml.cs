@@ -288,6 +288,19 @@ namespace BiliLite.Pages
             timer_focus.Start();
             controlTimer.Start();
         }
+        //判断是否按下mod键
+        private bool IsDown(Windows.System.VirtualKey key)
+        {
+            return Window.Current.CoreWindow.GetKeyState(key).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+        }
+        private bool NoMod()
+        {
+            return !IsDown(Windows.System.VirtualKey.Shift) &&
+                !IsDown(Windows.System.VirtualKey.Control) &&
+                !IsDown(Windows.System.VirtualKey.Menu) &&
+                !IsDown(Windows.System.VirtualKey.LeftWindows) &&
+                !IsDown(Windows.System.VirtualKey.RightWindows);
+        }
 
         private async void CoreWindow_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
         {
@@ -300,54 +313,40 @@ namespace BiliLite.Pages
             args.Handled = true;
             switch (args.VirtualKey)
             {
-                //case Windows.System.VirtualKey.Space:
-                //    if (mediaPlayer.PlaybackSession.CanPause)
-                //    {
-                //        mediaPlayer.Pause();
-                //    }
-                //    else
-                //    {
-                //        mediaPlayer.Play();
-                //    }
-                //    break;
-
-                case VirtualKey.Up:
-                    if (SliderVolume.Value + 0.1>1)
+                case VirtualKey.Space:
+                    if (NoMod())
                     {
-                        SliderVolume.Value = 1;
+                        if (mediaPlayer.PlaybackSession.CanPause)
+                        {
+                            mediaPlayer.Pause();
+                        }
+                        else
+                        {
+                            mediaPlayer.Play();
+                        }
                     }
-                    else
-                    {
-                        SliderVolume.Value += 0.1;
-                    }
-                 
-                    TxtToolTip.Text = "音量:" + SliderVolume.Value.ToString("P");
-                    ToolTip.Visibility = Visibility.Visible;
-                    await Task.Delay(2000);
-                    ToolTip.Visibility = Visibility.Collapsed;
                     break;
 
-                case VirtualKey.Down:
-                  
-                    if (SliderVolume.Value - 0.1<0)
+                case Windows.System.VirtualKey.Up:
+                case Windows.System.VirtualKey.Down:
+                    if (NoMod())
                     {
-                        SliderVolume.Value = 0;
+                        SliderVolume.Value += args.VirtualKey == Windows.System.VirtualKey.Up ? 0.1 : -0.1;
+                        //允许设成小于0
+                        if (SliderVolume.Value == 0)
+                        {
+                            TxtToolTip.Text = "静音";
+                        }
+                        else
+                        {
+                            //防止太响
+                            if (SliderVolume.Value > 1) SliderVolume.Value = 1;
+                            TxtToolTip.Text = "音量:" + SliderVolume.Value.ToString("P");
+                        }
+                        ToolTip.Visibility = Visibility.Visible;
+                        await Task.Delay(2000);
+                        ToolTip.Visibility = Visibility.Collapsed;
                     }
-                    else
-                    {
-                        SliderVolume.Value -= 0.1;
-                    }
-                    if (SliderVolume.Value == 0)
-                    {
-                        TxtToolTip.Text = "静音";
-                    }
-                    else
-                    {
-                        TxtToolTip.Text = "音量:" + SliderVolume.Value.ToString("P");
-                    }
-                    ToolTip.Visibility = Visibility.Visible;
-                    await Task.Delay(2000);
-                    ToolTip.Visibility = Visibility.Collapsed;
                     break;
                 case VirtualKey.Escape:
                     SetFullScreen(false);
@@ -355,13 +354,18 @@ namespace BiliLite.Pages
                     break;
                 case VirtualKey.F8:
                 case VirtualKey.T:
-                    //小窗播放
-                    MiniWidnows(BottomBtnMiniWindows.Visibility == Visibility.Visible);
-
+                    if (NoMod())
+                    {
+                        //小窗播放
+                        MiniWidnows(BottomBtnMiniWindows.Visibility == Visibility.Visible);
+                    }
                     break;
                 case VirtualKey.F12:
                 case VirtualKey.W:
-                    SetFullWindow(BottomBtnFullWindows.Visibility == Visibility.Visible);
+                    if (NoMod())
+                    {
+                        SetFullWindow(BottomBtnFullWindows.Visibility == Visibility.Visible);
+                    }
                     break;
                 case VirtualKey.F11:
                 case VirtualKey.F:
@@ -369,20 +373,27 @@ namespace BiliLite.Pages
                     SetFullScreen(BottomBtnFull.Visibility == Visibility.Visible);
                     break;
                 case VirtualKey.F10:
-                    await CaptureVideo();
+                    if (NoMod())
+                    {
+                        await CaptureVideo();
+                    }
                     break;
                 case VirtualKey.F9:
                 case VirtualKey.D:
-                    if (DanmuControl.Visibility == Visibility.Visible)
+                    if (NoMod())
                     {
-                        DanmuControl.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        DanmuControl.Visibility = Visibility.Visible;
+                        if (DanmuControl.Visibility == Visibility.Visible)
+                        {
+                            DanmuControl.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            DanmuControl.Visibility = Visibility.Visible;
+                        }
                     }
                     break;
                 //增加刷新
+                //本来就有
                 case VirtualKey.F5:
                     //liveRoomVM.LoadLiveRoomDetail(roomid);
                     break;
@@ -406,14 +417,7 @@ namespace BiliLite.Pages
             }
             if (interopMSS != null)
             {
-                try
-                {
-                    interopMSS.Dispose();
-                }
-                catch(Exception ex)
-                {
-                    LogHelper.Log("直播关闭失败",LogType.ERROR,ex);
-                }
+                interopMSS.Dispose();
                 interopMSS = null;
             }
             liveRoomVM?.Dispose();

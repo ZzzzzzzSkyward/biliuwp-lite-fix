@@ -110,6 +110,13 @@ namespace BiliLite.Helpers
             MessageToast ms = new MessageToast(Message, TimeSpan.FromSeconds(seconds));
             ms.Show();
         }
+        public static StringBuilder sb = new StringBuilder();
+        public static Pages.SettingPage sp = null;
+        public static void AddALog(string message)
+        {
+            sb.AppendLine(message);
+            sp?.Log(sb);
+        }
         public static void ShowMessageToast(string message,string longmsg, int seconds = 10, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string filePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
             //当有错误时延长时间
@@ -117,8 +124,12 @@ namespace BiliLite.Helpers
             string errorMessage = $"{memberName}@{filePath}:{lineNumber}\n{message}\n{cutmsg}";
             MessageToast ms = new MessageToast(errorMessage, TimeSpan.FromSeconds(seconds));
             ms.Show();
-            //并且记录
+            //并且记录，如果确实是一个exception
+            if(longmsg.Length>50)
             LogHelper.logger.Error("来自Utils的报错%s", longmsg);
+            //并汇报
+            AddALog(message);
+            AddALog(longmsg);
         }
         public static void ShowMessageToast(string message, List<MyUICommand> commands, int seconds = 15)
         {

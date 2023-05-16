@@ -67,7 +67,7 @@
                 <Grid Background="Black">
                     <control:PlayerControl x:Name="player" AllMediaEndEvent="player_AllMediaEndEvent" FullScreenEvent="PlayerControl_FullScreenEvent" FullWindowEvent="PlayerControl_FullWindowEvent" ChangeEpisodeEvent="PlayerControl_ChangeEpisodeEvent"/>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" SizeChanged="OnGridSizeChanged">
                     <StackPanel Orientation="Horizontal" >
                         <Button Holding="btnLike_Holding" 
                                   RightTapped="btnLike_RightTapped"
@@ -163,31 +163,51 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnShare"
+                        <StackPanel Name="ButtonStack" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnShare"
                                 Background="Transparent"
                                 Margin="0 0 4 0"
                                 Width="56" Foreground="{ThemeResource TextColor}">
-                            <StackPanel>
-                                <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xE671;" />
-                                <TextBlock FontSize="12" TextAlignment="Center" Text="分享"></TextBlock>
-                            </StackPanel>
-                            <Button.Flyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem Click="btnShareCopyUrl_Click" Icon="Copy" Text="复制链接"/>
-                                    <MenuFlyoutItem Click="btnShareCopy_Click" Icon="Copy" Text="复制标题链接"/>
-                                    <MenuFlyoutItem Click="btnShare_Click" Icon="Share" Text="分享到..."/>
-                                </MenuFlyout>
-                            </Button.Flyout>
-                        </Button>
-                        <Button Background="Transparent"
+                                <StackPanel>
+                                    <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xE671;" />
+                                    <TextBlock FontSize="12" TextAlignment="Center" Text="分享"></TextBlock>
+                                </StackPanel>
+                                <Button.Flyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Click="btnShareCopyUrl_Click" Icon="Copy" Text="复制链接"/>
+                                        <MenuFlyoutItem Click="btnShareCopy_Click" Icon="Copy" Text="复制标题链接"/>
+                                        <MenuFlyoutItem Click="btnShare_Click" Icon="Share" Text="分享到..."/>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
+                            <Button Background="Transparent"
                                 Margin="0 0 4 0"
                                 Width="56"
                                 x:Name="btnDownload" Click="btnDownload_Click" Foreground="{ThemeResource TextColor}">
-                            <StackPanel>
-                                <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xE672;" />
-                                <TextBlock FontSize="12" TextAlignment="Center" Text="下载"></TextBlock>
-                            </StackPanel>
-                        </Button>
+                                <StackPanel>
+                                    <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xE672;" />
+                                    <TextBlock FontSize="12" TextAlignment="Center" Text="下载"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Background="Transparent"
+                                Margin="0 0 4 0"
+                                Width="56"
+                                x:Name="btnWatchLater2" Click="btnWatchLater_Click" Foreground="{ThemeResource TextColor}">
+                                <StackPanel>
+                                    <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xe68b;" />
+                                    <TextBlock FontSize="12" TextTrimming="None" TextAlignment="Left" Text="稍后再看" Margin="-10 0 -10 0"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Background="Transparent"
+                                Margin="0 0 4 0"
+                                Width="56"
+                                x:Name="btnRefresh2" Click="btnRefresh_Click" Foreground="{ThemeResource TextColor}">
+                                <StackPanel>
+                                    <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xe67f;" />
+                                    <TextBlock FontSize="12" Text="刷新"></TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                         <AppBarButton Visibility="Collapsed" Style="{StaticResource AppBarButtonNoChevronStyle}" Label="手机看" Foreground="{ThemeResource TextColor}">
                             <AppBarButton.Icon>
                                 <fa:FontAwesome Icon="Solid_MobileAlt"></fa:FontAwesome>
@@ -219,6 +239,14 @@
                                 <KeyboardAccelerator Key="F5"></KeyboardAccelerator>
                             </AppBarButton.KeyboardAccelerators>
                         </AppBarButton>
+                        <AppBarButton x:Name="btnDownload2" Visibility="Collapsed" Label="下载" Click="btnDownload_Click" Foreground="{ThemeResource TextColor}" >
+                            <AppBarButton.Icon>
+                                <fa:FontAwesome Icon="Solid_Sync"></fa:FontAwesome>
+                            </AppBarButton.Icon>
+                            <AppBarButton.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="F7"></KeyboardAccelerator>
+                            </AppBarButton.KeyboardAccelerators>
+                        </AppBarButton>
                         
                         <Button Background="Transparent"
                                 Margin="0"
@@ -231,10 +259,11 @@
                             </StackPanel>
                             <Button.Flyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem Click="BtnWatchLater_Click" >稍后再看</MenuFlyoutItem>
+                                    <MenuFlyoutItem Click="btnWatchLater_Click" >稍后再看</MenuFlyoutItem>
                                     <MenuFlyoutItem Click="btnOpenQR_Click" >手机观看</MenuFlyoutItem>
                                     <MenuFlyoutItem Click="btnOpenWeb_Click" >浏览器打开</MenuFlyoutItem>
-                                    <MenuFlyoutItem Click="btnRefresh_Click">刷新</MenuFlyoutItem>
+                                    <MenuFlyoutItem ToolTipService.ToolTip="F5" Click="btnRefresh_Click">刷新F5</MenuFlyoutItem>
+                                    <MenuFlyoutItem ToolTipService.ToolTip="F7" Click="btnDownload_Click">下载F7</MenuFlyoutItem>
                                 </MenuFlyout>
                             </Button.Flyout>
                         </Button>

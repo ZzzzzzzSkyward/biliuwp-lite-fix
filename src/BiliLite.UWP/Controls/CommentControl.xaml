@@ -182,8 +182,10 @@
 
                 </ContentControl>
                 <toolkit:AdaptiveGridView
+                    Visibility="{x:Bind Path=content.haspictures}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                    ScrollViewer.HorizontalScrollMode="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
                     Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
                     x:Name="NotePicturesView"
                     StretchContentForSingleRow="False"
@@ -199,6 +201,7 @@
                                 Background="Transparent">
                                 <Image
                                     Source="{Binding ImgSrc}"
+                                    ImageFailed="OnImageFail"
                                     Stretch="UniformToFill"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"/>

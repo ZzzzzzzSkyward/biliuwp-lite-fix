@@ -42,6 +42,19 @@ namespace BiliLite.Pages
     }
     public sealed partial class VideoDetailPage : PlayPage
     {
+        //判断是否按下mod键
+        private bool IsDown(Windows.System.VirtualKey key)
+        {
+            return Window.Current.CoreWindow.GetKeyState(key).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down);
+        }
+        private bool NoMod()
+        {
+            return !IsDown(Windows.System.VirtualKey.Shift) &&
+                !IsDown(Windows.System.VirtualKey.Control) &&
+                !IsDown(Windows.System.VirtualKey.Menu) &&
+                !IsDown(Windows.System.VirtualKey.LeftWindows) &&
+                !IsDown(Windows.System.VirtualKey.RightWindows);
+        }
         VideoDetailVM videoDetailVM;
         string avid = "";
         string bvid = "";
@@ -51,6 +64,7 @@ namespace BiliLite.Pages
             this.InitializeComponent();
             Title = "视频详情";
             this.Loaded += VideoDetailPage_Loaded;
+            this.Unloaded += VideoDetailPage_Unloaded;
             this.Player = this.player;
             NavigationCacheMode = NavigationCacheMode.Enabled;
             videoDetailVM = new VideoDetailVM();
@@ -72,24 +86,29 @@ namespace BiliLite.Pages
             switch (args.VirtualKey)
             {
                 case VirtualKey.F5:
+                    if (NoMod())
                     {
                         if (videoDetailVM.Loading) return;
                         await InitializeVideo(_id);
-                        break;
                     }
+                    break;
                 default:
-                    Utils.ShowMessageToast("按键", args.VirtualKey.ToString());
+                    //Utils.ShowMessageToast("按键", args.VirtualKey.ToString());
                     break;
             }
         }
 
 
+        private void VideoDetailPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
+        }
         private void VideoDetailPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Window.Current.CoreWindow.KeyDown -= CoreWindow_KeyDown;
+            Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
             if (this.Parent is MyFrame)
             {
-                Window.Current.CoreWindow.KeyDown += CoreWindow_KeyDown;
                 (this.Parent as MyFrame).ClosedPage -= VideoDetailPage_ClosedPage;
                 (this.Parent as MyFrame).ClosedPage += VideoDetailPage_ClosedPage;
             }
@@ -99,6 +118,7 @@ namespace BiliLite.Pages
         private void VideoDetailPage_ClosedPage(object sender, EventArgs e)
         {
             ClosePage();
+            //AddToHistory(_id);
         }
         private void ClosePage()
         {
@@ -526,7 +546,7 @@ namespace BiliLite.Pages
             Modules.User.WatchLaterVM.Instance.AddToWatchlater(data.aid);
         }
 
-        private void BtnWatchLater_Click(object sender, RoutedEventArgs e)
+        private void btnWatchLater_Click(object sender, RoutedEventArgs e)
         {
             if (videoDetailVM == null || videoDetailVM.VideoInfo == null) return;
             Modules.User.WatchLaterVM.Instance.AddToWatchlater(avid);
@@ -608,6 +628,18 @@ namespace BiliLite.Pages
         private void btnOpenQR_Click(object sender, RoutedEventArgs e)
         {
             qrFlyout.ShowAt(btnMore);
+        }
+
+        private void OnGridSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width < 540)
+            {
+                ButtonStack.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                ButtonStack.Visibility = Visibility.Visible;
+            }
         }
     }
 }

@@ -668,6 +668,13 @@ namespace BiliLite.Controls
         {
             LoadComment(_loadCommentInfo);
         }
+
+        private void OnImageFail(object sender, ExceptionRoutedEventArgs e)
+        {
+            // 在此处处理加载图像失败的情况
+            // 在此示例中，我们将图像的 Source 属性设置为一个缺省图像的 URI
+            ((Image)sender).Source = new Windows.UI.Xaml.Media.Imaging.BitmapImage(new Uri("ms-appx:///Assets/Image/DefaultImage.png"));
+        }
     }
 
     public class LoadCommentInfo
@@ -972,6 +979,11 @@ namespace BiliLite.Controls
     public class CommentContentModel
     {
         public List<NotePicture> pictures { get; set; }
+        public Visibility haspictures { 
+            get {
+                return (pictures != null && pictures.Count > 0) ? Visibility.Visible : Visibility.Collapsed;
+            } 
+        }
         public string message { get; set; }
         public int plat { get; set; }
         public string plat_str
@@ -1184,5 +1196,23 @@ namespace BiliLite.Controls
         public string color { get; set; }
         public string name { get; set; }
         public string num_desc { get; set; }
+    }
+    public class CountToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null && value is List<NotePicture>)
+            {
+                var v = (List<NotePicture>)value;
+                return v.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            Utils.ShowMessageToast("尝试把显示转换回去！");
+            return 0;
+        }
     }
 }

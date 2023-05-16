@@ -30,9 +30,10 @@ namespace BiliLite.Helpers
         /// <returns></returns>
         public async static Task<HttpResults> Get(string url, IDictionary<string, string> headers = null)
         {
+            Debug.WriteLine("GET:" + url);
+            Utils.AddALog("[GET]" + url);
             try
             {
-                Debug.WriteLine("GET:" + url);
                 HttpBaseProtocolFilter fiter = new HttpBaseProtocolFilter();
 
                 fiter.IgnorableServerCertificateErrors.Add(Windows.Security.Cryptography.Certificates.ChainValidationResult.Expired);
@@ -91,6 +92,8 @@ namespace BiliLite.Helpers
 
         public async static Task<HttpResults> GetWithWebCookie(string url, IDictionary<string, string> headers = null)
         {
+            Debug.WriteLine("GET:" + url);
+            Utils.AddALog("[GET]" + url);
             try
             {
                 if (headers == null)
@@ -136,6 +139,7 @@ namespace BiliLite.Helpers
         public async static Task<Stream> GetStream(string url, IDictionary<string, string> headers = null)
         {
             Debug.WriteLine("GET:" + url);
+            Utils.AddALog("[GET STREAM]" + url);
             try
             {
                 using (var client = new HttpClient())
@@ -175,6 +179,7 @@ namespace BiliLite.Helpers
         public async static Task<IBuffer> GetBuffer(string url, IDictionary<string, string> headers = null)
         {
             Debug.WriteLine("GET:" + url);
+            Utils.AddALog("[GET STREAM]" + url);
             try
             {
                 using (var client = new HttpClient())
@@ -214,6 +219,7 @@ namespace BiliLite.Helpers
         public async static Task<String> GetString(string url, IDictionary<string, string> headers = null, IDictionary<string, string> cookie = null)
         {
             Debug.WriteLine("GET:" + url);
+            Utils.AddALog("[GET]" + url);
             try
             {
                 using (var client = new HttpClient())
@@ -258,7 +264,7 @@ namespace BiliLite.Helpers
         public async static Task<HttpResults> Post(string url, string body, IDictionary<string, string> headers = null, string contentType = "application/x-www-form-urlencoded")
         {
             Debug.WriteLine("POST:" + url + "\r\nBODY:" + body);
-
+            Utils.AddALog("[POST]" + url + body);
             try
             {
                 using (var client = new HttpClient())
@@ -273,6 +279,7 @@ namespace BiliLite.Helpers
                     var response = await client.PostAsync(new Uri(url), new HttpStringContent(body, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/x-www-form-urlencoded"));
                     if (!response.IsSuccessStatusCode)
                     {
+                        Utils.AddALog("[POST][FAIL]"+url+response.StatusCode.ToString());
                         return new HttpResults()
                         {
                             code = (int)response.StatusCode,
@@ -356,6 +363,7 @@ namespace BiliLite.Helpers
         public string results { get; set; }
         public bool status { get; set; }
 
+        //处理两个json的情况
         public JObject FindLongestValidJsonString(string input)
         {
             JObject obj=null;
@@ -385,13 +393,11 @@ namespace BiliLite.Helpers
 
                         try
                         {
-                            string substring = input.Substring(start, end - start + 1);
+                            int sublength = end - start + 1;
+                            if (sublength <= maxLength) continue;
+                            string substring = input.Substring(start, sublength);
                             obj = JObject.Parse(substring);
-
-                            if (substring.Length > maxLength)
-                            {
-                                maxLength = substring.Length;
-                            }
+                            maxLength = substring.Length;
                         }
                         catch (Exception)
                         {
@@ -422,6 +428,7 @@ namespace BiliLite.Helpers
                  catch(Exception e)
                  {
                      Console.WriteLine("解析json失败", e.ToString());
+                     Utils.AddALog("[JSON][FAIL]" + results.ToString());
                  }
                  return default(T);
              });
@@ -448,8 +455,8 @@ namespace BiliLite.Helpers
             catch(Exception e)
             {
                 Utils.ShowMessageToast("解析json对象失败", e.ToString());
-                Console.WriteLine(e.ToString());
                 Console.WriteLine(obj.ToString());
+                Utils.AddALog("[JSON][FAIL]" + obj.ToString());
                 return null;
             }
         }

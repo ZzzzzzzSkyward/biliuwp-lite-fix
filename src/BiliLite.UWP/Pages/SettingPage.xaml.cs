@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -244,7 +245,6 @@ namespace BiliLite.Pages
             ExceptHomeNavItems();
 
 
-
         }
         private void LoadPlayer()
         {
@@ -471,7 +471,17 @@ namespace BiliLite.Pages
                     SettingHelper.SetValue(SettingHelper.Roaming.TO_SIMPLIFIED, RoamingSettingToSimplified.IsOn);
                 });
             });
-          
+            //日志
+            EnableLog.IsOn = SettingHelper.GetValue<bool>("EnableLog", true);
+            EnableLog.Loaded += new RoutedEventHandler((sender, e) =>
+            {
+                EnableLog.Toggled += new RoutedEventHandler((obj, args) =>
+                {
+                    SettingHelper.SetValue("EnableLog", EnableLog.IsOn);
+                });
+            });
+
+
         }
 
 
@@ -607,6 +617,7 @@ namespace BiliLite.Pages
 
             ApiHelper.Init(lst);
             SaveSettings();
+            Utils.sp = this;
         }
         private void LoadDownlaod()
         {
@@ -747,6 +758,7 @@ namespace BiliLite.Pages
             ExceptHomeNavItems();
             Utils.ShowMessageToast("更改成功,重启生效");
         }
+
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -757,10 +769,32 @@ namespace BiliLite.Pages
             }
             catch (Exception)
             {
+                //throw;
+            }
+            try
+            {
+                dbginfo.Text = await FileIO.ReadTextAsync(await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Text/dbginfo.md")));
+            }
+            catch (Exception)
+            {
+                //throw;
+            }
+        }
 
-                throw;
+        // 在代码中定义一个名为 Log 的方法，用于向日志文本框中添加新的日志
+        private int loglength = 10000;
+        public void Log(StringBuilder logBuilder)
+        {
+            if (!EnableLog.IsOn) return;
+            Console.Write("Log");
+            int leng = logBuilder.ToString().Length;
+            if (leng > loglength*2)
+            {
+                logBuilder.Remove(0, leng - loglength);
             }
 
+            // 将 StringBuilder 对象中的所有内容显示到日志文本框中
+            logTextBox.Text = logBuilder.ToString();
         }
 
         private async void DanmuSettingAddWord_Click(object sender, RoutedEventArgs e)

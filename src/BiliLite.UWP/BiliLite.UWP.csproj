@@ -501,6 +501,7 @@
     <Content Include="Assets\Icon\纪录片.png" />
     <Content Include="Assets\Icon\综艺.png" />
     <Content Include="Assets\Image\background.jpg" />
+    <Content Include="Assets\Image\DefaultImage.png" />
     <Content Include="Assets\JiYan\极验.htm" />
     <Content Include="Assets\JiYan\极验_files\fullpage.0.0.0.js" />
     <Content Include="Assets\JiYan\极验_files\gt.js" />
@@ -579,6 +580,7 @@
     <Content Include="Assets\Fonts\vanfont.otf" />
     <Content Include="Assets\Fonts\FansNum.otf" />
     <Content Include="Assets\Fonts\biliicon.ttf" />
+    <Content Include="Assets\Text\dbginfo.md" />
     <None Include="Assets\Text\new_version.json" />
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>

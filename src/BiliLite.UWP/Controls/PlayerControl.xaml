@@ -581,7 +581,7 @@
                 </Border>
                 <!--弹幕-->
                 <Grid >
-                    <danmaku:Danmaku x:Name="DanmuControl" Width="1000"/>
+                    <danmaku:Danmaku x:Name="DanmuControl"/>
                 </Grid>
                 <!--亮度-->
                 <Grid x:Name="BrightnessShield" Tapped="Grid_Tapped" Background="#99000000" Opacity="0"></Grid>
@@ -791,6 +791,7 @@
                                     </ComboBox>
                                     <ComboBox x:Name="BottomCBSpeed" ToolTipService.ToolTip="倍速" HorizontalContentAlignment="Center" Style="{StaticResource PlayerComboBoxStyle}" Foreground="White" BorderThickness="0" FontSize="18" VerticalAlignment="Center" Background="Transparent">
                                         <ComboBox.Items>
+                                            <ComboBoxItem Content="3.0x" ></ComboBoxItem>
                                             <ComboBoxItem Content="2.0x" ></ComboBoxItem>
                                             <ComboBoxItem Content="1.5x" ></ComboBoxItem>
                                             <ComboBoxItem Content="1.25x" ></ComboBoxItem>

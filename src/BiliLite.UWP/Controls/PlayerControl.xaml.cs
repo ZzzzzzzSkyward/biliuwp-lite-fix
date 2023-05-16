@@ -306,6 +306,38 @@ namespace BiliLite.Controls
                     break;
             }
         }
+        //判断是否按下mod键
+        private bool IsDown(Windows.System.VirtualKey key)
+        {
+            return Window.Current.CoreWindow.GetKeyState(key).HasFlag(CoreVirtualKeyStates.Down);
+        }
+        private bool NoMod()
+        {
+            return !IsDown(Windows.System.VirtualKey.Shift) && 
+                !IsDown(Windows.System.VirtualKey.Control) && 
+                !IsDown(Windows.System.VirtualKey.Menu) && 
+                !IsDown(Windows.System.VirtualKey.LeftWindows) &&
+                !IsDown(Windows.System.VirtualKey.RightWindows);
+        }
+        // 计算步长
+        private double GetStep()
+        {
+            double step = 0.0;
+            if (IsDown(Windows.System.VirtualKey.Control))
+            {
+                step = 0.5;
+            }
+            else if (IsDown(Windows.System.VirtualKey.Shift))
+            {
+                step = 30.0;
+            }
+            else if (NoMod())
+            {
+                step = 3.0;
+            }
+            return step;
+        }
+
         private async void PlayerControl_KeyDown(CoreWindow sender, KeyEventArgs args)
         {
             var elent = FocusManager.GetFocusedElement();
@@ -315,74 +347,81 @@ namespace BiliLite.Controls
                 return;
             }
             args.Handled = true;
+            /*
+             * 按键       操作
+             * space     播放/暂停
+             * left/right进度，ctrl=0.5,3,shift=30
+             * up/down   音量
+             * esc       退出全屏
+             * f8/t      小窗
+             * f12/w/f11/f/enter     全屏
+             * f10       录制
+             * o/p  跳过op=90秒
+             * f9/d      开关弹幕
+             * z/n       上一p
+             * x/m       下一p
+             * f1/f2     速度
+             * f3/v      静音/100音量
+             */
             switch (args.VirtualKey)
             {
                 case Windows.System.VirtualKey.Space:
-                    if (Player.PlayState == PlayState.Playing || Player.PlayState == PlayState.End)
+                    if (NoMod())
                     {
-                        Pause();
-                    }
-                    else
-                    {
-                        Player.Play();
+                        if (Player.PlayState == PlayState.Playing || Player.PlayState == PlayState.End)
+                        {
+                            Pause();
+                        }
+                        else
+                        {
+                            Player.Play();
+                        }
                     }
                     break;
                 case Windows.System.VirtualKey.Left:
-                    {
-                        if (Player.PlayState == PlayState.Playing || Player.PlayState == PlayState.Pause)
-                        {
-                            var _position = Player.Position - 3;
-                            if (_position < 0)
-                            {
-                                _position = 0;
-                            }
-                            Player.Position = _position;
-                            TxtToolTip.Text = "进度:" + TimeSpan.FromSeconds(Player.Position).ToString(@"hh\:mm\:ss");
-                            ToolTip.Visibility = Visibility.Visible;
-                            await Task.Delay(2000);
-                            ToolTip.Visibility = Visibility.Collapsed;
-                        }
-                    }
-
-                    break;
                 case Windows.System.VirtualKey.Right:
                     {
                         if (Player.PlayState == PlayState.Playing || Player.PlayState == PlayState.Pause)
                         {
-                            var _position = Player.Position + 3;
-                            if (_position > Player.Duration)
+                            var _position = Player.Position;
+                            var step = GetStep();
+                            if (step != 0)
                             {
-                                _position = Player.Duration;
+                                step = args.VirtualKey == Windows.System.VirtualKey.Left ? -step : step;
+                                _position += step;
+                                if (_position < 0)
+                                {
+                                    _position = 0;
+                                }
+                                Player.Position = _position;
                             }
-                            Player.Position = _position;
-                            TxtToolTip.Text = "进度:" + TimeSpan.FromSeconds(Player.Position).ToString(@"hh\:mm\:ss");
-                            ToolTip.Visibility = Visibility.Visible;
-                            await Task.Delay(2000);
-                            ToolTip.Visibility = Visibility.Collapsed;
+                            if (step >= 1)
+                            {
+                                TxtToolTip.Text = "进度:" + TimeSpan.FromSeconds(Player.Position).ToString(@"hh\:mm\:ss");
+                                ToolTip.Visibility = Visibility.Visible;
+                                await Task.Delay(2000);
+                                ToolTip.Visibility = Visibility.Collapsed;
+                            }
                         }
                     }
                     break;
                 case Windows.System.VirtualKey.Up:
-                    Player.Volume += 0.1;
-                    TxtToolTip.Text = "音量:" + Player.Volume.ToString("P");
-                    ToolTip.Visibility = Visibility.Visible;
-                    await Task.Delay(2000);
-                    ToolTip.Visibility = Visibility.Collapsed;
-                    break;
-
                 case Windows.System.VirtualKey.Down:
-                    Player.Volume -= 0.1;
-                    if (Player.Volume == 0)
+                    if (NoMod())
                     {
-                        TxtToolTip.Text = "静音";
+                        Player.Volume += args.VirtualKey == Windows.System.VirtualKey.Up ? 0.1 : -0.1;
+                        if (Player.Volume == 0)
+                        {
+                            TxtToolTip.Text = "静音";
+                        }
+                        else
+                        {
+                            TxtToolTip.Text = "音量:" + Player.Volume.ToString("P");
+                        }
+                        ToolTip.Visibility = Visibility.Visible;
+                        await Task.Delay(2000);
+                        ToolTip.Visibility = Visibility.Collapsed;
                     }
-                    else
-                    {
-                        TxtToolTip.Text = "音量:" + Player.Volume.ToString("P");
-                    }
-                    ToolTip.Visibility = Visibility.Visible;
-                    await Task.Delay(2000);
-                    ToolTip.Visibility = Visibility.Collapsed;
                     break;
                 case Windows.System.VirtualKey.Escape:
                     IsFullScreen = false;
@@ -390,22 +429,26 @@ namespace BiliLite.Controls
                 case Windows.System.VirtualKey.F8:
                 case Windows.System.VirtualKey.T:
                     //小窗播放
-                    MiniWidnows(!miniWin);
+                    if (NoMod())
+                    { MiniWidnows(!miniWin); }
                     break;
                 case Windows.System.VirtualKey.F12:
                 case Windows.System.VirtualKey.W:
-                    IsFullWindow = !IsFullWindow;
-                    break;
                 case Windows.System.VirtualKey.F11:
                 case Windows.System.VirtualKey.F:
                 case Windows.System.VirtualKey.Enter:
-                    IsFullScreen = !IsFullScreen;
+                    if (NoMod())
+                    {
+                        IsFullScreen = !IsFullScreen;
+                    }
                     break;
                 case Windows.System.VirtualKey.F10:
-                    await CaptureVideo();
+                    if (NoMod())
+                        await CaptureVideo();
                     break;
                 case Windows.System.VirtualKey.O:
                 case Windows.System.VirtualKey.P:
+                    if (NoMod())
                     {
                         if (Player.PlayState == PlayState.Playing || Player.PlayState == PlayState.Pause)
                         {
@@ -424,71 +467,88 @@ namespace BiliLite.Controls
                     break;
                 case Windows.System.VirtualKey.F9:
                 case Windows.System.VirtualKey.D:
-                    if (DanmuControl.Visibility == Visibility.Visible)
+                    if (NoMod())
                     {
-                        DanmuControl.Visibility = Visibility.Collapsed;
-                    }
-                    else
-                    {
-                        DanmuControl.Visibility = Visibility.Visible;
+                        if (DanmuControl.Visibility == Visibility.Visible)
+                        {
+                            DanmuControl.Visibility = Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            DanmuControl.Visibility = Visibility.Visible;
+                        }
                     }
                     break;
                 case Windows.System.VirtualKey.Z:
                 case Windows.System.VirtualKey.N:
                 case (Windows.System.VirtualKey)188:
-                    if (EpisodeList.SelectedIndex == 0)
+                    if (NoMod())
                     {
-                        Utils.ShowMessageToast("已经是第一P了");
-                    }
-                    else
-                    {
-                        await SetPlayItem(EpisodeList.SelectedIndex - 1);
+                        if (EpisodeList.SelectedIndex == 0)
+                        {
+                            Utils.ShowMessageToast("已经是第一P了");
+                        }
+                        else
+                        {
+                            await SetPlayItem(EpisodeList.SelectedIndex - 1);
+                        }
                     }
                     break;
                 case Windows.System.VirtualKey.X:
                 case Windows.System.VirtualKey.M:
                 case (Windows.System.VirtualKey)190:
-                    if (EpisodeList.SelectedIndex == EpisodeList.Items.Count - 1)
+                    if (NoMod())
                     {
-                        Utils.ShowMessageToast("已经是最后一P了");
-                    }
-                    else
-                    {
-                        await SetPlayItem(EpisodeList.SelectedIndex + 1);
+                        if (EpisodeList.SelectedIndex == EpisodeList.Items.Count - 1)
+                        {
+                            Utils.ShowMessageToast("已经是最后一P了");
+                        }
+                        else
+                        {
+                            await SetPlayItem(EpisodeList.SelectedIndex + 1);
+                        }
                     }
                     break;
                 case Windows.System.VirtualKey.F1:
                 case (Windows.System.VirtualKey)186:
-                    //慢速播放
-                    if (BottomCBSpeed.SelectedIndex == 5)
+                    if (NoMod())
                     {
-                        Utils.ShowMessageToast("不能再慢啦");
-                        return;
+                        //慢速播放
+                        if (BottomCBSpeed.SelectedIndex == BottomCBSpeed.Items.Count)
+                        {
+                            Utils.ShowMessageToast("不能再慢啦");
+                            return;
+                        }
+
+                        BottomCBSpeed.SelectedIndex += 1;
                     }
-
-                    BottomCBSpeed.SelectedIndex += 1;
-
                     break;
                 case Windows.System.VirtualKey.F2:
                 case (Windows.System.VirtualKey)222:
-                    //加速播放
-                    if (BottomCBSpeed.SelectedIndex == 0)
+                    if (NoMod())
                     {
-                        Utils.ShowMessageToast("不能再快啦");
-                        return;
+                        //加速播放
+                        if (BottomCBSpeed.SelectedIndex == 0)
+                        {
+                            Utils.ShowMessageToast("不能再快啦");
+                            return;
+                        }
+                        BottomCBSpeed.SelectedIndex -= 1;
                     }
-                    BottomCBSpeed.SelectedIndex -= 1;
                     break;
                 case Windows.System.VirtualKey.F3:
                 case Windows.System.VirtualKey.V:
-                    //静音
-                    if (Player.Volume >= 0)
+                    if (NoMod())
                     {
-                        Player.Volume = 0;
-                    }
-                    else
-                    {
-                        Player.Volume = 1;
+                        //静音
+                        if (Player.Volume >= 0)
+                        {
+                            Player.Volume = 0;
+                        }
+                        else
+                        {
+                            Player.Volume = 1;
+                        }
                     }
                     break;
                 default:

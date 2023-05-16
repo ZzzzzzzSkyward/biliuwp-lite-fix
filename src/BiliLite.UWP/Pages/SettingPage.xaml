@@ -312,63 +312,52 @@
                 </PivotItem.Header>
                 <ScrollViewer Padding="12 0" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
-                        <Button Margin="8 0 0 0" x:Name="ApplyAPI" Click="ApplyAPI_Click">修改</Button>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0 16 0 8" FontSize="16">日志</TextBlock>
+                            <ToggleSwitch Margin="8 8 0 8"  x:Name="EnableLog" OnContent="打开" OffContent="关闭" VerticalAlignment="Center"></ToggleSwitch>
+                        </StackPanel>
+                        <TextBox Visibility="{x:Bind EnableLog.IsOn}" x:Name="logTextBox" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0 16 0 8" FontSize="16">参数</TextBlock>
+                            <Button Margin="8 8 0 0" x:Name="ApplyAPI" Click="ApplyAPI_Click" VerticalAlignment="Center">修改</Button>
+                        </StackPanel>
                         <TextBlock Margin="0 16 0 8" FontSize="16">SESSDATA</TextBlock>
                         <TextBox Margin="0 0 0 8" MinWidth="200" PlaceholderText="请输入SESSDATA"></TextBox>
                         <TextBlock Margin="0 16 0 8" FontSize="16">APPKEY</TextBlock>
-                        <RichTextBlock>
- <Paragraph>APPKEY	APPSEC	platform	APP类型	neuronAppId	mobi_app	备注</Paragraph>
- <Paragraph>9d5889cf67e615cd	8fd9bb32efea8cef801fd895bef2713d	android	Ai4cCreatorAndroid			                                         </Paragraph>
- <Paragraph>1d8b6e7d45233436	560c52ccd288fed045859ed18bffd973	android	普通版(粉版)	1	android	获取资源通用                                   </Paragraph>
- <Paragraph>783bbb7264451d82	2653583c8873dea268ab9386918b1d65	android	普通版(粉版)	1	android	仅获取用户信息时使用(7.X及更新版本)              </Paragraph>
- <Paragraph>57263273bc6b67f6	a0488e488d1567960d3a765e8d129f90	android	普通版(粉版)	1	android	可能来自旧版                                   </Paragraph>
- <Paragraph>07da50c9a0bf829f	25bdede4e1581c836cab73a48790ca6e	android	概念版(蓝版)	3	android_b	                                         </Paragraph>
- <Paragraph>191c3b6b975af184	********************************	android	概念版(蓝版)	3	android_b	新出现, 仅获取用户信息时使用. 暂未知appsec   </Paragraph>
- <Paragraph>178cf125136ca8ea	34381a26236dd1171185c0beb042e1c6	android	概念版(蓝版)	3	android_b	可能来自旧版                               </Paragraph>
- <Paragraph>7d336ec01856996b	a1ce6983bc89e20a36c37f40c4f1a0dd	android	概念版(蓝版)	3	android_b	可能来自旧版                               </Paragraph>
- <Paragraph>dfca71928277209b	b5475a8825547a4fc26fbd31fda5b7f7	android	概念版(蓝版)	3		                                                 </Paragraph>
- <Paragraph>6f9999d3b01b2516	e988e794d4d4b6a15e4dfebdcf229187	android	BiliInternationAndroid	4	android_tv	                             </Paragraph>
- <Paragraph>ebfa43d4e6529d46	007d47ee1d16a8bc7c6a2fb949e1b57a	android	BiliIntlReleaseAndroid	4	android_tv	                             </Paragraph>
- <Paragraph>ebc171b8a6a85920	1c15888dc316e05a15fdd0a02ed6584f	android	BiliIntlBetaAndroid	4	android_tv	                                 </Paragraph>
- <Paragraph>4409e2d78bcdaede	59b43e04bdc2a02f707f4d86f4c5494a	android	BiliIntlQAAndroid	4	android_tv	                                 </Paragraph>
- <Paragraph>37207f2beaebf8d7	25bdede4e1581c836cab73a48790ca6e	android	概念版(蓝版)	3	android_b	用于获取用户信息                           </Paragraph>
- <Paragraph>4ebafd7c4951b366	1c15888dc316e05a15fdd0a02ed6584f	ios	BiliIntlBetaIOS	4	ios	                                                 </Paragraph>
- <Paragraph>9258e67f71c8dcb7	59b43e04bdc2a02f707f4d86f4c5494a	ios	BiliIntlQAiOS	4	ios	                                                 </Paragraph>
- <Paragraph>e1d8f84a4d8b199b	007d47ee1d16a8bc7c6a2fb949e1b57a	ios	BiliIntlReleaseIOS	4	ios                                              </Paragraph>
-                        </RichTextBlock>
+                        <controls1:MarkdownTextBlock x:Name="dbginfo" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="16" LinkClicked="txtHelp_LinkClicked" IsTextSelectionEnabled="True" ></controls1:MarkdownTextBlock>
                         <StackPanel Margin="0 0 8 0">
                             <TextBlock FontWeight="Bold">android:</TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入android APPKEY 4409e2ce8ffd12b8" x:Name="appkey_android_1"/>
-                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入android APPKEY 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_android_2"/>
+                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入android APPSEC 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_android_2"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="0 0 8 0">
                             <TextBlock FontWeight="Bold">login:</TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入login APPKEY 4409e2ce8ffd12b8" x:Name="appkey_login_1"/>
-                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入login APPKEY 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_login_2"/>
+                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入login APPSEC 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_login_2"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="0 0 8 0">
                             <TextBlock FontWeight="Bold">video:</TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入video APPKEY 4409e2ce8ffd12b8" x:Name="appkey_video_1" />
-                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入video APPKEY 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_video_2" />
+                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入video APPSEC 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_video_2" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="0 0 8 0">
                             <TextBlock FontWeight="Bold">tv:</TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入tv APPKEY 4409e2ce8ffd12b8" x:Name="appkey_tv_1"/>
-                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入tv APPKEY 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_tv_2"/>
+                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入tv APPSEC 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_tv_2"/>
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Margin="0 0 8 0">
                             <TextBlock FontWeight="Bold">web:</TextBlock>
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入web APPKEY 4409e2ce8ffd12b8" x:Name="appkey_web_1"/>
-                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入web APPKEY 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_web_2"/>
+                                <TextBox Margin="0 8 0 0" MinWidth="400" PlaceholderText="请输入web APPSEC 59b43e04bdc2a02f707f4d86f4c5494a" x:Name="appkey_web_2"/>
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Margin="0 16 0 8" FontSize="16">平台</TextBlock>
@@ -378,9 +367,9 @@
                                 <ComboBoxItem>IPhone</ComboBoxItem>
                             </ComboBox.Items>
                         </ComboBox>
-                        <TextBlock Margin="0 16 0 8" FontSize="16">顶级网址</TextBlock>
+                        <TextBlock Margin="0 16 0 8" FontSize="16">api.bili</TextBlock>
                         <TextBox Margin="0 0 0 8" MinWidth="200" PlaceholderText="https://api.bilibili.com" x:Name="api_web_top"></TextBox>
-                        <TextBlock Margin="0 16 0 8" FontSize="16">二级网址</TextBlock>
+                        <TextBlock Margin="0 16 0 8" FontSize="16">APIv2</TextBlock>
                         <TextBox Margin="0 0 0 8" MinWidth="200" PlaceholderText="/x/v2" x:Name="api_web_secondary"></TextBox>
                     </StackPanel>
                 </ScrollViewer>
