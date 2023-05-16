@@ -35,13 +35,16 @@ namespace BiliLite.Modules.User
         }
       
         public ICommand AttentionCommand { get; private set; }
-
         public async void GetUserInfo()
+        {
+            GetUserInfo(false);
+        }
+        public async void GetUserInfo(bool usev2)
         {
             try
             {
                 var result = await userDetailAPI.UserInfo(mid).Request();
-
+                var request = userDetailAPI.UserInfov2(mid);
                 if (result.status)
                 {
                     var data = await result.GetData<UserCenterInfoModel>();
@@ -52,19 +55,30 @@ namespace BiliLite.Modules.User
                     }
                     else
                     {
-                        Utils.ShowMessageToast(data.message);
+                        if (usev2)
+                            Utils.ShowMessageToast(data.message);
+                        else
+                            GetUserInfo(true);
                     }
-
                 }
                 else
                 {
-                    Utils.ShowMessageToast(result.message);
+                    if (usev2)
+                        Utils.ShowMessageToast(result.message);
+                    else
+                        GetUserInfo(true);
+
                 }
             }
             catch (Exception ex)
             {
-                LogHelper.Log("读取个人资料失败", LogType.ERROR, ex);
-                Utils.ShowMessageToast("读取个人资料失败");
+                if (usev2)
+                {
+                    LogHelper.Log("读取个人资料失败", LogType.ERROR, ex);
+                    Utils.ShowMessageToast("读取个人资料失败");
+                }
+                else
+                    GetUserInfo(true);
             }
         }
         public async Task<UserCenterInfoStatModel> GetStat()

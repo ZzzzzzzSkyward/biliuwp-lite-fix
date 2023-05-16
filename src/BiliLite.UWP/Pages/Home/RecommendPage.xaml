@@ -97,6 +97,7 @@
                         <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#FFDF85A0" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=badge}"></TextBlock>
                     </Border>
                     <TextBlock  TextWrapping="Wrap" VerticalAlignment="Center" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{x:Bind bottomText}"></TextBlock>
+                    <TextBlock  FlowDirection="RightToLeft" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="12" Foreground="Red" TextTrimming="CharacterEllipsis" Text="{x:Bind timeText}" HorizontalAlignment="Right" HorizontalTextAlignment="Right" TextAlignment="Right"></TextBlock>
                 </StackPanel>
 
 
@@ -150,6 +151,7 @@
                             <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="#FFDF85A0" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=badge}"></TextBlock>
                         </Border>
                         <TextBlock  TextWrapping="Wrap" VerticalAlignment="Center" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{x:Bind bottomText}"></TextBlock>
+                        <TextBlock  TextWrapping="Wrap" VerticalAlignment="Center" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{x:Bind timeText}" HorizontalAlignment="Right">1</TextBlock>
                     </StackPanel>
                 </Grid>
 

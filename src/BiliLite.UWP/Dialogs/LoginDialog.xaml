@@ -137,7 +137,8 @@
             </StackPanel>
         </StackPanel>
         <!--WebView-->
-        <!--muxc:WebView2 x:Name="webView2" AllowDrop="True" AllowFocusOnInteraction="True" IsDoubleTapEnabled="True" Source="ms-appx-web:///Asset/JiYan/极验.htm" Width="320" Visibility="Visible" Margin="150,48,0,0" Opacity="0.5"/-->
+        <!--muxc:WebView2 x:Name="webView2" AllowDrop="True" AllowFocusOnInteraction="True" IsDoubleTapEnabled="True" Source="file:///JiYan/极验.htm" Width="320" Visibility="Visible" Margin="150,48,0,0" 
+        Opacity="0.5"/-->
         <WebView x:Name="webView" NavigationStarting="webView_NavigationStarting" NavigationCompleted="WebView_NavigationCompleted"  Height="360" Width="320" Visibility="Collapsed" ></WebView>
     </Grid>
 

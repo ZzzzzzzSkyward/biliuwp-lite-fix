@@ -351,7 +351,22 @@ namespace BiliLite.Modules
                 {
                     return args.up_name;
                 }
+                return args.up_name;
+            }
+        }
+        public string timeText
+        {
+            get
+            {
                 return "";
+                if (desc_button != null)
+                {
+                    return desc_button.text;
+                }
+                if (card_goto=="live")
+                {
+                    return args.up_name;
+                }
             }
         }
 

@@ -430,8 +430,15 @@ namespace BiliLite.Pages
                 LoadSetting();
                 roomid = e.Parameter.ToString();
                 await liveRoomVM.LoadLiveRoomDetail(roomid);
-                Title = liveRoomVM.LiveInfo.anchor_info.base_info.uname + "的直播间";
-                ChangeTitle(liveRoomVM.LiveInfo.anchor_info.base_info.uname + "的直播间");
+                try
+                {
+                    //此处可能发生liveRoomVM==null
+                    Title = liveRoomVM?.LiveInfo.anchor_info.base_info.uname + "的直播间";
+                    ChangeTitle(liveRoomVM.LiveInfo.anchor_info.base_info.uname + "的直播间");
+                }
+                catch(Exception ex){
+                    Utils.ShowMessageToast("直播间标题获取失败", ex.ToString());
+                }
             }
             else
             {
