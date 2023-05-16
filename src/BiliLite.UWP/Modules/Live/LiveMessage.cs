@@ -92,8 +92,11 @@ namespace BiliLite.Modules.Live
         private static System.Timers.Timer heartBeatTimer;
         public async Task Connect(int roomID, int uid, CancellationToken cancellationToken)
         {
-            //连接
-            await ws.ConnectAsync(new Uri(ServerUrl), cancellationToken);
+            if (ws.State != WebSocketState.Open && ws.State != WebSocketState.Connecting)
+                //连接
+                await ws.ConnectAsync(new Uri(ServerUrl), cancellationToken);
+            else 
+                return;
             //进房
             await JoinRoomAsync(roomID, uid);
             //发送心跳

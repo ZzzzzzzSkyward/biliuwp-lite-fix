@@ -581,7 +581,7 @@
                 </Border>
                 <!--弹幕-->
                 <Grid >
-                    <danmaku:Danmaku x:Name="DanmuControl"/>
+                    <danmaku:Danmaku x:Name="DanmuControl" Width="1000"/>
                 </Grid>
                 <!--亮度-->
                 <Grid x:Name="BrightnessShield" Tapped="Grid_Tapped" Background="#99000000" Opacity="0"></Grid>

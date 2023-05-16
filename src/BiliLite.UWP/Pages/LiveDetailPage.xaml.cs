@@ -18,6 +18,7 @@ using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.System;
 using Windows.System.Display;
 using Windows.UI;
 using Windows.UI.Popups;
@@ -310,7 +311,7 @@ namespace BiliLite.Pages
                 //    }
                 //    break;
 
-                case Windows.System.VirtualKey.Up:
+                case VirtualKey.Up:
                     if (SliderVolume.Value + 0.1>1)
                     {
                         SliderVolume.Value = 1;
@@ -326,7 +327,7 @@ namespace BiliLite.Pages
                     ToolTip.Visibility = Visibility.Collapsed;
                     break;
 
-                case Windows.System.VirtualKey.Down:
+                case VirtualKey.Down:
                   
                     if (SliderVolume.Value - 0.1<0)
                     {
@@ -348,30 +349,30 @@ namespace BiliLite.Pages
                     await Task.Delay(2000);
                     ToolTip.Visibility = Visibility.Collapsed;
                     break;
-                case Windows.System.VirtualKey.Escape:
+                case VirtualKey.Escape:
                     SetFullScreen(false);
 
                     break;
-                case Windows.System.VirtualKey.F8:
-                case Windows.System.VirtualKey.T:
+                case VirtualKey.F8:
+                case VirtualKey.T:
                     //小窗播放
                     MiniWidnows(BottomBtnMiniWindows.Visibility == Visibility.Visible);
 
                     break;
-                case Windows.System.VirtualKey.F12:
-                case Windows.System.VirtualKey.W:
+                case VirtualKey.F12:
+                case VirtualKey.W:
                     SetFullWindow(BottomBtnFullWindows.Visibility == Visibility.Visible);
                     break;
-                case Windows.System.VirtualKey.F11:
-                case Windows.System.VirtualKey.F:
-                case Windows.System.VirtualKey.Enter:
+                case VirtualKey.F11:
+                case VirtualKey.F:
+                case VirtualKey.Enter:
                     SetFullScreen(BottomBtnFull.Visibility == Visibility.Visible);
                     break;
-                case Windows.System.VirtualKey.F10:
+                case VirtualKey.F10:
                     await CaptureVideo();
                     break;
-                case Windows.System.VirtualKey.F9:
-                case Windows.System.VirtualKey.D:
+                case VirtualKey.F9:
+                case VirtualKey.D:
                     if (DanmuControl.Visibility == Visibility.Visible)
                     {
                         DanmuControl.Visibility = Visibility.Collapsed;
@@ -380,6 +381,10 @@ namespace BiliLite.Pages
                     {
                         DanmuControl.Visibility = Visibility.Visible;
                     }
+                    break;
+                //增加刷新
+                case VirtualKey.F5:
+                    liveRoomVM.LoadLiveRoomDetail(roomid);
                     break;
 
                 default:
