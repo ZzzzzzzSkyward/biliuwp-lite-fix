@@ -192,7 +192,7 @@
                             <Button Background="Transparent"
                                 Margin="0 0 4 0"
                                 Width="56"
-                                x:Name="btnWatchLater2" Click="btnWatchLater_Click" Foreground="{ThemeResource TextColor}">
+                                x:Name="btnWatchLater2" Click="btnWatchLater2_Click" Foreground="{ThemeResource TextColor}">
                                 <StackPanel>
                                     <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xe68b;" />
                                     <TextBlock FontSize="12" TextTrimming="None" TextAlignment="Left" Text="稍后再看" Margin="-10 0 -10 0"></TextBlock>

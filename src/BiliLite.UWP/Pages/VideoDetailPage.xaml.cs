@@ -641,5 +641,10 @@ namespace BiliLite.Pages
                 ButtonStack.Visibility = Visibility.Visible;
             }
         }
+
+        private void btnWatchLater2_Click(object sender, RoutedEventArgs e)
+        {
+            btnWatchLater_Click(sender, e);
+        }
     }
 }
