@@ -24,6 +24,8 @@
 
 https://github.com/ywmoyue/biliuwp-lite
 
+最低18362版本，亚克力效果 https://github.com/ZzzzzzzSkyward/bilibili-uwp-liter
+
 # 原介绍
 
 第三方哔哩哔哩UWP客户端
