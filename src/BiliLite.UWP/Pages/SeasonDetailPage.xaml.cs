@@ -6,20 +6,13 @@ using BiliLite.Modules.Season;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -35,7 +28,7 @@ namespace BiliLite.Pages
         SeasonReviewVM seasonReviewVM;
         string season_id = "";
         string ep_id = "";
-        bool selectProview = false;
+        bool selectPreview = false;
         public SeasonDetailPage()
         {
             this.InitializeComponent();
@@ -139,7 +132,7 @@ namespace BiliLite.Pages
         private void InitializePlayInfo()
         {
             if (seasonDetailVM.NothingPlay) return;
-            selectProview = !seasonDetailVM.ShowEpisodes;
+            selectPreview = !seasonDetailVM.ShowEpisodes;
 
             var index = 0;
             if (string.IsNullOrEmpty(ep_id) && seasonDetailVM.Detail.user_status?.progress != null)
@@ -147,12 +140,12 @@ namespace BiliLite.Pages
                 ep_id = seasonDetailVM.Detail.user_status.progress.last_ep_id.ToString();
                 SettingHelper.SetValue<double>("ep" + ep_id, Convert.ToDouble(seasonDetailVM.Detail.user_status.progress.last_time));
             }
-            var selectItem = (selectProview?seasonDetailVM.Previews: seasonDetailVM.Episodes).FirstOrDefault(x => x.id.ToString() == ep_id);
+            var selectItem = (selectPreview?seasonDetailVM.Previews: seasonDetailVM.Episodes).FirstOrDefault(x => x.id.ToString() == ep_id);
             if (selectItem != null)
             {
-                index = (selectProview ? seasonDetailVM.Previews : seasonDetailVM.Episodes).IndexOf(selectItem);
+                index = (selectPreview ? seasonDetailVM.Previews : seasonDetailVM.Episodes).IndexOf(selectItem);
             }
-            if (selectProview)
+            if (selectPreview)
             {
                 UpdatePlayInfoToPreview(index);
             }
@@ -299,7 +292,7 @@ namespace BiliLite.Pages
         {
             changedFlag = true;
             var aid = "";
-            if (selectProview)
+            if (selectPreview)
             {
                 listPreview.SelectedIndex = e;
                 ep_id = seasonDetailVM.Previews[e].id.ToString();
@@ -328,10 +321,10 @@ namespace BiliLite.Pages
             {
                 return;
             }
-            if (selectProview)
+            if (selectPreview)
             {
                 listPreview.SelectedIndex = -1;
-                selectProview = false;
+                selectPreview = false;
                 UpdatePlayInfoToEpisode(listEpisode.SelectedIndex);
             }
             player.ChangePlayIndex(listEpisode.SelectedIndex);
@@ -350,19 +343,19 @@ namespace BiliLite.Pages
             {
                 return;
             }
-            if (!selectProview)
+            if (!selectPreview)
             {
                 listEpisode.SelectedIndex = -1;
-                selectProview = true;
+                selectPreview = true;
                 UpdatePlayInfoToPreview(listPreview.SelectedIndex);
             }
             player.ChangePlayIndex(listPreview.SelectedIndex);
-            ep_id = seasonDetailVM.Episodes[listPreview.SelectedIndex].id.ToString();
+            ep_id = seasonDetailVM.Previews[listPreview.SelectedIndex].id.ToString();
             comment.LoadComment(new LoadCommentInfo()
             {
                 CommentMode = (int)Api.CommentApi.CommentType.Video,
                 CommentSort = Api.CommentApi.CommentSort.Hot,
-                Oid = seasonDetailVM.Episodes[listPreview.SelectedIndex].aid
+                Oid = seasonDetailVM.Previews[listPreview.SelectedIndex].aid
             });
             CreateQR();
         }
@@ -432,6 +425,8 @@ namespace BiliLite.Pages
         {
 
             var data = (sender as HyperlinkButton).DataContext as SeasonDetailStyleItemModel;
+            //防止报错
+            if (string.IsNullOrEmpty(data.id)) return;
             MessageCenter.NavigateToPage(this, new NavigationInfo()
             {
                 icon = Symbol.Filter,
@@ -515,7 +510,7 @@ namespace BiliLite.Pages
                 {
                     state = 2;
                 }
-                if (DownloadVM.Instance.Downloadeds.FirstOrDefault(x => x.Epsidoes.FirstOrDefault(y => y.EpisodeID == item.id.ToString()) != null) != null)
+                if (DownloadVM.Instance.Downloadeds.FirstOrDefault(x => x.Episodes.FirstOrDefault(y => y.EpisodeID == item.id.ToString()) != null) != null)
                 {
                     state = 3;
                 }

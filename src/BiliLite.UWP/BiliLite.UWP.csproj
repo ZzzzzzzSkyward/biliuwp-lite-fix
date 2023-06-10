@@ -24,7 +24,7 @@
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>False</GenerateTestArtifacts>
     <AppxBundle>Auto</AppxBundle>
-    <AppxBundlePlatforms>arm64</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <PackageCertificateThumbprint>
     </PackageCertificateThumbprint>
@@ -500,6 +500,7 @@
     <Content Include="Assets\Icon\索引.png" />
     <Content Include="Assets\Icon\纪录片.png" />
     <Content Include="Assets\Icon\综艺.png" />
+    <Content Include="Assets\Image\2233login.png" />
     <Content Include="Assets\Image\background.jpg" />
     <Content Include="Assets\Image\DefaultImage.png" />
     <Content Include="Assets\JiYan\极验.htm" />
@@ -581,6 +582,7 @@
     <Content Include="Assets\Fonts\FansNum.otf" />
     <Content Include="Assets\Fonts\biliicon.ttf" />
     <Content Include="Assets\Text\dbginfo.md" />
+    <Content Include="Assets\Text\info.md" />
     <None Include="Assets\Text\new_version.json" />
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
@@ -848,6 +850,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Content Include="Themes\DefaultTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
     <Page Include="Themes\Pink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

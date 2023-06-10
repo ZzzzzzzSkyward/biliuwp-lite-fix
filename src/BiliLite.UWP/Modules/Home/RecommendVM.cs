@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using BiliLite.Models;
 using BiliLite.Helpers;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Windows.UI.Xaml.Controls;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Windows.Input;
-using BiliLite.Modules.User;
 
 namespace BiliLite.Modules
 {
@@ -130,9 +125,11 @@ namespace BiliLite.Modules
 
         private void LoadBanner(RecommendItemModel banner)
         {
+            if(SettingHelper.GetValue("dontloadbanner",false)==true) { return; }
             try
             {
-                if (Banner != null || Banner.Count == 0)
+                if (Banner == null) Banner = new ObservableCollection<RecommendBannerItemModel>();
+                if (Banner.Count == 0)
                 {
                     foreach (var item in banner.banner_item)
                     {
@@ -152,6 +149,8 @@ namespace BiliLite.Modules
             }
            
         }
+        //TODO防止页面无限调用此方法
+
         public async void LoadMore()
         {
             if (Items == null || Items.Count == 0)

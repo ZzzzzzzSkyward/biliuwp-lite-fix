@@ -1,23 +1,11 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Pages.Bangumi;
-using FFmpegInteropX;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -43,13 +31,25 @@ namespace BiliLite.Pages
         private async void SetBackground()
         {
             var background = SettingHelper.GetValue(SettingHelper.UI.BACKGROUND_IMAGE,AppHelper.BACKGROUND_IAMGE_URL);
-            if (background== AppHelper.BACKGROUND_IAMGE_URL)
+            if (background == AppHelper.BACKGROUND_IAMGE_URL)
             {
-                backgroundImage.Source = new BitmapImage(new Uri(background));
+                //backgroundImage.Source = new BitmapImage(new Uri(background));
             }
             else
             {
-                var file = await StorageFile.GetFileFromPathAsync(background);
+                StorageFile file = null;
+                try
+                {
+                    file = await StorageFile.GetFileFromPathAsync(background);
+                }
+                catch
+                {
+                    Utils.ShowMessageToast("请授予系统存储权限", 5);
+                }
+                if (file == null)
+                {
+                    return;
+                }
                 var img = new BitmapImage();
                 img.SetSource(await file.OpenReadAsync());
                 backgroundImage.Source = img;
@@ -107,7 +107,7 @@ namespace BiliLite.Pages
                 Utils.ShowMessageToast("关键字不能为空");
                 return;
             }
-            if (await MessageCenter.HandelUrl(SearchBox.Text))
+            if (await MessageCenter.HandleUrl(SearchBox.Text))
             {
                 return;
             }
@@ -169,6 +169,17 @@ namespace BiliLite.Pages
                 icon = Symbol.Document,
                 page = typeof(Live.LiveRecommendPage),
                 title = "全部直播"
+            });
+        }
+
+        private void BtnBilibili_Click(object sender, RoutedEventArgs e)
+        {
+            MessageCenter.NavigateToPage(this, new NavigationInfo()
+            {
+                icon = (Symbol)57755,
+                page = typeof(WebPage),
+                title = "B站",
+                parameters="https://www.bilibili.com"
             });
         }
     }

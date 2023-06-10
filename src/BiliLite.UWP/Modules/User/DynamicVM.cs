@@ -1,10 +1,8 @@
-﻿using BiliLite.Controls;
-using BiliLite.Controls.Dynamic;
+﻿using BiliLite.Controls.Dynamic;
 using BiliLite.Helpers;
 using BiliLite.Models;
 using BiliLite.Models.Dynamic;
 using BiliLite.Pages;
-using BiliLite.Pages.Other;
 using BiliLite.Pages.User;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,16 +10,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
 using Windows.Foundation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using static BiliLite.Api.User.DynamicAPI;
 using BiliLite.Dialogs;
-using Windows.UI.Xaml.Documents;
+using System.Reflection;
+using Windows.Storage.Pickers;
+using Windows.Storage.Provider;
+using Windows.Storage;
+using System.IO;
+using System.Security.Policy;
+using System.Net.Http;
+using Grpc.Core;
+using System.Net;
 
 namespace BiliLite.Modules.User
 {
@@ -59,12 +63,19 @@ namespace BiliLite.Modules.User
             LotteryCommand = new RelayCommand<object>(OpenLottery);
             VoteCommand = new RelayCommand<object>(OpenVote);
             ImageCommand = new RelayCommand<object>(OpenImage);
+            SaveImageCommand = new RelayCommand<object>(SaveImage);
             CommentCommand = new RelayCommand<DynamicItemDisplayModel>(OpenComment);
             DeleteCommand = new RelayCommand<DynamicItemDisplayModel>(Delete);
             LikeCommand = new RelayCommand<DynamicItemDisplayModel>(DoLike);
             RepostCommand = new RelayCommand<DynamicItemDisplayModel>(OpenSendDynamicDialog);
             DetailCommand = new RelayCommand<DynamicItemDisplayModel>(OpenDetail);
         }
+
+        public async void SaveImage(object obj)
+        {
+            await SaveImageAsync(obj);
+        }
+
         public event EventHandler<DynamicItemDisplayModel> OpenCommentEvent;
         public ICommand VoteCommand { get; set; }
         public ICommand UserCommand { get; set; }
@@ -73,6 +84,7 @@ namespace BiliLite.Modules.User
         public ICommand WebCommand { get; set; }
         public ICommand TagCommand { get; set; }
         public ICommand ImageCommand { get; set; }
+        public ICommand SaveImageCommand { get; set; }
         public ICommand CommentCommand { get; set; }
         public ICommand RepostCommand { get; set; }
         public ICommand LikeCommand { get; set; }
@@ -141,7 +153,7 @@ namespace BiliLite.Modules.User
         }
         public async void LaunchUrl(object url)
         {
-            var result = await MessageCenter.HandelUrl(url.ToString());
+            var result = await MessageCenter.HandleUrl(url.ToString());
             if (!result)
             {
                 Utils.ShowMessageToast("无法打开Url");
@@ -162,6 +174,34 @@ namespace BiliLite.Modules.User
         {
             DyanmicItemDisplayImageInfo info = data as DyanmicItemDisplayImageInfo;
             MessageCenter.OpenImageViewer(info.AllImages, info.Index);
+        }
+        public async Task SaveImageAsync(object data)
+        {
+            FileSavePicker save = new FileSavePicker();
+            save.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            save.FileTypeChoices.Add("图片", new List<string>() { Path.GetExtension(data as string) });
+            save.SuggestedFileName = "bili_img_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            StorageFile file = await save.PickSaveFileAsync();
+            if (file != null)
+            {
+                var httpClient = new HttpClient();
+                var response = await httpClient.GetAsync(data as string);
+                if (response != null && response.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var stream = await file.OpenStreamForWriteAsync())
+                    {
+                        await response.Content.CopyToAsync(stream);
+                    }
+                    FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
+                    if (status == FileUpdateStatus.Complete)
+                        Utils.ShowMessageToast("保存成功");
+                    else
+                        Utils.ShowMessageToast("保存失败");
+                    return;
+                }
+                Utils.ShowMessageToast("下载失败");
+            }
         }
         public void OpenTag(object name)
         {
@@ -190,7 +230,7 @@ namespace BiliLite.Modules.User
             {
                 Width = 500,
                 Height = 500,
-                Source = new Uri($"https://t.bilibili.com/lottery/h5/index/#/result?business_id={ id.ToString()}&business_type=1&isWeb=1"),
+                Source = new Uri($"https://t.bilibili.com/lottery/h5/index/#/result?business_id={id.ToString()}&business_type=1&isWeb=1"),
             };
             await contentDialog.ShowAsync();
         }
@@ -201,7 +241,7 @@ namespace BiliLite.Modules.User
                 icon = Symbol.Document,
                 page = typeof(WebPage),
                 title = "投票",
-                parameters = $"https://t.bilibili.com/vote/h5/index/#/result?vote_id={ id.ToString()}"
+                parameters = $"https://t.bilibili.com/vote/h5/index/#/result?vote_id={id.ToString()}"
             });
             //ContentDialog contentDialog = new ContentDialog()
             //{
@@ -365,7 +405,7 @@ namespace BiliLite.Modules.User
                 if (results.status)
                 {
                     var data = results.GetJObject();
-                    if (data!=null && (data["code"].ToInt32() == 0))
+                    if (data != null && (data["code"].ToInt32() == 0))
                     {
                         var items = JsonConvert.DeserializeObject<List<DynamicCardModel>>(data["data"]?["cards"]?.ToString() ?? "[]");
                         if (items.Count > 0)
@@ -460,6 +500,7 @@ namespace BiliLite.Modules.User
 
                 var card = JObject.Parse(item.card);
                 var extend_json = JObject.Parse(item.extend_json);
+                var display=item.display;
                 var data = new DynamicItemDisplayModel()
                 {
                     CommentCount = item.desc.comment,
@@ -481,6 +522,7 @@ namespace BiliLite.Modules.User
                     VoteCommand = VoteCommand,
                     IsSelf = item.desc.uid == SettingHelper.Account.UserID,
                     ImageCommand = ImageCommand,
+                    SaveImageCommand = SaveImageCommand,
                     CommentCommand = CommentCommand,
                     LikeCommand = LikeCommand,
                     DeleteCommand = DeleteCommand,
@@ -518,7 +560,8 @@ namespace BiliLite.Modules.User
                             Height = img["img_height"].ToInt32(),
                             Width = img["img_width"].ToInt32(),
                             Index = i,
-                            ImageCommand = ImageCommand
+                            ImageCommand = ImageCommand,
+                            SaveImageCommand = SaveImageCommand
                         });
                         i++;
                     }
@@ -599,6 +642,33 @@ namespace BiliLite.Modules.User
                     content = card["vest"]["content"]?.ToString();
                 }
 
+
+                //直播预约
+                if (display?.add_on_card_info != null)
+                {
+                    var arr = new JArray();
+                    foreach (var _info in display.add_on_card_info)
+                    {
+                        var info = _info.reserve_attach_card;
+                        if (info == null) { continue; }
+                        var tp = info.type;
+                        if (tp != null && tp.ToString() == "reserve")
+                        {
+                            //这个是一个预约
+                            var time = info.desc_first?.text;
+                            var people = info.desc_second;
+                            var title = info.title;
+                            arr.Add(new JObject(
+                                new JProperty("time", time),
+                                new JProperty("people", people),
+                                new JProperty("title", title)
+                            ));
+                        }
+                    }
+                    extend_json["直播"] = arr;
+                }
+
+
                 if (!string.IsNullOrEmpty(content))
                 {
                     data.ContentStr = content;
@@ -609,14 +679,20 @@ namespace BiliLite.Modules.User
                     data.ShowContent = false;
                 }
 
-
+                if (item.desc.user_profile == null && card["owner"] != null)
+                {
+                    data.UserName = card["owner"]["name"]?.ToString();
+                    data.Photo = card["owner"]["face"]?.ToString();
+                    data.Verify = AppHelper.TRANSPARENT_IMAGE;
+                    data.Mid = long.Parse(card["owner"]["mid"]?.ToString());
+                }
                 if (item.desc.user_profile != null)
                 {
                     data.UserName = item.desc.user_profile.info.uname;
                     data.Photo = item.desc.user_profile.info.face;
                     if (item.desc.user_profile.vip != null)
                     {
-                        data.IsYearVip = item.desc.user_profile.vip.vipStatus==1&& item.desc.user_profile.vip.vipType == 2;
+                        data.IsYearVip = item.desc.user_profile.vip.vipStatus == 1 && item.desc.user_profile.vip.vipType == 2;
                     }
                     switch (item.desc.user_profile.card?.official_verify?.type ?? 3)
                     {
@@ -640,6 +716,7 @@ namespace BiliLite.Modules.User
                     data.DecorateColor = item.desc.user_profile.decorate_card?.fan?.color;
                     data.DecorateImage = item.desc.user_profile.decorate_card?.big_card_url;
                 }
+
 
 
                 if (card.ContainsKey("apiSeasonInfo"))

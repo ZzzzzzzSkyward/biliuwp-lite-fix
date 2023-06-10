@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -80,7 +79,13 @@ namespace BiliLite.Helpers
                 subtitle= subtitle ,
                 isDash=isDash
             });
-            await Windows.ApplicationModel.FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
+            try
+            {
+                await Windows.ApplicationModel.FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
+            }
+            catch {
+                Utils.ShowMessageToast("由于升级包，导出视频功能不可用");
+            }
         }
 
     }

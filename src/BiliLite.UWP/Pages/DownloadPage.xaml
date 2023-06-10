@@ -9,7 +9,7 @@
       xmlns:convert="using:BiliLite.Converters" 
     xmlns:controls="using:BiliLite.Controls"
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:modules="using:BiliLite.Modules"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource TransparentBackground}">
     <Page.Resources>
         <SolidColorBrush x:Key="PivotHeaderBackground" Color="{ThemeResource TopPaneBackground}"></SolidColorBrush>
         <SolidColorBrush x:Key="SystemControlHighlightAltAccentBrush" Color="White"></SolidColorBrush>
@@ -25,110 +25,14 @@
         <Pivot>
             <Pivot.RightHeader>
                 <Grid Background="{StaticResource PivotHeaderBackground}">
-                    <Button x:Name="btnMerge" Click="btnMerge_Click" Margin="8 0" FontSize="12">合并视频</Button>
+                    <Button x:Name="btnMerge" Click="btnMerge_Click" Margin="8 0" FontSize="12" Visibility="Collapsed">合并视频</Button>
+                    <Button x:Name="btnOpen" Click="btnOpen_Click" Margin="8 0" FontSize="12" ToolTipService.ToolTip="字幕和弹幕需要手动加载">播放本地视频</Button>
                 </Grid>
             </Pivot.RightHeader>
             <PivotItem Margin="0">
                 <PivotItem.Header>
                     <TextBlock FontSize="15" >
-                        正在下载(<Run Text="{x:Bind Path=downloadVM.Downloadings.Count,Mode=OneWay}"/>)
-                    </TextBlock>
-                </PivotItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid  Background="{StaticResource PivotHeaderBackground}">
-                        <StackPanel Margin="12 8" Orientation="Horizontal">
-                            <Button Command="{x:Bind Path=downloadVM.StartCommand}" FontSize="12" Margin="0 0 8 0">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE102;" />
-                                    <TextBlock Margin="4 0 0 0">开始全部</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button Command="{x:Bind Path=downloadVM.PauseCommand}" FontSize="12" Margin="0 0 8 0">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE103;" />
-                                    <TextBlock Margin="4 0 0 0">暂停全部</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button Command="{x:Bind Path=downloadVM.DeleteCommand}" FontSize="12" Margin="0 0 8 0">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" />
-                                    <TextBlock Margin="4 0 0 0">删除全部</TextBlock>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </Grid>
-                    <ListView SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind Path=downloadVM.Downloadings}" Padding="4" Grid.Row="1">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                <Setter Property="Margin" Value="4 8" />
-                                <Setter Property="Padding" Value="8" />
-                                <Setter Property="BorderThickness" Value="1" />
-                                <Setter Property="BorderBrush" Value="#33808080" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="modules:DownloadingItem">
-                                <StackPanel >
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <StackPanel>
-                                            <TextBlock Text="{x:Bind Path=Title}"></TextBlock>
-                                            <TextBlock  FontSize="14" Foreground="Gray" Text="{x:Bind Path=EpisodeTitle}"></TextBlock>
-
-                                        </StackPanel>
-                                        <AppBarButton x:Name="btnDeleteItem" Command="{x:Bind Path=DeleteItemCommand}" CommandParameter="{x:Bind}" Icon="Delete" Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1"></AppBarButton>
-                                    </Grid>
-                                    <ItemsControl Margin="0 4 0 0" ItemsSource="{x:Bind Items}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate x:DataType="modules:DownloadingSubItem">
-                                                <Grid BorderThickness="0 1 0 0" BorderBrush="#33808080">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel>
-                                                        <TextBlock Foreground="Gray" FontSize="12" Grid.Row="1" Text="{x:Bind Path=FileName}"></TextBlock>
-                                                        <ProgressBar Grid.ColumnSpan="3" Maximum="100" Value="{x:Bind Path=Progress,Mode=OneWay}"></ProgressBar>
-                                                        <Grid>
-                                                            <TextBlock FontSize="12"  Foreground="Gray" Text="{x:Bind Path=Status,Mode=OneWay,Converter={StaticResource downloadStatusConvert}}"></TextBlock>
-                                                            <TextBlock FontSize="12"  Foreground="Gray" HorizontalAlignment="Right" >
-                                                                <Run Text="{x:Bind Path=ProgressBytes,Mode=OneWay,Converter={StaticResource byteSizeConvert},ConverterParameter='MB,--'}"/>/<Run Text="{x:Bind Path=TotalBytes,Mode=OneWay,Converter={StaticResource byteSizeConvert},ConverterParameter='MB,未知'}"/>
-                                                            </TextBlock>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <Button Grid.Column="1" Padding="0" Visibility="{x:Bind Path=ShowPause,Mode=OneWay}"  Command="{x:Bind Path=PauseItemCommand}" CommandParameter="{x:Bind}" VerticalAlignment="Stretch" Background="Transparent" Width="36">
-                                                        <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE103;" />
-                                                    </Button>
-                                                    <Button Grid.Column="1" Padding="0" Visibility="{x:Bind Path=ShowStart,Mode=OneWay}" Command="{x:Bind Path=ResumeItemCommand}"  CommandParameter="{x:Bind}" VerticalAlignment="Stretch" Background="Transparent" Width="36">
-                                                        <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE118;" />
-                                                    </Button>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-
-
-
-                                    </ItemsControl>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                       
-                       
-                    </ListView>
-                </Grid>
-            </PivotItem>
-            <PivotItem Margin="0">
-                <PivotItem.Header>
-                    <TextBlock FontSize="15" >
-                        下载完成(<Run Text="{x:Bind Path=downloadVM.Downloadeds.Count,Mode=OneWay}"/>)
+                        离线视频(<Run Text="{x:Bind Path=downloadVM.Downloadeds.Count,Mode=OneWay}"/>)
                     </TextBlock>
                 </PivotItem.Header>
                 <SplitView x:Name="splitView" OpenPaneLength="360" PanePlacement="Right" PaneBackground="Transparent">
@@ -158,11 +62,11 @@
 
                                         <StackPanel Grid.Column="1" Margin="8 0 0 0">
                                             <TextBlock TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{Binding Path=Title}"></TextBlock>
-                                            <TextBlock Foreground="Gray" Margin="0 4 0 0" FontSize="12">共<Run Text="{Binding Path=Epsidoes.Count}"/>个视频</TextBlock>
-                                            <TextBlock Foreground="Gray" Margin="0 4 0 0" FontSize="12" Text="{Binding Path=UpdateTime}"></TextBlock>
+                                            <TextBlock Foreground="{ThemeResource ForegroundTextColor}" Margin="0 4 0 0" FontSize="12">共<Run Text="{Binding Path=Episodes.Count}"/>个视频</TextBlock>
+                                            <TextBlock Foreground="{ThemeResource ForegroundTextColor}" Margin="0 4 0 0" FontSize="12" Text="{Binding Path=UpdateTime}"></TextBlock>
                                         </StackPanel>
                                     </Grid>
-                                    <ListView x:Name="listDownloadedEpisodes" ItemClick="listDownloadedEpisodes_ItemClick" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{Binding Path=Epsidoes}">
+                                    <ListView x:Name="listDownloadedEpisodes" ItemClick="listDownloadedEpisodes_ItemClick" Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{Binding Path=Episodes}">
                                         <ListView.ItemContainerStyle>
                                             <Style TargetType="ListViewItem">
                                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -245,8 +149,8 @@
 
                                             <StackPanel Grid.Column="1" >
                                                 <TextBlock TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=Title}"></TextBlock>
-                                                <TextBlock Foreground="Gray" Margin="0 4 0 0" FontSize="12">共<Run Text="{x:Bind Path=Epsidoes.Count}"/>个视频</TextBlock>
-                                                <TextBlock Foreground="Gray" Margin="0 4 0 0" FontSize="12" Text="{x:Bind Path=UpdateTime}"></TextBlock>
+                                                <TextBlock Foreground="{ThemeResource ForegroundTextColor}" Margin="0 4 0 0" FontSize="12">共<Run Text="{x:Bind Path=Episodes.Count}"/>个视频</TextBlock>
+                                                <TextBlock Foreground="{ThemeResource ForegroundTextColor}" Margin="0 4 0 0" FontSize="12" Text="{x:Bind Path=UpdateTime}"></TextBlock>
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -260,11 +164,141 @@
 
                 </SplitView>
             </PivotItem>
-        </Pivot>
+            <PivotItem Margin="0">
+                <PivotItem.Header>
+                    <TextBlock FontSize="15" >
+                        正在下载(<Run Text="{x:Bind Path=downloadVM.Downloadings.Count,Mode=OneWay}"/>)
+                    </TextBlock>
+                </PivotItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid  Background="{StaticResource PivotHeaderBackground}">
+                        <StackPanel Margin="12 8" Orientation="Horizontal">
+                            <Button Command="{x:Bind Path=downloadVM.StartCommand}" FontSize="12" Margin="0 0 8 0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE102;" />
+                                    <TextBlock Margin="4 0 0 0">全部开始</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{x:Bind Path=downloadVM.PauseCommand}" FontSize="12" Margin="0 0 8 0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE103;" />
+                                    <TextBlock Margin="4 0 0 0">全部暂停</TextBlock>
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{x:Bind Path=downloadVM.DeleteCommand}" FontSize="12" Margin="0 0 8 0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE107;" />
+                                    <TextBlock Margin="4 0 0 0">全部删除</TextBlock>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    <ListView SelectionMode="None" IsItemClickEnabled="False" ItemsSource="{x:Bind Path=downloadVM.Downloadings}" Padding="4" Grid.Row="1">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="Margin" Value="4 8" />
+                                <Setter Property="Padding" Value="8" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="BorderBrush" Value="#33808080" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="modules:DownloadingItem">
+                                <StackPanel >
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Bind Path=Title}"></TextBlock>
+                                            <TextBlock  FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" Text="{x:Bind Path=EpisodeTitle}"></TextBlock>
+
+                                        </StackPanel>
+                                        <AppBarButton x:Name="btnDeleteItem" Command="{x:Bind Path=DeleteItemCommand}" CommandParameter="{x:Bind}" Icon="Delete" Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Column="1"></AppBarButton>
+                                    </Grid>
+                                    <ItemsControl Margin="0 4 0 0" ItemsSource="{x:Bind Items}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="modules:DownloadingSubItem">
+                                                <Grid BorderThickness="0 1 0 0" BorderBrush="#33808080">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel>
+                                                        <TextBlock Foreground="{ThemeResource ForegroundTextColor}" FontSize="12" Grid.Row="1" Text="{x:Bind Path=FileName}"></TextBlock>
+                                                        <ProgressBar Grid.ColumnSpan="3" Maximum="100" Value="{x:Bind Path=Progress,Mode=OneWay}"></ProgressBar>
+                                                        <Grid>
+                                                            <TextBlock FontSize="12"  Foreground="{ThemeResource ForegroundTextColor}" Text="{x:Bind Path=Status,Mode=OneWay,Converter={StaticResource downloadStatusConvert}}"></TextBlock>
+                                                            <TextBlock FontSize="12"  Foreground="{ThemeResource ForegroundTextColor}" HorizontalAlignment="Right" >
+                                                                <Run Text="{x:Bind Path=ProgressBytes,Mode=OneWay,Converter={StaticResource byteSizeConvert},ConverterParameter='MB,--'}"/>/<Run Text="{x:Bind Path=TotalBytes,Mode=OneWay,Converter={StaticResource byteSizeConvert},ConverterParameter='MB,未知'}"/>
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" Padding="0" Visibility="{x:Bind Path=ShowPause,Mode=OneWay}"  Command="{x:Bind Path=PauseItemCommand}" CommandParameter="{x:Bind}" VerticalAlignment="Stretch" Background="Transparent" Width="36">
+                                                        <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE103;" />
+                                                    </Button>
+                                                    <Button Grid.Column="1" Padding="0" Visibility="{x:Bind Path=ShowStart,Mode=OneWay}" Command="{x:Bind Path=ResumeItemCommand}"  CommandParameter="{x:Bind}" VerticalAlignment="Stretch" Background="Transparent" Width="36">
+                                                        <FontIcon FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE118;" />
+                                                    </Button>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+
+
+
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                       
+                       
+                    </ListView>
+                </Grid>
+            </PivotItem>
+			<PivotItem Margin="0">
+				<PivotItem.Header>
+					<TextBlock FontSize="15">
+						导入视频
+					</TextBlock>
+				</PivotItem.Header>
+				<StackPanel>
+
+					<TextBlock Text="视频标题" />
+					<TextBox  x:Name="TitleTextBox" />
+					<TextBlock Text="视频链接" />
+					<TextBox  x:Name="LinkTextBox" />
+					<TextBlock  Text="预览图链接" />
+					<TextBox  x:Name="ImageTextBox" />
+					<TextBlock  Text="视频文件" />
+					<Button  Content="选择视频文件" x:Name="SelectFileButton" Click="SelectFileButton_Click" />
+					<ListView x:Name="VideosListView">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+									<TextBlock Text="{Binding}" HorizontalAlignment="Left" />
+									<Button Content="删除" Click="DeleteButton_Click" HorizontalAlignment="Right" />
+								</StackPanel>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+					<TextBlock  Text="字幕文件" />
+					<Button  Content="选择字幕文件" x:Name="SelectSubtitleButton" Click="SelectSubtitleButton_Click" />
+					<TextBlock x:Name="SubtitleTextBox"/>
+					<Button Content="生成" x:Name="GenerateButton" Click="GenerateButton_Click" />
+					<TextBlock x:Name="GenerateResult"></TextBlock>
+				</StackPanel>
+			</PivotItem>
+			</Pivot>
         <StackPanel BorderThickness="0 1 0 0" BorderBrush="#40808080" Grid.Row="1" Padding="12 4">
             <Grid>
                 <TextBlock>磁盘可用空间 <Run Text="{x:Bind Path=downloadVM.DiskFree,Mode=OneWay,Converter={StaticResource numberToStringConvert}}"/>GB</TextBlock>
-                <TextBlock Foreground="Gray" HorizontalAlignment="Right"><Run Text="{x:Bind Path=downloadVM.DiskUse,Mode=OneWay,Converter={StaticResource numberToStringConvert}}"/>GB/<Run Text="{x:Bind Path=downloadVM.DiskTotal,Mode=OneWay,Converter={StaticResource numberToStringConvert}}"/>GB</TextBlock>
+                <TextBlock Foreground="{ThemeResource ForegroundTextColor}" HorizontalAlignment="Right"><Run Text="{x:Bind Path=downloadVM.DiskUse,Mode=OneWay,Converter={StaticResource numberToStringConvert}}"/>GB/<Run Text="{x:Bind Path=downloadVM.DiskTotal,Mode=OneWay,Converter={StaticResource numberToStringConvert}}"/>GB</TextBlock>
             </Grid>
 
             <ProgressBar Margin="0 4 0 0" Height="8" Value="{x:Bind Path=downloadVM.DiskUse,Mode=OneWay}" Maximum="{x:Bind Path=downloadVM.DiskTotal,Mode=OneWay}"></ProgressBar>

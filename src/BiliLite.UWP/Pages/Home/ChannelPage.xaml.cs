@@ -1,18 +1,7 @@
 ﻿using BiliLite.Helpers;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Popups;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -50,7 +39,7 @@ namespace BiliLite.Pages.Home
         private async void webView_NewWindowRequested(WebView sender, WebViewNewWindowRequestedEventArgs args)
         {
             args.Handled = true;
-            var re = await MessageCenter.HandelUrl(args.Uri.AbsoluteUri);
+            var re = await MessageCenter.HandleUrl(args.Uri.AbsoluteUri);
             if (!re)
             {
                 var md = new MessageDialog("是否使用外部浏览器打开此链接？");

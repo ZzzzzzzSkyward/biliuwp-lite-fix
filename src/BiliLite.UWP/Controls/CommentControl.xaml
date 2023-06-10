@@ -171,7 +171,7 @@
                     <AppBarButton Visibility="Collapsed" Style="{StaticResource AppBarButtonNoChevronStyle}" Flyout="{StaticResource ResourceKey=menu}" HorizontalAlignment="Right" Icon="More"  Width="48" ></AppBarButton>
                 </StackPanel>
 
-                <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Foreground="Gray" Margin="4 0" VerticalAlignment="Top" ToolTipService.ToolTip="{x:Bind Path=ctime,Converter={StaticResource datetime}}">
+                <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontSize="12" Foreground="{ThemeResource ForegroundTextColor}" Margin="4 0" VerticalAlignment="Top" ToolTipService.ToolTip="{x:Bind Path=ctime,Converter={StaticResource datetime}}">
                     <!--#<Run Text="{Binding Path=floor}"></Run>-->
                     <Run Text="{x:Bind Path=time}"></Run> 
                     <Run Text="{x:Bind Path=content.plat_str}"></Run>
@@ -185,12 +185,13 @@
                     Visibility="{x:Bind Path=content.haspictures}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     ScrollViewer.HorizontalScrollMode="Auto"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden"
                     Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
                     x:Name="NotePicturesView"
                     StretchContentForSingleRow="False"
                     OneRowModeEnabled="True"
                     ItemHeight="80"
+                    MaxHeight="80"
                     ItemsSource="{x:Bind Path=content.pictures}"
                     SelectionMode="None"
                     ItemClick="NotePicturesView_ItemClick"
@@ -212,24 +213,24 @@
                 <Grid Margin="0 8 0 0" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                        <HyperlinkButton  Click="btn_Like_Click" Foreground="{x:Bind LikeColor,Mode=OneWay}" Margin="4 0 8 0" HorizontalContentAlignment="Left">
+                        <HyperlinkButton  Click="btn_Like_Click" Foreground="{x:Bind LikeColor,Mode=OneWay}" Margin="4 0 0 0" HorizontalContentAlignment="Left">
                             <StackPanel Orientation="Horizontal">
                                 <fa:FontAwesome Icon="Regular_ThumbsUp" FontSize="14"></fa:FontAwesome>
-                                <TextBlock  Margin="4 0" Text="{x:Bind like_str,Mode=OneWay}"></TextBlock>
+                                <TextBlock  Margin="4 0 0 0" Text="{x:Bind like_str,Mode=OneWay}"></TextBlock>
                             </StackPanel>
                         </HyperlinkButton>
-                        <HyperlinkButton  Click="btn_ShowComment_Click" Foreground="Gray"  Margin="8 0" HorizontalContentAlignment="Left">
+                        <HyperlinkButton  Click="btn_ShowComment_Click" Foreground="{ThemeResource ForegroundTextColor}"  Margin="0 0" HorizontalContentAlignment="Left">
                             <StackPanel Orientation="Horizontal">
                                 <fa:FontAwesome Icon="Regular_Comment" FontSize="14"></fa:FontAwesome>
-                                <TextBlock Margin="4 0" Text="{x:Bind rcount_str,Mode=OneWay}"></TextBlock>
+                                <TextBlock Margin="4 0 0 0" Text="{x:Bind rcount_str,Mode=OneWay}"></TextBlock>
                             </StackPanel>
                         </HyperlinkButton>
-                        <HyperlinkButton Visibility="{x:Bind showReplyBtn,Mode=OneWay}" Click="btn_ShowReplyBtn_Click" Foreground="Gray" Margin="8 0" HorizontalContentAlignment="Left">
+                        <HyperlinkButton Visibility="{x:Bind showReplyBtn,Mode=OneWay}" Click="btn_ShowReplyBtn_Click" Foreground="{ThemeResource ForegroundTextColor}" Margin="8 0" HorizontalContentAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="4 0">回复</TextBlock>
+                                <TextBlock Margin="4 0 0 0">回复</TextBlock>
                             </StackPanel>
                         </HyperlinkButton>
-                        <HyperlinkButton Click="btn_DonotLike_Click" Visibility="Collapsed" Foreground="Gray" Margin="8 0" HorizontalContentAlignment="Left">
+                        <HyperlinkButton Click="btn_DonotLike_Click" Visibility="Collapsed" Foreground="{ThemeResource ForegroundTextColor}" Margin="8 0" HorizontalContentAlignment="Left">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon VerticalAlignment="Center" FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE19E;" />
                                 <TextBlock ></TextBlock>
@@ -238,7 +239,7 @@
                     </StackPanel>
 
                     <Border Visibility="{x:Bind Path=up_action.like,Mode=OneWay}" Background="#3C808080" HorizontalAlignment="Right" VerticalAlignment="Center" CornerRadius="2">
-                        <TextBlock FontSize="12" Margin="8 4" Foreground="Gray">UP主觉得很赞</TextBlock>
+                        <TextBlock FontSize="12" Margin="8 4" Foreground="{ThemeResource ForegroundTextColor}">UP主觉得很赞</TextBlock>
                     </Border>
                 </Grid>
 
@@ -279,7 +280,7 @@
                                             <Image Height="12" Margin="8 0" Source="{Binding Path=member.LV}"></Image>
                                         </StackPanel>
                                     </HyperlinkButton>
-                                    <TextBlock FontSize="12"  IsTextSelectionEnabled="True" Foreground="Gray" VerticalAlignment="Center"  ToolTipService.ToolTip="{Binding Path=ctime,Converter={StaticResource datetime}}">
+                                    <TextBlock FontSize="12"  IsTextSelectionEnabled="True" Foreground="{ThemeResource ForegroundTextColor}" VerticalAlignment="Center"  ToolTipService.ToolTip="{Binding Path=ctime,Converter={StaticResource datetime}}">
                                                 <Run Text="{Binding Path=time}"></Run>
                                                 <Run Text="{Binding Path=reply_control.location}"></Run>
                                     </TextBlock>
@@ -290,29 +291,28 @@
 
                                     <Grid>
                                         <StackPanel Margin="0 4" Orientation="Horizontal">
-                                           
-                                            <HyperlinkButton  Click="btn_Like_Click" Foreground="{Binding LikeColor}" Margin="8 0" HorizontalContentAlignment="Left">
+
+                                            <HyperlinkButton  Click="btn_Like_Click" Foreground="{Binding LikeColor}" Margin="0 0 0 0" HorizontalContentAlignment="Left" >
                                                 <StackPanel Orientation="Horizontal">
                                                     <fa:FontAwesome Icon="Regular_ThumbsUp" FontSize="14"></fa:FontAwesome>
-                                                    <TextBlock  Margin="4 0" Text="{Binding Path=like_str}"></TextBlock>
+                                                    <TextBlock  Margin="4 0 0 0" Text="{Binding Path=like_str,Converter={StaticResource numberToStringConvert}}"></TextBlock>
                                                 </StackPanel>
                                             </HyperlinkButton>
 
-                                            <HyperlinkButton Click="btn_ShowReplyBtn_Click" Margin="8 0" Foreground="Gray">
+                                            <HyperlinkButton Click="btn_ShowReplyBtn_Click" Margin="0" Foreground="{ThemeResource ForegroundTextColor}">
                                                 <StackPanel Orientation="Horizontal">
-
-                                                    <TextBlock  Margin="4 0">回复</TextBlock>
+                                                    <FontIcon FontFamily="{StaticResource BiliIconFont}" Glyph="&#xe6df;" FontSize="16" />
                                                 </StackPanel>
                                             </HyperlinkButton>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="0 4" HorizontalAlignment="Right">
-                                            <HyperlinkButton Visibility="{Binding showDelete}" Click="btn_DeleteComment_Click" Foreground="Gray" >
+                                            <HyperlinkButton Visibility="{Binding showDelete}" Click="btn_DeleteComment_Click" Foreground="{ThemeResource ForegroundTextColor}" >
                                                 <StackPanel Orientation="Horizontal">
 
                                                     <TextBlock  Margin="4 0">删除</TextBlock>
                                                 </StackPanel>
                                             </HyperlinkButton>
-                                            <HyperlinkButton Foreground="Gray" >
+                                            <HyperlinkButton Foreground="{ThemeResource ForegroundTextColor}" Visibility="Collapsed">
                                                 <StackPanel Orientation="Horizontal">
 
                                                     <TextBlock  Margin="4 0">举报</TextBlock>
@@ -382,9 +382,8 @@
                 </HyperlinkButton>
             </StackPanel>
             <StackPanel Padding="0 0 0 8" Orientation="Horizontal" x:Name="_new">
-                <TextBlock Margin="12 8 0 0" FontSize="20" VerticalAlignment="Center" >最新评论</TextBlock>
                 <HyperlinkButton x:Name="btn_HotSort"  Margin="8 0 0 0" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"  Click="btn_HotSort_Click" >
-                    <TextBlock>按热门排序</TextBlock>
+                    <TextBlock Margin="12 8 0 0" FontSize="20" VerticalAlignment="Center" >最新评论</TextBlock>
                 </HyperlinkButton>
             </StackPanel>
             <AppBarButton x:Name="btn_Refresh" Click="btn_Refresh_Click" Margin="0 0 40 0" Width="40" Height="40" Icon="Refresh" HorizontalAlignment="Right"></AppBarButton>
@@ -403,8 +402,8 @@
                     <HyperlinkButton x:Name="btn_LoadMore" Click="btn_LoadMore_Click" HorizontalAlignment="Center">
                         <TextBlock>加载更多</TextBlock>
                     </HyperlinkButton>
-                    <TextBlock x:Name="noRepost" Visibility="Collapsed" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 24">还没有人评论</TextBlock>
-                    <TextBlock x:Name="closeRepost" Visibility="Collapsed" Foreground="Gray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 24">禁止评论</TextBlock>
+                    <TextBlock x:Name="noRepost" Visibility="Collapsed" Foreground="{ThemeResource ForegroundTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 24">还没有人评论</TextBlock>
+                    <TextBlock x:Name="closeRepost" Visibility="Collapsed" Foreground="{ThemeResource ForegroundTextColor}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 24">禁止评论</TextBlock>
                 </StackPanel>
             </ListView.Footer>
         </ListView>

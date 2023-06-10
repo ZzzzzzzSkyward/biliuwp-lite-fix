@@ -1,20 +1,10 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Modules.User;
-using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -42,6 +32,38 @@ namespace BiliLite.Pages.Home
             else
             {
                 this.NavigationCacheMode = NavigationCacheMode.Disabled;
+            }
+            SetBackground();
+        }
+
+        private async void SetBackground()
+        {
+            var canshow = SettingHelper.GetValue("showbgondynamic", false);
+            if(!canshow) { return; }
+            var background = SettingHelper.GetValue(SettingHelper.UI.BACKGROUND_IMAGE, AppHelper.BACKGROUND_IAMGE_URL);
+            if (background == AppHelper.BACKGROUND_IAMGE_URL)
+            {
+                BGImage.Source = new BitmapImage(new Uri(background));
+            }
+            else
+            {
+                StorageFile file = null;
+                try
+                {
+                    file = await StorageFile.GetFileFromPathAsync(background);
+                }
+                catch
+                {
+                    Utils.ShowMessageToast("请授予系统存储权限", 5);
+                }
+                if (file == null)
+                {
+                    return;
+                }
+                var img = new BitmapImage();
+                img.SetSource(await file.OpenReadAsync());
+                BGImage.Source = img;
+                BGImage.Visibility = Visibility.Visible;
             }
         }
 

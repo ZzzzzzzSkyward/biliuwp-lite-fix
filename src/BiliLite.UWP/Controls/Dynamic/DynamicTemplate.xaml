@@ -21,14 +21,14 @@
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
 
-                <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="#C8E5E9EF" CornerRadius="4">
-                    <HyperlinkButton Padding="0" Margin="0" Command="{Binding Path=LaunchUrlCommand}" CommandParameter="{Binding Path=OneRowInfo.Url}">
+                <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="{ThemeResource ForegroundTextColor}" CornerRadius="4">
+                    <HyperlinkButton Padding="0" Margin="0" Command="{Binding Path=LaunchUrlCommand}" CommandParameter="{Binding Path=OneRowInfo.Url}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
                         <HyperlinkButton.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Visibility="{Binding Path=ShowWatchLater}" Icon="Add" Text="添加到稍后再看" Command="{Binding Path=WatchLaterCommand}" CommandParameter="{Binding Path=OneRowInfo.ID}"></MenuFlyoutItem>
                             </MenuFlyout>
                         </HyperlinkButton.ContextFlyout>
-                        <Grid >
+                        <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -46,9 +46,9 @@
                             </Grid>
 
                             <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Margin="8 4 8 0">
-                                <TextBlock Text="{Binding Path=OneRowInfo.Title}" Foreground="{ThemeResource TextColor}" TextTrimming="CharacterEllipsis" MaxLines="2" TextWrapping="Wrap"></TextBlock>
-                                <TextBlock Visibility="Collapsed" Text="{Binding Path=OneRowInfo.Desc}" Margin="0 4" FontSize="14" Foreground="Gray" TextTrimming="CharacterEllipsis" MaxLines="2" TextWrapping="Wrap"></TextBlock>
-                                <TextBlock Margin="0 8 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="Gray"></TextBlock>
+                                <TextBlock FontSize="20" Text="{Binding Path=OneRowInfo.Title}" Foreground="{ThemeResource TextColor}" TextTrimming="CharacterEllipsis" MaxLines="2" TextWrapping="Wrap"></TextBlock>
+                                <TextBlock Visibility="Collapsed" Text="{Binding Path=OneRowInfo.Desc}" Margin="0 4" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" MaxLines="2" TextWrapping="Wrap"></TextBlock>
+                                <TextBlock Margin="0 8 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}"></TextBlock>
                             </StackPanel>
                         </Grid>
                     </HyperlinkButton>
@@ -81,9 +81,18 @@
     <DataTemplate x:Key="Photo1x1">
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
-                <Border HorizontalAlignment="Left" CornerRadius="4" MaxWidth="240">
+                <Border HorizontalAlignment="Left" CornerRadius="4" MaxHeight="500" MaxWidth="400">
                     <Grid>
                         <HyperlinkButton Padding="0" Command="{Binding Path=ImageCommand}" CommandParameter="{Binding Path=ImagesInfo[0]}">
+                            <HyperlinkButton.ContextFlyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="保存" Command="{Binding Path=SaveImageCommand}" CommandParameter="{Binding Path=ImagesInfo[0].ImageUrl}">
+                                        <MenuFlyoutItem.Icon>
+                                            <SymbolIcon Symbol="Save"></SymbolIcon>
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </HyperlinkButton.ContextFlyout>
                             <controls:ImageEx  
                         IsCacheEnabled="True" 
                        
@@ -107,6 +116,15 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <HyperlinkButton Padding="0" Command="{Binding Path=ImageCommand}" CommandParameter="{Binding}">
+                                <HyperlinkButton.ContextFlyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="保存" Command="{Binding Path=SaveImageCommand}" CommandParameter="{Binding Path=ImageUrl}">
+                                            <MenuFlyoutItem.Icon>
+                                                <SymbolIcon Symbol="Save"></SymbolIcon>
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </HyperlinkButton.ContextFlyout>
                                 <Border  CornerRadius="4" >
                                     <controls:ImageEx  
                         IsCacheEnabled="True" 
@@ -140,15 +158,15 @@
         </local:DynamicItemControl>
     </DataTemplate>
     <DataTemplate x:Key="Miss">
-        <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="#C8E5E9EF" CornerRadius="4">
+        <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="{ThemeResource ForegroundBorderColor}" CornerRadius="4">
             <StackPanel Orientation="Horizontal"  Margin="12">
-                <FontIcon Foreground="Gray" FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;" />
-                <TextBlock Foreground="Gray" Margin="8 0 0 0">资源已失效</TextBlock>
+                <FontIcon Foreground="{ThemeResource ForegroundTextColor}" FontSize="14" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;" />
+                <TextBlock Foreground="{ThemeResource ForegroundTextColor}" Margin="8 0 0 0">资源已失效</TextBlock>
             </StackPanel>
         </Border>
     </DataTemplate>
     <DataTemplate x:Key="Other">
-        <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="#C8E5E9EF" CornerRadius="4">
+        <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="{ThemeResource ForegroundBorderColor}" CornerRadius="4">
             <StackPanel Margin="12">
                 <TextBlock TextWrapping="Wrap">无法显示此动态,请将以下内容复制给开发者适配</TextBlock>
                 <TextBlock Margin="0 0 8 0" Text="{Binding Path=ContentStr}" TextWrapping="Wrap" IsTextSelectionEnabled="True"></TextBlock>
@@ -158,7 +176,7 @@
     <DataTemplate x:Key="Repost">
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
-                <Border BorderThickness="1"  BorderBrush="#C8E5E9EF"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
+                <Border BorderThickness="1"  BorderBrush="{ThemeResource ForegroundBorderColor}"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
                     <ListView 
                         SelectionMode="None" 
                         IsItemClickEnabled="false" 

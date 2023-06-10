@@ -1,19 +1,16 @@
 ﻿using BiliLite.Helpers;
-using BiliLite.Modules;
 using BiliLite.Modules.Player.Playurl;
 using FFmpegInteropX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Media;
 using Windows.Media.Core;
 using Windows.Media.Editing;
@@ -22,11 +19,7 @@ using Windows.Media.Streaming.Adaptive;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 
 //https://go.microsoft.com/fwlink/?LinkId=234236 上介绍了“用户控件”项模板
@@ -246,12 +239,13 @@ namespace BiliLite.Controls
         /// <summary>
         /// 使用AdaptiveMediaSource播放视频
         /// </summary>
-        /// <param name="videoUrl"></param>
-        /// <param name="audioUrl"></param>
-        /// <param name="positon"></param>
-        /// <param name="needConfig"></param>
+        /// <param name="dashInfo"></param>
+        /// <param name="userAgent"></param>
+        /// <param name="referer"></param>
+        /// <param name="position"></param>
+        /// <param name="isLocal"></param>
         /// <returns></returns>
-        public async Task<PlayerOpenResult> PlayerDashUseNative(BiliDashPlayUrlInfo dashInfo, string userAgent, string referer, double positon = 0)
+        public async Task<PlayerOpenResult> PlayDashUseNative(BiliDashPlayUrlInfo dashInfo, string userAgent, string referer, double position = 0,bool isLocal=false)
         {
             try
             {
@@ -271,8 +265,18 @@ namespace BiliLite.Controls
                 //设置播放器
                 _playerVideo = new MediaPlayer();
                 //_playerVideo.Source = MediaSource.CreateFromUri(new Uri(videoUrl.baseUrl));
-                var mediaSource = await CreateAdaptiveMediaSource(dashInfo, userAgent, referer);
-                if (mediaSource == null)
+                AdaptiveMediaSource mediaSource=null;
+                MediaSource mediaSource2=null;
+                if (isLocal)
+                {
+                    mediaSource2 = MediaSource.CreateFromStorageFile(dashInfo.Video.file ?? await StorageFile.GetFileFromPathAsync(dashInfo.Video.Url));
+                }
+                else
+                {
+                mediaSource = await CreateAdaptiveMediaSource(dashInfo, userAgent, referer);
+
+                }
+                if (mediaSource == null&&mediaSource2==null)
                 {
                     return new PlayerOpenResult()
                     {
@@ -280,8 +284,10 @@ namespace BiliLite.Controls
                         message = "创建MediaSource失败"
                     };
                 }
-
+                if(mediaSource!=null)
                 _playerVideo.Source = MediaSource.CreateFromAdaptiveMediaSource(mediaSource);
+                else
+                _playerVideo.Source = mediaSource2;
                 Buffering = true;
               
                 //设置时长
@@ -1582,19 +1588,19 @@ namespace BiliLite.Controls
                 info += $"Engine: {current_engine.ToString()}\r\n";
                 if (_ffmpegMSSVideo != null)
                 {
-                    info += $"Resolution: {_ffmpegMSSVideo.CurrentVideoStream.PixelHeight} x {_ffmpegMSSVideo.CurrentVideoStream.PixelWidth}\r\n";
-                    info += $"Video Codec: {_ffmpegMSSVideo.CurrentVideoStream.CodecName}\r\n";
-                    info += $"Video Bitrate: {_ffmpegMSSVideo.CurrentVideoStream.Bitrate}\r\n";
-                    info += $"Average Frame: {((double)_ffmpegMSSVideo.CurrentVideoStream.FramesPerSecond).ToString("0.0")}\r\n";
+                    info += $"Resolution: {_ffmpegMSSVideo.CurrentVideoStream?.PixelHeight} x {_ffmpegMSSVideo.CurrentVideoStream?.PixelWidth}\r\n";
+                    info += $"Video Codec: {_ffmpegMSSVideo.CurrentVideoStream?.CodecName}\r\n";
+                    info += $"Video Bitrate: {_ffmpegMSSVideo.CurrentVideoStream?.Bitrate}\r\n";
+                    info += $"Average Frame: {((double)_ffmpegMSSVideo.CurrentVideoStream?.FramesPerSecond).ToString("0.0")}\r\n";
                     if (PlayMediaType == PlayMediaType.Dash)
                     {
-                        info += $"Audio Codec: {_ffmpegMSSAudio.AudioStreams[0].CodecName}\r\n";
-                        info += $"Audio Bitrate: {_ffmpegMSSAudio.AudioStreams[0].Bitrate}";
+                        info += $"Audio Codec: {_ffmpegMSSAudio.AudioStreams[0]?.CodecName}\r\n";
+                        info += $"Audio Bitrate: {_ffmpegMSSAudio.AudioStreams[0]?.Bitrate}";
                     }
                     else
                     {
-                        info += $"Audio Codec: {_ffmpegMSSVideo.AudioStreams[0].CodecName}\r\n";
-                        info += $"Audio Bitrate: {_ffmpegMSSVideo.AudioStreams[0].Bitrate}";
+                        info += $"Audio Codec: {_ffmpegMSSVideo.AudioStreams[0]?.CodecName}\r\n";
+                        info += $"Audio Bitrate: {_ffmpegMSSVideo.AudioStreams[0]?.Bitrate}";
                     }
                 }
                 else
@@ -1726,7 +1732,7 @@ namespace BiliLite.Controls
         private MediaSourceConfig CreateFFmpegInteropConfig(string userAgent, string referer)
         {
 
-            var passthrough = SettingHelper.GetValue<bool>(SettingHelper.Player.HARDWARE_DECODING, true);
+            var passthrough = SettingHelper.GetValue<int>("playertype", 0)==2;
             var _ffmpegConfig = new MediaSourceConfig();
             if (userAgent != null && userAgent.Length > 0)
             {
@@ -1737,7 +1743,7 @@ namespace BiliLite.Controls
                 _ffmpegConfig.FFmpegOptions.Add("referer", referer);
             }
 
-            _ffmpegConfig.VideoDecoderMode = passthrough ? VideoDecoderMode.ForceSystemDecoder : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
+            _ffmpegConfig.VideoDecoderMode = passthrough ? VideoDecoderMode.Automatic : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
             return _ffmpegConfig;
         }
 

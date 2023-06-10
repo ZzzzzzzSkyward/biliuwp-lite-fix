@@ -1,28 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BiliLite.Helpers;
+using System;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 namespace BiliLite.Converters
 {
-   public class ColorSelecteConvert : IValueConverter
+    public class ColorSelecteConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value==null)
             {
-                return new SolidColorBrush((Color)App.Current.Resources["TextColor"]);
+                return Utils.GetBrush("TextColor");
             }
             if (value.ToString()== parameter.ToString())
             {
-                return new SolidColorBrush((Color)App.Current.Resources["HighLightColor"]);
+                return Utils.GetBrush("HighLightColor");
             }
             else
             {
-                return (SolidColorBrush)App.Current.Resources["DefaultTextColor"];
+                return Utils.GetBrush("DefaultTextColor");
             }
         }
 

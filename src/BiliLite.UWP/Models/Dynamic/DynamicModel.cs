@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BiliLite.Models.Dynamic
 {
@@ -16,7 +11,7 @@ namespace BiliLite.Models.Dynamic
     public class DynamicCardModel
     {
         public DynamicCardDescModel desc { get; set; }
-       // public string card { get; set; }
+        // public string card { get; set; }
         public string extend_json { get; set; }
         public string card { get; set; }
         public DynamicCardDisplayModel display { get; set; }
@@ -50,7 +45,25 @@ namespace BiliLite.Models.Dynamic
         public DynamicCardDisplayModel origin { get; set; }
         public DynamicCardDisplayEmojiInfoModel emoji_info { get; set; }
         public DynamicCardDisplayEmojiInfoModel topic_info { get; set; }
+        public List<DynamicCardCardModel> add_on_card_info { get; set; }
     }
+    public class DynamicCardCardModel
+    {
+        public DynamicCardReserveModel reserve_attach_card { get; set; }
+    }
+    public class DynamicCardReserveModel
+
+    {
+        public string type { get; set; }
+        public string title { get; set; }
+        public DynamicCardReserveTimeModel desc_first { get; set; }
+        public string desc_second { get; set; }
+    }
+    public class DynamicCardReserveTimeModel
+    {
+        public string text { get; set; }
+    }
+
 
     public class DynamicCardDisplayTopicInfoModel
     {

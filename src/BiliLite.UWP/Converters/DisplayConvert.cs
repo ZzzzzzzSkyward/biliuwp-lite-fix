@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
@@ -15,6 +11,15 @@ namespace BiliLite.Converters
             if (value==null)
             {
                 return Visibility.Collapsed;
+            }
+            //如果是字符串，则返回非空
+            if(value is string)
+            {
+                if (string.IsNullOrEmpty(value as string))
+                {
+                    return Visibility.Collapsed;
+                }
+                return Visibility.Visible;
             }
             //如果是bool，反转下结果返回
             if(value is bool)

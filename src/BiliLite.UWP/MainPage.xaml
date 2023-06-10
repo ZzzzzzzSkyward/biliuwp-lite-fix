@@ -7,13 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
+    winui:BackdropMaterial.ApplyToRootOrPageBackground="True"
     xmlns:fa="using:FontAwesome5"
    xmlns:pages="using:BiliLite.Pages"
     xmlns:muxm="using:Microsoft.UI.Xaml.Media" xmlns:controls="using:BiliLite.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource TransparentBackground}" Visibility="Visible">
 
     <Grid>
-        <winui:TabView x:Name="tabView" TabItemsChanged="tabView_TabItemsChanged" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="tabView_Loaded" IsAddTabButtonVisible="True" TabCloseRequested="TabView_TabCloseRequested" AddTabButtonClick="TabView_AddTabButtonClick">
+        <winui:TabView x:Name="tabView" TabItemsChanged="tabView_TabItemsChanged" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Loaded="tabView_Loaded" IsAddTabButtonVisible="True" TabCloseRequested="TabView_TabCloseRequested" AddTabButtonClick="TabView_AddTabButtonClick"
+                  Background="{ThemeResource TransparentBackground}" TabWidthMode="SizeToContent" >
             <!--<winui:TabView.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.ThemeDictionaries>
@@ -30,9 +32,10 @@
             <winui:TabView.KeyboardAccelerators>
                 <KeyboardAccelerator Key="T" Modifiers="Control" Invoked="NewTabKeyboardAccelerator_Invoked" />
                 <KeyboardAccelerator Key="W" Modifiers="Control" Invoked="CloseSelectedTabKeyboardAccelerator_Invoked" />
+                <KeyboardAccelerator Key="T" Modifiers="Control,Shift" Invoked="ReopenLastTab" />
             </winui:TabView.KeyboardAccelerators>
             <winui:TabView.TabItems>
-                <winui:TabViewItem IsClosable="False" Header="首页">
+                <winui:TabViewItem IsClosable="False" Header="首页" MinWidth="100" >
                     <winui:TabViewItem.IconSource>
                         <winui:SymbolIconSource Symbol="Home" />
                     </winui:TabViewItem.IconSource>
@@ -48,7 +51,7 @@
             </winui:TabView.TabStripFooter>
         </winui:TabView>
         <Border x:Name="MiniWindowsTitleBar"  Visibility="Collapsed" Background="#00FFFFFF" Height="36" VerticalAlignment="Top"></Border>
-        <Grid x:Name="gridViewer" Opacity="0" Visibility="Collapsed" Background="{ThemeResource SystemControlChromeHighAcrylicElementMediumBrush}" >
+        <Grid x:Name="gridViewer" Opacity="0" Visibility="Collapsed" Background="{ThemeResource TransparentBackground}" >
             <controls:ImageViewerControl x:Name="imgViewer" CloseEvent="imgViewer_CloseEvent"></controls:ImageViewerControl>
         </Grid>
     </Grid>

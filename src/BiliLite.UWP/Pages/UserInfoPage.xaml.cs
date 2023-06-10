@@ -2,20 +2,8 @@
 using BiliLite.Modules.User;
 using BiliLite.Modules.User.UserDetail;
 using BiliLite.Pages.User;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -118,7 +106,7 @@ namespace BiliLite.Pages
             //    Oid = id
             //});
         }
-        protected  override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             SetStaggered();
@@ -161,7 +149,7 @@ namespace BiliLite.Pages
                 {
                     pivot.SelectedIndex = tabIndex;
                 }
-               
+
             }
         }
 
@@ -196,7 +184,7 @@ namespace BiliLite.Pages
                 icon = Symbol.Message,
                 title = "消息中心",
                 page = typeof(WebPage),
-                parameters = $"https://message.bilibili.com/#whisper/mid{ userDetailVM.mid}"
+                parameters = $"https://message.bilibili.com/#whisper/mid{userDetailVM.mid}"
             });
         }
 
@@ -296,7 +284,7 @@ namespace BiliLite.Pages
                 {
                     await followVM.GetTags();
                 }
-                
+
                 await followVM.Get();
             }
             if (pivot.SelectedIndex == 5 && fansVM.Items == null)
@@ -380,6 +368,14 @@ namespace BiliLite.Pages
         private void searchFollow_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             followVM.Refresh();
+        }
+
+        private async void RefreshUserDetail(object sender, RoutedEventArgs e)
+        {
+            if (userDetailVM.UserInfo == null)
+            {
+                userDetailVM?.Refresh();
+            }
         }
     }
 }

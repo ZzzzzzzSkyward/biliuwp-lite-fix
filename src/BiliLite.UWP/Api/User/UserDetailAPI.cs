@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BiliLite.Api.User
+﻿namespace BiliLite.Api.User
 {
     public class UserDetailAPI
     {
@@ -20,6 +14,7 @@ namespace BiliLite.Api.User
                 method = RestSharp.Method.Get,
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/space/acc/info",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey,needAccesskey:true)+$"&mid={mid}",
+                need_cookie=true,
             };
 
             return api;
@@ -29,7 +24,7 @@ namespace BiliLite.Api.User
         /// </summary>
         /// <param name="mid"></param>
         /// <returns></returns>
-        public ApiModel UserInfov2(string mid)
+        public ApiModel UserInfoWbi(string mid)
         {
             ApiModel api = new ApiModel()
             {
@@ -37,6 +32,7 @@ namespace BiliLite.Api.User
                 baseUrl = $"{ApiHelper.API_BASE_URL}/x/space/wbi/acc/info",
                 parameter = ApiHelper.MustParameter(ApiHelper.AndroidKey,needAccesskey:true)+$"&mid={mid}",
             };
+            api.parameter += ApiHelper.GetWbiSign(api.parameter);
 
             return api;
         }
@@ -98,7 +94,7 @@ namespace BiliLite.Api.User
         /// <param name="page">页数</param>
         /// <param name="pagesize">每页数量</param>
         /// <returns></returns>
-        public ApiModel SubmitVideosv2(string mid, int page = 1, int pagesize = 30,string keyword="",int tid=0, SubmitVideoOrder order= SubmitVideoOrder.pubdate)
+        public ApiModel SubmitVideosWbi(string mid, int page = 1, int pagesize = 30,string keyword="",int tid=0, SubmitVideoOrder order= SubmitVideoOrder.pubdate)
         {
             ApiModel api = new ApiModel()
             {
@@ -107,6 +103,7 @@ namespace BiliLite.Api.User
                 parameter = $"mid={mid}&ps={pagesize}&tid={tid}&pn={page}&keyword={keyword}&order={order}",
                 need_cookie=true,
             };
+            api.parameter += ApiHelper.GetWbiSign(api.parameter);
             return api;
         }
         /// <summary>

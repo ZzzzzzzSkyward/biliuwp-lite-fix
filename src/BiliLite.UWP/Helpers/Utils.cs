@@ -1,18 +1,15 @@
 ﻿using BiliLite.Api;
 using BiliLite.Controls;
 using Microsoft.Toolkit.Uwp.Helpers;
-using Microsoft.Toolkit.Uwp.UI.Animations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Controls;
 using Windows.UI;
@@ -25,6 +22,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
+using Windows.UI.Xaml;
 
 namespace BiliLite.Helpers
 {
@@ -460,6 +458,47 @@ namespace BiliLite.Helpers
                 return string.IsNullOrEmpty(proxyUrlTW) ? proxyUrl : proxyUrlTW;
             }
             return proxyUrl;
+        }
+        public static string ProcessURL(string u, int maxLength=40)
+        {
+            // Remove http:// or https:// from the beginning of the URL
+            if (u.StartsWith("http://"))
+            {
+                u = u.Substring(7);
+            }
+            else if (u.StartsWith("https://"))
+            {
+                u = u.Substring(8);
+            }
+
+            // Truncate the URL if it is too long and add ellipses
+            if (u.Length > maxLength)
+            {
+                u = u.Substring(0, maxLength - 3) + "...";
+            }
+
+            return u;
+        }
+        public static SolidColorBrush GetBrush(string name)
+        {
+            var themeDictionaries = App.Current.Resources.MergedDictionaries[5].ThemeDictionaries;
+            var requestedTheme = ((FrameworkElement)Window.Current.Content).RequestedTheme;
+            var themeKey = requestedTheme == ElementTheme.Light ? "Light" : "Dark";
+            if (themeDictionaries.TryGetValue(themeKey, out object theme))
+            {
+                var t =  (ResourceDictionary)theme;
+                if (t.ContainsKey(name))
+                {
+                    var highLightColor = (Color)t[name];
+                    return new SolidColorBrush(highLightColor);
+                }
+                return GetBrush("TextColor");
+            }
+            else
+            {
+                // 处理主题字典中未找到指定的键的情况
+                return new SolidColorBrush(Colors.Transparent);
+            }
         }
     }
     public class NewVersion

@@ -1,6 +1,5 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Models;
-using BiliLite.Pages;
 using BiliLite.Pages.Bangumi;
 using BiliLite.Pages.User;
 using Newtonsoft.Json.Linq;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
@@ -152,7 +150,7 @@ namespace BiliLite.Modules
             else
             {
                 var weblink = e.ClickedItem.GetType().GetProperty("link").GetValue(e.ClickedItem, null)??"";
-                var result= await MessageCenter.HandelUrl(weblink.ToString());
+                var result= await MessageCenter.HandleUrl(weblink.ToString());
                 if (!result) Utils.ShowMessageToast("无法打开此链接");
             }
            

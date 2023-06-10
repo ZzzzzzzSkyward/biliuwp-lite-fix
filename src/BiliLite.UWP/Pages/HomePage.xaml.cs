@@ -1,22 +1,12 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Modules;
-using BiliLite.Pages.Home;
+using FontAwesome5;
 using Microsoft.Toolkit.Uwp.Connectivity;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -43,12 +33,12 @@ namespace BiliLite.Pages
         }
         private void MessageCenter_LogoutedEvent(object sender, EventArgs e)
         {
-            LaodUserStatus();
+            LoadUserStatus();
         }
 
         private void MessageCenter_LoginedEvent(object sender, object e)
         {
-            LaodUserStatus();
+            LoadUserStatus();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -63,7 +53,7 @@ namespace BiliLite.Pages
         {
             if (!NetworkHelper.Instance.ConnectionInformation.IsInternetAvailable)
             {
-                return;
+                // return;
             }
 
             if (SettingHelper.Account.Logined)
@@ -98,7 +88,7 @@ namespace BiliLite.Pages
         }
 
 
-        private async void LaodUserStatus()
+        private async void LoadUserStatus()
         {
             if (SettingHelper.Account.Logined)
             {
@@ -167,7 +157,7 @@ namespace BiliLite.Pages
                 return;
             }
 
-            if (await MessageCenter.HandelUrl(SearchBox.Text))
+            if (await MessageCenter.HandleUrl(SearchBox.Text))
             {
                 return;
             }
@@ -230,6 +220,11 @@ namespace BiliLite.Pages
 
         private void MenuUserCenter_Click(object sender, RoutedEventArgs e)
         {
+            if (SettingHelper.Account.Profile is null)
+            {
+                Utils.ShowMessageToast("无法获取用户名");
+                return;
+            }
             MessageCenter.NavigateToPage(this, new NavigationInfo()
             {
                 icon = Symbol.Contact,
@@ -317,6 +312,44 @@ namespace BiliLite.Pages
             });
         }
 
+        private void btnUser_Click(object sender, RoutedEventArgs e)
+        {
+            homeVM.LoginUserCard();
+        }
+        private ElementTheme theme
+        {
+            get
+            {
+                return homeVM.ThemeIcon == EFontAwesomeIcon.Regular_Sun ? ElementTheme.Light : ElementTheme.Dark;
+            }
+            set
+            {
+                homeVM.ThemeIcon = value == ElementTheme.Dark ? EFontAwesomeIcon.Regular_Moon : EFontAwesomeIcon.Regular_Sun;
+            }
+        }
+
+        private void Theme_Click(object sender, RoutedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            var _theme = rootFrame.RequestedTheme;
+            var savedtheme = ElementTheme.Dark;
+            var apptheme=ApplicationTheme.Dark;
+            if (_theme == ElementTheme.Light)
+            {
+                savedtheme = ElementTheme.Dark;
+                apptheme = ApplicationTheme.Dark;
+            }
+            else
+            {
+                savedtheme = ElementTheme.Light;
+                apptheme=ApplicationTheme.Light;
+            }
+            theme = savedtheme;
+            SettingHelper.SetValue(SettingHelper.UI.THEME, savedtheme == ElementTheme.Light ? 1 : 2);
+            rootFrame.RequestedTheme = savedtheme;
+            //App.Current.RequestedTheme = apptheme;//报错
+            //App.ExtendAcrylicIntoTitleBar();
+        }
     }
 
 

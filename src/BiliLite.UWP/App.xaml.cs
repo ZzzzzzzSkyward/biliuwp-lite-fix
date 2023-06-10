@@ -4,27 +4,28 @@ using BiliLite.Modules;
 using FFmpegInteropX;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.Storage;
 using Windows.UI;
+using Windows.UI.Core.Preview;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+public enum AppTheme
+{
+    Default,
+    Light,
+    Dark,
+    TransparentDark,
+    TransparentLight,
+}
 
 namespace BiliLite
 {
@@ -91,7 +92,7 @@ namespace BiliLite
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-          
+            LoadTheme();
             Navigation(e.Arguments,e.PrelaunchActivated);
             
         }
@@ -156,12 +157,13 @@ namespace BiliLite
                 {
                     if (arguments != null && !string.IsNullOrEmpty(arguments.ToString()))
                     {
-                       await MessageCenter.HandelUrl(arguments.ToString());
+                       await MessageCenter.HandleUrl(arguments.ToString());
                     }
                     
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
+                SystemNavigationManagerPreview.GetForCurrentView().CloseRequested += OnExiting;
                 ExtendAcrylicIntoTitleBar();
             }
         }
@@ -244,6 +246,68 @@ namespace BiliLite
             }
            
         }
+        /// <summary>
+        /// 在将要挂起应用程序执行时调用。  在不知道应用程序
+        /// 无需知道应用程序会被终止还是会恢复，
+        /// 并让内存内容保持不变。
+        /// 有图片时要确认
+        /// </summary>
+        /// <param name="sender">挂起的请求的源。</param>
+        /// <param name="e">有关挂起请求的详细信息。</param>
+        private async void OnExiting(object sender, SystemNavigationCloseRequestedPreviewEventArgs e)
+        {
+            var deferral = e.GetDeferral();
+            try
+            {
+                var rootFrame = Window.Current.Content as Frame;
+                var mainPage = rootFrame.Content as MainPage;
+                if (mainPage.IsViewing())
+                {
+                    mainPage.CloseView();
+                    e.Handled = true;
+                    /*
+                                       var messageDialog = new ContentDialog
+                                       {
+                                           Title = "图片浏览",
+                                           Content = "你是不是按错了?",
+                                           PrimaryButtonText = "关闭图片",
+                                           CloseButtonText = "退出APP"
+                                       };
 
+                                       messageDialog.DefaultButton = ContentDialogButton.Primary;
+
+                                       var result = await messageDialog.ShowAsync();
+                                       switch (result)
+                                       {
+                                           case ContentDialogResult.None:
+                                               e.Handled = true;
+                                               break;
+                                           case ContentDialogResult.Primary:
+                                               break;
+                                           case ContentDialogResult.Secondary:
+                                               break;
+                                           default:
+                                               break;
+                                       }
+                    */
+                }
+            }
+            catch (Exception ex) { }
+            deferral.Complete();
+        }
+        public string ThemeXamlPath { get; set; } = "DefaultTheme.xaml";
+        private void LoadTheme()
+        {
+            var themeUri = new Uri($"ms-appx:///Themes/{ThemeXamlPath}", UriKind.Absolute);
+            var themeDict = new ResourceDictionary();
+            themeDict.Source = themeUri;
+            if (themeDict.ContainsKey("Light"))
+            {
+                var themeDictionaries = Resources.ThemeDictionaries;
+                themeDictionaries.Clear();
+                themeDictionaries.Add("Light", themeDict["Light"]);
+                themeDictionaries.Add("Dark", themeDict["Dark"]);
+            }
+        }
     }
 }

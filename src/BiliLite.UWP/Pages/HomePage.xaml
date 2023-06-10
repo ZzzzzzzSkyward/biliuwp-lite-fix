@@ -9,9 +9,9 @@
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:fa="using:FontAwesome5"
     xmlns:pages="using:BiliLite.Pages.Home"
-    xmlns:modules="using:BiliLite.Modules" xmlns:converters="using:BiliLite.Converters"
+    xmlns:modules="using:BiliLite.Modules" xmlns:converters="using:BiliLite.Converters" d:DataContext="{d:DesignInstance Type=modules:HomeVM}"
     NavigationCacheMode="Required"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource TransparentBackground}">
     <Page.Resources>
         <converters:CountDisplayConvert x:Name="countDisplayConvert"></converters:CountDisplayConvert>
     </Page.Resources>
@@ -20,16 +20,17 @@
         <winui:NavigationView  x:Name="navView" 
                                SelectedItem="{x:Bind Path=homeVM.SelectItem,Mode=TwoWay}" 
                                MenuItemsSource="{x:Bind Path=homeVM.HomeNavItems,Mode=OneWay}" 
+                               Background="Transparent"
                                SelectionChanged="navView_SelectionChanged" 
                                IsSettingsVisible="False"  
                                PaneDisplayMode="Top"  
                                IsBackButtonVisible="Collapsed" >
             <winui:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="SearchBox" QuerySubmitted="SearchBox_QuerySubmitted" MinWidth="140" PlaceholderText="你想找什么呢?" QueryIcon="Find"></AutoSuggestBox>
+                <AutoSuggestBox x:Name="SearchBox" QuerySubmitted="SearchBox_QuerySubmitted" MinWidth="140" PlaceholderText="你想找什么呢?" QueryIcon="Find" Background="Transparent"></AutoSuggestBox>
             </winui:NavigationView.AutoSuggestBox>
             <winui:NavigationView.PaneFooter>
                 <StackPanel Margin="-8 0 0 0" Orientation="Horizontal">
-                    <Button x:Name="btnUser" Visibility="{x:Bind Path=homeVM.IsLogin,Mode=OneWay}" BorderThickness="0"  Width="48" Height="40" Background="Transparent">
+                    <Button x:Name="btnUser" Visibility="{x:Bind Path=homeVM.IsLogin,Mode=OneWay}" BorderThickness="0"  Width="48" Height="40" Background="Transparent" Click="btnUser_Click">
                         <Ellipse Width="24" Height="24" >
                             <Ellipse.Fill>
                                 <ImageBrush  x:Name="imgPhoto"  ImageSource="{x:Bind Path=homeVM.Profile.face,Mode=OneWay,Converter={StaticResource imageConvert2},ConverterParameter='100w'}"/>
@@ -141,6 +142,13 @@
                             <TextBlock  FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" Text="{x:Bind Path=downloadVM.Downloadings.Count,Mode=OneWay}"></TextBlock>
                         </Border>
                     </Grid>
+                    <AppBarButton x:Name="MenuWatchlater2" Height="48" Width="48" Click="MenuWatchlater_Click" Icon="Play" ToolTipService.ToolTip="稍后再看"/>
+                    <AppBarButton x:Name="btnHistory" Height="48" Width="48" Click="MenuHistory_Click" Icon="Clock" ToolTipService.ToolTip="历史"/>
+                    <AppBarButton x:Name="btnFavorite" Height="48" Width="48" Click="MenuMyFollow_Click" Icon="OutlineStar" ToolTipService.ToolTip="收藏"/>
+                    <AppBarButton x:Name="btnTheme" Height="48" Width="48" Click="Theme_Click">
+                        <fa:FontAwesome Icon="{Binding ThemeIcon, Mode=OneWay}" FontSize="14"></fa:FontAwesome>
+                        <ToolTipService.ToolTip>主题</ToolTipService.ToolTip>
+                    </AppBarButton>
                     <AppBarButton x:Name="btnSetting" Height="48" Click="btnSetting_Click" Width="48" Icon="Setting" ></AppBarButton>
                 </StackPanel>
             </winui:NavigationView.PaneFooter>

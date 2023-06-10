@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using RestSharp;
 using System.IO;
 using Windows.Web.Http;
 using Windows.Storage.Streams;
@@ -13,9 +12,11 @@ using Windows.Web.Http.Filters;
 using BiliLite.Models;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Diagnostics;
+using System.Timers;
 
 namespace BiliLite.Helpers
 {
+
     /// <summary>
     /// 网络请求方法封装
     /// </summary>
@@ -28,8 +29,20 @@ namespace BiliLite.Helpers
         /// <param name="headers"></param>
         /// <param name="cookie"></param>
         /// <returns></returns>
-        public async static Task<HttpResults> Get(string url, IDictionary<string, string> headers = null)
+        public static DateTime lasttime=System.DateTime.Now;
+        public static TimeSpan dt = new TimeSpan(1);
+        public async static Task<HttpResults> Get( string url)
         {
+            return await Get(url, null);
+        }
+        public async static Task<HttpResults> Get( string url, IDictionary<string, string> headers)
+        {
+            //wait 
+            var t=DateTime.Now;
+            if (t - lasttime < dt)
+            {
+                await Task.Delay(dt + (lasttime - t));
+            }
             Debug.WriteLine("GET:" + url);
             Utils.AddALog("[GET]" + url);
             try
@@ -411,8 +424,6 @@ namespace BiliLite.Helpers
         }
     public async Task<T> GetJson<T>()
         {
-            return await Task.Run<T>(() =>
-             {
                  try
                  {
                      return JsonConvert.DeserializeObject<T>(results);
@@ -428,10 +439,9 @@ namespace BiliLite.Helpers
                  catch(Exception e)
                  {
                      Console.WriteLine("解析json失败", e.ToString());
-                     Utils.AddALog("[JSON][FAIL]" + results.ToString());
+                     Utils.AddALog("[JSON][FAIL]" + results.ToString().Substring(0,100));
                  }
                  return default(T);
-             });
 
         }
         public JObject GetJObject()

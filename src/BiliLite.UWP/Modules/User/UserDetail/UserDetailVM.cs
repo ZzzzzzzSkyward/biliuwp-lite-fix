@@ -1,16 +1,10 @@
 ﻿using BiliLite.Api.User;
 using BiliLite.Helpers;
 using BiliLite.Models;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
@@ -20,7 +14,7 @@ namespace BiliLite.Modules.User
     {
         public string mid { get; set; }
         private readonly UserDetailAPI userDetailAPI;
-        private readonly FollowAPI  followAPI;
+        private readonly FollowAPI followAPI;
         public UserDetailVM()
         {
             userDetailAPI = new UserDetailAPI();
@@ -33,18 +27,14 @@ namespace BiliLite.Modules.User
             get { return _userInfo; }
             set { _userInfo = value; DoPropertyChanged("UserInfo"); }
         }
-      
+
         public ICommand AttentionCommand { get; private set; }
-        public async void GetUserInfo()
-        {
-            GetUserInfo(false);
-        }
-        public async void GetUserInfo(bool usev2)
+        public async void GetUserInfo(bool usev2 = false)
         {
             try
             {
-                var result = await userDetailAPI.UserInfo(mid).Request();
-                var request = userDetailAPI.UserInfov2(mid);
+                var api = usev2 ? userDetailAPI.UserInfoWbi(mid) : userDetailAPI.UserInfo(mid);
+                var result = await api.Request();
                 if (result.status)
                 {
                     var data = await result.GetData<UserCenterInfoModel>();
@@ -58,7 +48,10 @@ namespace BiliLite.Modules.User
                         if (usev2)
                             Utils.ShowMessageToast(data.message);
                         else
+                        {
+                            await Task.Delay(100);
                             GetUserInfo(true);
+                        }
                     }
                 }
                 else
@@ -66,8 +59,10 @@ namespace BiliLite.Modules.User
                     if (usev2)
                         Utils.ShowMessageToast(result.message);
                     else
+                    {
+                        await Task.Delay(100);
                         GetUserInfo(true);
-
+                    }
                 }
             }
             catch (Exception ex)
@@ -124,9 +119,9 @@ namespace BiliLite.Modules.User
                     if (data.success)
                     {
                         UserCenterSpaceStatModel stat = new UserCenterSpaceStatModel();
-                        stat.article_count = (data.data["article"]?["count"]??0).ToInt32();
-                        stat.video_count = (data.data["archive"]?["count"]??0).ToInt32();
-                        stat.favourite_count = (data.data["favourite2"]?["count"]??0).ToInt32();
+                        stat.article_count = (data.data["article"]?["count"] ?? 0).ToInt32();
+                        stat.video_count = (data.data["archive"]?["count"] ?? 0).ToInt32();
+                        stat.favourite_count = (data.data["favourite2"]?["count"] ?? 0).ToInt32();
                         stat.follower = data.data["card"]["fans"].ToInt32();
                         stat.following = data.data["card"]["attention"].ToInt32();
                         return stat;
@@ -150,7 +145,7 @@ namespace BiliLite.Modules.User
         }
         public async void DoAttentionUP()
         {
-            var result = await AttentionUP(UserInfo.mid.ToString(), UserInfo.is_followed? 2 : 1);
+            var result = await AttentionUP(UserInfo.mid.ToString(), UserInfo.is_followed ? 2 : 1);
             if (result)
             {
                 UserInfo.is_followed = !UserInfo.is_followed;
@@ -197,10 +192,14 @@ namespace BiliLite.Modules.User
 
 
         }
+        public async void Refresh()
+        {
+            GetUserInfo();
+        }
 
 
     }
-   
+
 
 
     public class UserCenterInfoOfficialModel
@@ -314,7 +313,7 @@ namespace BiliLite.Modules.User
         }
 
     }
-    public class UserCenterInfoModel:IModules
+    public class UserCenterInfoModel : IModules
     {
         public long mid { get; set; }
         public string name { get; set; }
@@ -329,7 +328,7 @@ namespace BiliLite.Modules.User
             {
                 switch (level)
                 {
-                   
+
                     case 2:
                         return new SolidColorBrush(Colors.LightGreen);
                     case 3:
@@ -408,5 +407,6 @@ namespace BiliLite.Modules.User
                 }
             }
         }
+
     }
 }

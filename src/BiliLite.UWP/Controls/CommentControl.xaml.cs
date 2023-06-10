@@ -1,25 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Markup;
-using System.Text.RegularExpressions;
 using Windows.UI;
 using System.ComponentModel;
-using Windows.UI.Xaml.Documents;
 using System.Threading.Tasks;
 using BiliLite.Helpers;
 using BiliLite.Pages;
@@ -727,11 +717,11 @@ namespace BiliLite.Controls
             {
                 if (action == 0)
                 {
-                    return new SolidColorBrush(Colors.Gray);
+                    return Utils.GetBrush("ForegroundTextColor");
                 }
                 else
                 {
-                    return new SolidColorBrush((Color)Application.Current.Resources["HighLightColor"]);
+                    return Utils.GetBrush("HighLightColor");
                 }
             }
         }
@@ -962,7 +952,7 @@ namespace BiliLite.Controls
 
         private async void ButtonClick(object paramenter)
         {
-            await MessageCenter.HandelUrl(paramenter.ToString());
+            await MessageCenter.HandleUrl(paramenter.ToString());
             return;
 
 

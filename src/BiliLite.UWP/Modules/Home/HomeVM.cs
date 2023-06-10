@@ -1,21 +1,33 @@
 ﻿using BiliLite.Helpers;
-using BiliLite.Models;
 using FontAwesome5;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace BiliLite.Modules
 {
     public class HomeVM : IModules
     {
         Account account;
+        private bool _ThemeIcon;
+        public EFontAwesomeIcon ThemeIcon
+        {
+            get
+            {
+                return _ThemeIcon? EFontAwesomeIcon.Regular_Moon : EFontAwesomeIcon.Regular_Sun;
+            }
+            set
+            {
+                _ThemeIcon = value == EFontAwesomeIcon.Regular_Moon;
+                DoPropertyChanged(nameof(ThemeIcon));
+            }
+        }
+
         public HomeVM()
         {
+            ThemeIcon = SettingHelper.GetValue(SettingHelper.UI.THEME, 0) == 2 ? EFontAwesomeIcon.Regular_Moon : EFontAwesomeIcon.Regular_Sun;
             account = new Account();
             HomeNavItems = SettingHelper.GetValue<ObservableCollection<HomeNavItem>>(SettingHelper.UI.HOEM_ORDER, GetAllNavItems());
             //var chanel=HomeNavItems.FirstOrDefault(x => x.Icon == EFontAwesomeIcon.Solid_Shapes);
@@ -24,7 +36,7 @@ namespace BiliLite.Modules
             //    chanel = GetAllNavItems().FirstOrDefault(x => x.Icon == EFontAwesomeIcon.Solid_Shapes);
             //    SettingHelper.SetValue(SettingHelper.UI.HOEM_ORDER, HomeNavItems);
             //}
-         
+
             SelectItem = HomeNavItems.FirstOrDefault();
             if (SettingHelper.Account.Logined)
             {

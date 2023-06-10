@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
@@ -167,6 +166,10 @@ namespace BiliLite.Modules
             {
                 Loading = false;
             }
+        }
+        public async Task Delete(FavoriteInfoVideoItemModel item)
+        {
+            await Delete(new List<FavoriteInfoVideoItemModel> { item });
         }
         public async Task Delete(List<FavoriteInfoVideoItemModel> items)
         {
@@ -393,6 +396,7 @@ namespace BiliLite.Modules
         public string id { get; set; }
         public string cover { get; set; }
         public string title { get; set; }
+        public string intro { get; set; }
         public FavoriteInfoVideoItemUpperModel upper { get; set; }
         public FavoriteInfoVideoItemStatModel cnt_info { get; set; }
     }

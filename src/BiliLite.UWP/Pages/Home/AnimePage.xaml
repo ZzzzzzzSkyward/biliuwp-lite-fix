@@ -11,7 +11,7 @@
       xmlns:winui="using:Microsoft.UI.Xaml.Controls" 
       xmlns:fa="using:FontAwesome5"
       xmlns:models="using:BiliLite.Models"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="{ThemeResource TransparentBackground}">
     <Page.Resources>
         <DataTemplate x:Key="HotAnimeItem" x:DataType="model:AnimeRankModel">
             <Grid>
@@ -42,7 +42,7 @@
                     </Grid>
                 </Border>
                 <TextBlock Grid.Row="1" Margin="4 4 4 0" MaxLines="1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=title}"></TextBlock>
-                <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=index_show}"></TextBlock>
+                <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=index_show}"></TextBlock>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -100,7 +100,7 @@
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem">
                                     <Setter Property="Margin" Value="4"></Setter>
-                                    <Setter Property="Height" Value="180"></Setter>
+                                    <Setter Property="Height" Value="auto"></Setter>
                                     <Setter Property="Width" Value="200"></Setter>
                                 </Style>
                             </GridView.ItemContainerStyle>
@@ -137,7 +137,7 @@
                                             </Grid>
                                         </Border>
                                         <TextBlock Grid.Row="1" Margin="4 4 4 0" MaxLines="1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=title}"></TextBlock>
-                                        <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=progress_text}"></TextBlock>
+                                        <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" Text="{x:Bind Path=progress_text}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
@@ -193,7 +193,7 @@
                                             </Grid>
                                         </Border>
                                         <TextBlock Grid.Row="1" Margin="4 4 4 0" MaxLines="1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding title}"></TextBlock>
-                                        <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="Gray" TextTrimming="CharacterEllipsis" Text="{Binding pub_index}"></TextBlock>
+                                        <TextBlock Grid.Row="2" Margin="4 0 4 4" TextWrapping="Wrap" FontSize="12" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" Text="{Binding pub_index}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
@@ -286,13 +286,13 @@
                                                     </Grid.RowDefinitions>
                                                     <toolkit:ImageEx IsCacheEnabled="True" PlaceholderSource="ms-appx:///Assets/Thumbnails/Placeholde.png" Stretch="UniformToFill" Source="{x:Bind Path=cover,Converter={StaticResource imageConvert},ConverterParameter='180h'}"></toolkit:ImageEx>
                                                     <TextBlock Grid.Row="1" Margin="4" MaxLines="1" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{x:Bind title}"></TextBlock>
-                                                    <!--<TextBlock  Grid.Row="2" Margin="4 0 4 4" FontSize="12" Foreground="Gray" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding desc}"></TextBlock>-->
+                                                    <!--<TextBlock  Grid.Row="2" Margin="4 0 4 4" FontSize="12" Foreground="{ThemeResource ForegroundTextColor}" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Text="{Binding desc}"></TextBlock>-->
                                                 </Grid>
                                             </DataTemplate>
                                         </toolkit:AdaptiveGridView.ItemTemplate>
                                     </toolkit:AdaptiveGridView>
                                     <Grid>
-                                        <HyperlinkButton x:Name="btnLoadMoreFall" Visibility="{x:Bind Path=ShowMore,Mode=OneWay}" Click="btnLoadMoreFall_Click" HorizontalAlignment="Center" Padding="4" Foreground="Gray">
+                                        <HyperlinkButton x:Name="btnLoadMoreFall" Visibility="{x:Bind Path=ShowMore,Mode=OneWay}" Click="btnLoadMoreFall_Click" HorizontalAlignment="Center" Padding="4" Foreground="{ThemeResource ForegroundTextColor}">
                                             <TextBlock>加载更多</TextBlock>
                                         </HyperlinkButton>
                                         <ProgressRing IsActive="True" Visibility="{x:Bind Path=ShowMore,Converter={StaticResource display},Mode=OneWay}" HorizontalAlignment="Center"></ProgressRing>
@@ -307,7 +307,7 @@
         <controls:RoundButton x:Name="btnRefresh" Click="btnRefresh_Click" VerticalAlignment="Bottom" Padding="12" Margin="12" HorizontalAlignment="Right">
             <SymbolIcon Symbol="Refresh" Foreground="White"></SymbolIcon>
         </controls:RoundButton>
-        <Grid x:Name="gridLoading" Visibility="{x:Bind Path=homeBangumi.Loading,Mode=OneWay}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid x:Name="gridLoading" Visibility="{x:Bind Path=homeBangumi.Loading,Mode=OneWay}" Background="{ThemeResource TransparentBackground}">
             <ProgressRing IsActive="True" VerticalAlignment="Center" HorizontalAlignment="Center"></ProgressRing>
         </Grid>
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using BiliLite.Api;
 using BiliLite.Api.Live;
+using BiliLite.Converters;
 using BiliLite.Helpers;
 using BiliLite.Models;
 using BiliLite.Modules.Live;
@@ -9,18 +10,13 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using Windows.UI;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
-using static BiliLite.Modules.Live.LiveDanmaku;
 
 namespace BiliLite.Modules
 {
@@ -73,7 +69,7 @@ namespace BiliLite.Modules
                     Messages.Add(new DanmuMsgModel()
                     {
                         username = message.ToString(),
-                        uname_color = new SolidColorBrush(Colors.Gray)
+                        uname_color = Utils.GetBrush("TextColor")
                     });
                     break;
                 case MessageType.Online:
@@ -82,14 +78,14 @@ namespace BiliLite.Modules
                 case MessageType.Danmu:
                     {
                         var m = message as DanmuMsgModel;
-                        m.uname_color = new SolidColorBrush(Colors.Gray);
-                        if (m.medalColor != null && m.medalColor != "")
+                        m.uname_color = Utils.GetBrush("TextColor");
+                    if (m.medalColor != null && m.medalColor != "")
                         {
                             m.ul_color = new SolidColorBrush(Utils.ToColor(m.ulColor));
                         }
                         else
                         {
-                            m.ul_color = new SolidColorBrush(Colors.Gray);
+                            m.ul_color = Utils.GetBrush("TextColor");
                         }
                         if (m.medalColor != null && m.medalColor != "")
                         {

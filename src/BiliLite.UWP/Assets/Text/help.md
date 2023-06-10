@@ -1,4 +1,4 @@
-﻿﻿# 原版说明
+# 原版说明
 
 此页面可能更新不及时，请到[https://b.nsapps.cn/#/docs/help](https://b.nsapps.cn/#/docs/help)查阅最新内容
 
@@ -7,7 +7,6 @@
 此应用是哔哩哔哩第三方UWP客户端！第三方客户端！第三方客户端！第三方客户端！
 
 使用遇到问题，请先阅读以下内容，如果以下内容无法解决你的问题，请发送邮件至biliuwp@iill.moe
-
 
 ### 权限说明
 
@@ -42,7 +41,6 @@
 * 如果你的视频编码选择了HEVC，请检查是否安装了 [HEVC扩展](ms-windows-store://pdp/?productid=9n4wgh0z6vhq)
 
 * 如果你的视频编码选择了AV1，请检查是否安装了[AV1扩展](ms-windows-store://pdp/?productid=9MVZQVXJBQ9V)，同时部分清晰度可能需要HEVC扩展
-
 
 ### 播放视频掉帧或卡死
 
@@ -136,36 +134,10 @@ Webp图片扩展安装地址:[ms-windows-store://pdp/?productid=9PG2DK419DRG](ms
 
 ### 日志文件
 
-路径:`%USERPROFILE%\AppData\Local\Packages\5421.502643927C6AD_wp9dg7z2zqgtj\LocalState\log`
+路径:`%USERPROFILE%\AppData\Local\Packages\BilibiliUWPLiter_agd62dfed6f7t\LocalState\log`
 
 为了你的账号安全，发送日志时请一定要移除access_key=...里的内容
 
 [点击打开日志存放目录](OpenLog)
 
-# 更新说明
-
-使用VS2019，Win10 x64 1809 17763版本升级了所有依赖，但是由于很多包都要求18362版本所以我没法升到最新的。
-
-签名换了一个，到2024年过期。
-
-包名换了一个，版本号改了。
-
-## bug修复
-
-`appkey`统一改成TV版，以应付B站的`appkey`与`access_key`检验
-
-修复评论相关API缺少`csrf`字段，方案来自@ywmoyue
-
-修复评论里面出现了超过`int`范围的数字
-
-修复B站返回错误json数据导致无法读取
-
-修复关闭直播间太快导致后台还在加载而出错
-
-## bug增加
-
-调试时动态页面发生`Not Implemented`崩溃，但是我不会修，因为我找不到到底是哪个函数
-
-无法使用密码、手机登录，因为验证码显示不出来。所以只能二维码登录
-
-日志文件的路径显示错误
+# 

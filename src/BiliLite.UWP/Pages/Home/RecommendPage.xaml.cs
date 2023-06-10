@@ -2,20 +2,10 @@
 using BiliLite.Modules;
 using BiliLite.Modules.User;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -95,7 +85,7 @@ namespace BiliLite.Pages.Home
                 {
                     url = data.ad_info.creative_content.click_url ?? data.ad_info.creative_content.url;
                 }
-                await MessageCenter.HandelUrl(url);
+                await MessageCenter.HandleUrl(url);
               
                 //MessageCenter.NavigateToPage(this, new NavigationInfo()
                 //{
@@ -117,12 +107,12 @@ namespace BiliLite.Pages.Home
                 });
                 return;
             }
-            if (await MessageCenter.HandelUrl(data.uri))
+            if (await MessageCenter.HandleUrl(data.uri))
             {
                 return;
             }
             var browserUri = data.three_point_v2.FirstOrDefault(x => x.type == "browser")?.url ?? "";
-            if (!string.IsNullOrEmpty(browserUri)&& await MessageCenter.HandelUrl(browserUri))
+            if (!string.IsNullOrEmpty(browserUri)&& await MessageCenter.HandleUrl(browserUri))
             {
                 return;
             }
@@ -137,7 +127,7 @@ namespace BiliLite.Pages.Home
      
         private async void BannerItem_Click(object sender, RoutedEventArgs e)
         {
-            await MessageCenter.HandelUrl(((sender as HyperlinkButton).DataContext as RecommendBannerItemModel).uri);
+            await MessageCenter.HandleUrl(((sender as HyperlinkButton).DataContext as RecommendBannerItemModel).uri);
            
         }
 

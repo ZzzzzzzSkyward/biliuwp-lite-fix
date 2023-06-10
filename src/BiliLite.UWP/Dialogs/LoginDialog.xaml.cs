@@ -1,22 +1,14 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Modules.User;
-using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“内容对话框”项模板
 
@@ -72,7 +64,12 @@ namespace BiliLite.Dialogs
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             args.Cancel = true;
-            loginVM.DoLogin();
+            if (loginVM.loginType == 3)
+            {
+                ManualLogin();
+            }
+            else
+                loginVM.DoLogin();
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -111,6 +108,13 @@ namespace BiliLite.Dialogs
         }
         private void TryRelogin(string uri)
         {
+            //手动
+            if(loginVM.LoginType == 2)
+            {
+                Utils.ShowMessageToast(uri);
+                ManualLogin();
+                return;
+            }
             var parsed = ParseJiYan(uri);
             var challenge = parsed[0];
             var validate = parsed[1];
@@ -192,14 +196,48 @@ namespace BiliLite.Dialogs
                 return;
             }
         }
-
-        private void ManualLogin(object sender, TextChangedEventArgs e)
+        private void WebView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
-            var result = ManualResult.Text;
-            if (result != "" && Regex.Match(result, "geetest").Success)
-            {
-                TryRelogin(result);
-            }
+            string errorMessage = $"Navigation to {e.Uri} failed with error {e.WebErrorStatus}";
+            Utils.ShowMessageToast(errorMessage);
+        }
+
+        private void ManualLogin()
+        {
+            var accesskey = ManualResult.Text;
+            var mid = long.Parse(UID.Text);
+            loginVM.account.SaveLogin(accesskey, "", 0, mid, null, null);
+        }
+        static string thirdurl = "https://passport.bilibili.com/login/app/third";
+        static string targeturl = "https://www.mcbbs.net/template/mcbbs/image/special_photo_bg.png";
+        private void CopyURL(object sender, RoutedEventArgs e)
+        {
+            Utils.SetClipboard(NaviURL);
+        }
+        private string _NaviURL = "url";
+        public string NaviURL
+        {
+            get { return _NaviURL; }
+            set { _NaviURL = value; OnPropertyChanged(nameof(NaviURL)); }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            MenuItem.Text = _NaviURL;
+            Hyper.NavigateUri = new Uri(_NaviURL);
+            HyperText.Text = _NaviURL;
+        }
+        private void RefreshURL(object sender, TextChangedEventArgs e)
+        {
+            var appkey = APPKEY.Text;
+            var appsec=APPSEC.Text;
+            var param=$"api={targeturl}{appsec}";
+            var sign = Utils.ToMD5(param);
+            var u = $"{thirdurl}?api={targeturl}&appkey={appkey}&sign={sign}";
+            NaviURL = u;
+
         }
     }
 }

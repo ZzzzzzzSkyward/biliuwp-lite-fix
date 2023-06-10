@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Newtonsoft.Json;
@@ -444,7 +443,7 @@ namespace BiliLite.Modules
                 if (results.status)
                 {
                     var data = await results.GetJson<ApiDataModel<JObject>>();
-                    if (data.success)
+                    if (data!=null&&data.success)
                     {
 
                         var result = JsonConvert.DeserializeObject<ObservableCollection<SearchAnimeItem>>(data.data["result"]?.ToString() ?? "[]");

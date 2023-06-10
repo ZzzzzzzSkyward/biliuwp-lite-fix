@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Markup;
@@ -162,8 +158,10 @@ namespace BiliLite.Helpers
                     continue;
                 }
                 keyword.Add(item.Groups[0].Value);
+                var u = item.Groups[0].Value;
+                var display = Utils.ProcessURL(u);
                 var data = @"<InlineUIContainer><HyperlinkButton x:Name=""btn"" Command=""{Binding LaunchUrlCommand}""  IsEnabled=""True"" Margin=""0 -4 0 -4"" Padding=""0"" " +
-                    string.Format(@" CommandParameter=""{0}"" ><TextBlock>🔗网页链接</TextBlock></HyperlinkButton></InlineUIContainer>", item.Groups[0].Value);
+                    string.Format(@" CommandParameter=""{0}"" ><TextBlock>🔗{1}</TextBlock></HyperlinkButton></InlineUIContainer>", u,display);
                 input = input.Replace(item.Groups[0].Value, data);
             }
 
