@@ -42,7 +42,7 @@ namespace BiliLite.Modules.User
         public int loginType = 1;
         /// <summary>
         /// 登录类型
-        /// 0=账号密码，1=短信登录，2=二维码登录
+        /// 0=账号密码，1=短信登录，2=二维码登录, 3=手动登录
         /// </summary>
         public int LoginType
         {

@@ -1592,7 +1592,7 @@ namespace BiliLite.Controls
                     info += $"Video Codec: {_ffmpegMSSVideo.CurrentVideoStream?.CodecName}\r\n";
                     info += $"Video Bitrate: {_ffmpegMSSVideo.CurrentVideoStream?.Bitrate}\r\n";
                     info += $"Average Frame: {((double)_ffmpegMSSVideo.CurrentVideoStream?.FramesPerSecond).ToString("0.0")}\r\n";
-                    if (PlayMediaType == PlayMediaType.Dash)
+                    if (PlayMediaType == PlayMediaType.Dash&&_ffmpegMSSAudio!=null)
                     {
                         info += $"Audio Codec: {_ffmpegMSSAudio.AudioStreams[0]?.CodecName}\r\n";
                         info += $"Audio Bitrate: {_ffmpegMSSAudio.AudioStreams[0]?.Bitrate}";
@@ -1732,7 +1732,7 @@ namespace BiliLite.Controls
         private MediaSourceConfig CreateFFmpegInteropConfig(string userAgent, string referer)
         {
 
-            var passthrough = SettingHelper.GetValue<int>("playertype", 0)==2;
+            var FFmpegType = SettingHelper.GetValue<int>("playertype", 0)==3;
             var _ffmpegConfig = new MediaSourceConfig();
             if (userAgent != null && userAgent.Length > 0)
             {
@@ -1743,7 +1743,7 @@ namespace BiliLite.Controls
                 _ffmpegConfig.FFmpegOptions.Add("referer", referer);
             }
 
-            _ffmpegConfig.VideoDecoderMode = passthrough ? VideoDecoderMode.Automatic : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
+            _ffmpegConfig.VideoDecoderMode = FFmpegType ? VideoDecoderMode.Automatic : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
             return _ffmpegConfig;
         }
 
