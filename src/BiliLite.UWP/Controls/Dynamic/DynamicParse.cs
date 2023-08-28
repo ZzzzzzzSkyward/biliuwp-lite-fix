@@ -319,7 +319,7 @@ namespace BiliLite.Controls.Dynamic
 
 
         /// <summary>
-        /// 文本转为RichText
+        /// 评论文本转为RichText
         /// </summary>
         /// <param name="id">动态id</param>
         /// <param name="txt"></param>
@@ -362,7 +362,6 @@ namespace BiliLite.Controls.Dynamic
     xmlns:mc = ""http://schemas.openxmlformats.org/markup-compatibility/2006"" LineHeight=""20"">
                                           <Paragraph>{0}</Paragraph>
                 ",input);
-                                      //</RichTextBlock>", input);
                 //处理直播
                 var more = HandleCard(input, extend_json["直播"] as JArray  );
                 xaml += more;

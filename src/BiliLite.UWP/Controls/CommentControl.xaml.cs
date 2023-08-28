@@ -187,6 +187,32 @@ namespace BiliLite.Controls
                                     m.data.upper.top.showTop = Visibility.Visible;
                                     m.data.replies.Insert(0, m.data.upper.top);
                                 }
+                                if (m.data.topReplies != null)
+                                {
+                                    foreach(var t in m.data.topReplies)
+                                    {
+                                        t.showTop = true;
+                                        CommentModel c = new CommentModel();
+                                        c.rpid = t.RpId;
+                                        c.rpid_str = t.RpidStr;
+                                        c.content = t.Content;
+                                        c.like = t.Like;
+                                        c.mid = t.Mid;
+                                        c.oid = t.Oid;
+                                        c.rcount = t.Rcount;
+                                        c.state = t.State;
+                                        c.action = t.Action;
+                                        c.type = t.Type;
+                                        c.root = t.Root;
+                                        c.parent = t.Parent;
+                                        c.count = t.Count;
+                                        c.floor = t.Floor;
+                                        c.ctime = t.Ctime;
+
+
+                                        m.data.replies.Insert(0, c);
+                                    }
+                                }
                                 //ls_hot.ItemsSource = m.data.hots;
                                 ls_new.ItemsSource = m.data.replies;
                             }
@@ -199,7 +225,7 @@ namespace BiliLite.Controls
                             }
                             _page++;
 
-                            if (m.data.replies.Count >= 20)
+                            if (m.data.replies.Count >= 10)
                             {
                                 btn_LoadMore.Visibility = Visibility.Visible;
                             }
@@ -695,6 +721,9 @@ namespace BiliLite.Controls
         public dataCommentModel upper { get; set; }
         public CommentModel top { get; set; }
 
+        [JsonProperty("top_replies")]
+        public List<CommentItem> topReplies { get; set; }
+
     }
     public class CommentModel : INotifyPropertyChanged
     {
@@ -960,6 +989,51 @@ namespace BiliLite.Controls
 
 
 
+    }
+    public class CommentItem
+    {
+        public int Action { get; set; }
+
+        [JsonProperty("rpid")]
+        public long RpId { get; set; }
+
+        public long Oid { get; set; }
+
+        public int Type { get; set; }
+
+        public long Mid { get; set; }
+
+        public long Root { get; set; }
+
+        public long Parent { get; set; }
+
+        public int Count { get; set; }
+
+        public int Rcount { get; set; }
+
+        public int Like { get; set; }
+
+        public int Floor { get; set; }
+
+        public int State { get; set; }
+
+        public long Ctime { get; set; }
+
+        [JsonProperty("rpid_str")]
+        public string RpidStr { get; set; }
+
+        public CommentMemberModel Member { get; set; }
+
+        public CommentContentModel Content { get; set; }
+
+        [JsonProperty("up_action")]
+        public CommentUPActionModel UpAction { get; set; }
+
+        [JsonProperty("reply_control")]
+        public CommentReplyControlModel ReplyControl { get; set; }
+
+        public List<CommentItem> Replies { get; set; }
+        public bool showTop { get; internal set; }
     }
     public class CommentReplyControlModel
     {
