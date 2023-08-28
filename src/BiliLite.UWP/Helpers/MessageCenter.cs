@@ -553,6 +553,7 @@ namespace BiliLite.Helpers
         public Type page { get; set; }
         public string title { get; set; }
         public object parameters { get; set; }
+        public bool dontGoTo;
     }
 
 
