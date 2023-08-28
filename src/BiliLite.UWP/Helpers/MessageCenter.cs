@@ -120,8 +120,8 @@ namespace BiliLite.Helpers
              * bilibili://story/722919541
              */
 
-            var video = Utils.RegexMatch(url.Replace("aid", "av").Replace("/", "").Replace("=", ""), @"av(\d+)");
-            if (video != "")
+            var video = Utils.ExtractVideoId(url);
+            if (video>0)
             {
                 NavigateToPage(null, new NavigationInfo()
                 {
@@ -132,43 +132,6 @@ namespace BiliLite.Helpers
                 });
                 return true;
             }
-            video = Utils.RegexMatch(url, @"bilibili://video/(\d+)");
-            if (video != "")
-            {
-                NavigateToPage(null, new NavigationInfo()
-                {
-                    icon = Symbol.Play,
-                    page = typeof(VideoDetailPage),
-                    title = "视频加载中...",
-                    parameters = video
-                });
-                return true;
-            }
-            video = Utils.RegexMatch(url, @"bilibili://story/(\d+)");
-            if (video != "")
-            {
-                NavigateToPage(null, new NavigationInfo()
-                {
-                    icon = Symbol.Play,
-                    page = typeof(VideoDetailPage),
-                    title = "视频加载中...",
-                    parameters = video
-                });
-                return true;
-            }
-            video = Utils.RegexMatch(url, @"avid=(\d+)");
-            if (video != "")
-            {
-                NavigateToPage(null, new NavigationInfo()
-                {
-                    icon = Symbol.Play,
-                    page = typeof(VideoDetailPage),
-                    title = "视频加载中...",
-                    parameters = video
-                });
-                return true;
-            }
-
             /*
             * 视频BV号
             * https://www.bilibili.com/video/BV1EE411w75R

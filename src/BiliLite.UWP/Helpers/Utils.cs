@@ -500,6 +500,37 @@ namespace BiliLite.Helpers
                 return new SolidColorBrush(Colors.Transparent);
             }
         }
+        /*
+         * video123
+         * aid=123
+         * avid=123
+         * video/123
+         * av123
+         * story/123
+         */
+        public static long ExtractVideoId(string url)
+        {
+            url = url.Replace("aid","av").Replace("bid","bv").Replace("avid","av");
+            string pattern = @"(video|av|story)([/=]?)(\d+)";
+            long id = 0;
+            var match = Regex.Matches(url, pattern);
+
+            for(var i=0;i<match.Count;i++){
+                var m = match[i];
+                string videoId = m.Groups[3].Value;
+                long vid;
+                // 判断视频ID是否较大
+                if (long.TryParse(videoId, out vid))
+                {
+                    if (vid >id &&vid> 10)  // 假设10为较大的ID阈值
+                    {
+                        id = vid ;
+                    }
+                }
+            }
+
+            return id;
+        }
     }
     public class NewVersion
     {

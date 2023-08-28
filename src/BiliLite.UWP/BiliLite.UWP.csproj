@@ -891,7 +891,7 @@
       <Version>2.8.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.1774.30</Version>
+      <Version>1.0.1988-prerelease</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -909,7 +909,7 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
-      <Version>110.2.1-alpha.0.3</Version>
+      <Version>110.2.1-alpha.0.11</Version>
     </PackageReference>
     <PackageReference Include="SYEngine.uwp">
       <Version>1.0.7</Version>
