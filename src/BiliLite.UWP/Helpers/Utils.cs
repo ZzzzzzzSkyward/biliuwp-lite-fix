@@ -329,7 +329,7 @@ namespace BiliLite.Helpers
                     };
                     markdownText.LinkClicked += new EventHandler<LinkClickedEventArgs>(async (sender, args) =>
                     {
-                        await Launcher.LaunchUriAsync(new Uri(args.Link));
+                        await Utils.LaunchUri(new Uri(args.Link));
                     });
                     dialog.Content = markdownText;
                     dialog.PrimaryButtonText = "查看详情";
@@ -337,7 +337,7 @@ namespace BiliLite.Helpers
 
                     dialog.PrimaryButtonClick += new Windows.Foundation.TypedEventHandler<ContentDialog, ContentDialogButtonClickEventArgs>(async (sender, e) =>
                     {
-                        await Windows.System.Launcher.LaunchUriAsync(new Uri(ver.url));
+                        await LaunchUri(ver.url);
                     });
                     await dialog.ShowAsync();
                 }
@@ -345,6 +345,24 @@ namespace BiliLite.Helpers
             catch (Exception)
             {
             }
+        }
+        public static async Task<bool> LaunchUri(Uri uri)
+        {
+            var result = await Launcher.LaunchUriAsync(uri);
+            if (!result)
+            {
+                Utils.ShowMessageToast("打开" + uri + "失败");
+            }
+            return result;
+        }
+        public static async Task<bool> LaunchUri(string uri)
+        {
+            var result = await Launcher.LaunchUriAsync(new Uri(uri));
+            if (!result)
+            {
+                Utils.ShowMessageToast("打开" + uri + "失败");
+            }
+            return result;
         }
 
         public static Color ToColor(this string obj)

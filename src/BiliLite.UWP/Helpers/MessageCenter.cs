@@ -470,7 +470,12 @@ namespace BiliLite.Helpers
             {
                 if (SettingHelper.GetValue<bool>(SettingHelper.UI.OPEN_URL_BROWSER, false))
                 {
-                    await Launcher.LaunchUriAsync(new Uri(url));
+                    var result = await Utils.LaunchUri(url);
+                    if (!result)
+                    {
+                        Utils.ShowMessageToast("打开" + url + "失败");
+                    }
+
                     return true;
                 }
                 NavigateToPage(null, new NavigationInfo()

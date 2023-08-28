@@ -59,7 +59,6 @@
   </Applications>
 
   <Capabilities>
-    <Capability Name="internetClient" />
     <uap:Capability Name="videosLibrary"/>
     <rescap:Capability Name="broadFileSystemAccess"/>
     <uap:Capability Name="picturesLibrary"/>
@@ -67,5 +66,6 @@
     <uap3:Capability Name="backgroundMediaPlayback"/>
     <uap:Capability Name="removableStorage"/>
     <rescap:Capability Name="confirmAppClose"/>
+    <Capability Name="internetClient"/>
   </Capabilities>
 </Package>
