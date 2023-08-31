@@ -16,15 +16,27 @@
 
 无法使用密码、手机登录，因为验证码显示不出来。所以只能二维码登录
 
+## 已知问题
+
+1. 无法预约直播
+2. 不能跳转到合集里的其他视频
+3. 无法使用密码、短信登录，只能扫二维码
+
 ## 下载
 
-看release
+https://github.com/ZzzzzzzSkyward/biliuwp-lite-fix/releases
 
 ## 其他fork
 
-https://github.com/ywmoyue/biliuwp-lite
+最低18362版本，Mica效果https://github.com/ywmoyue/biliuwp-lite
 
 最低18362版本，亚克力效果 https://github.com/ZzzzzzzSkyward/bilibili-uwp-liter
+
+
+
+
+
+
 
 # 原介绍
 
@@ -34,9 +46,7 @@ https://github.com/ywmoyue/biliuwp-lite
 
 ## 截图
 
-[QQ截图20200730165337.png](https://vip1.loli.net/2020/08/02/rGLMwtVSYmaKgxi.png)
-
-![](./screenshot/ui.png)
+![图](./screenshot/ui.png)
 
 ## 说明
 
