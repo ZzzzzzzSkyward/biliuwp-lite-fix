@@ -1,12 +1,13 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Models;
 using System;
+using System.Collections.Generic;
 
 namespace BiliLite.Api
 {
     public class PlayerAPI
     {
-        public ApiModel VideoPlayUrl(string aid, string cid, int qn,bool dash,bool proxy=false,string area="")
+        public ApiModel VideoPlayUrl(string aid, string cid, int qn, bool dash, bool proxy = false, string area = "")
         {
             var baseUrl = ApiHelper.API_BASE_URL;
 
@@ -18,13 +19,14 @@ namespace BiliLite.Api
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"{baseUrl}/x/player/playurl",
-                parameter = ApiHelper.MustParameter(ApiHelper.WebVideoKey, true) + $"&avid={aid}&cid={cid}&qn={qn}&type=&otype=json&mid={(SettingHelper.Account.Logined? SettingHelper.Account.Profile.mid.ToString():"")}"
+                parameter = $"avid={aid}&cid={cid}&qn={qn}&type=&otype=json&mid={(SettingHelper.Account.Logined ? SettingHelper.Account.Profile.mid.ToString() : "")}",
+                need_cookie = true,
             };
             if (dash)
             {
                 api.parameter += "&fourk=1&fnver=0&fnval=4048";
             }
-           
+
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.WebVideoKey);
             if (proxy)
             {
@@ -33,9 +35,9 @@ namespace BiliLite.Api
             return api;
         }
 
-       
 
-        public ApiModel SeasonPlayUrl(string aid, string cid, string ep_id, int qn,int season_type, bool dash, bool proxy = false, string area = "")
+
+        public ApiModel SeasonPlayUrl(string aid, string cid, string ep_id, int qn, int season_type, bool dash, bool proxy = false, string area = "")
         {
             var baseUrl = ApiHelper.API_BASE_URL;
             if (proxy)
@@ -56,7 +58,7 @@ namespace BiliLite.Api
             {
                 api.parameter += "&fourk=1&fnver=0&fnval=4048";
             }
-            
+
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.WebVideoKey);
             if (proxy)
             {
@@ -84,15 +86,66 @@ namespace BiliLite.Api
             return api;
         }
 
-        public ApiModel LivePlayUrl(string cid, int qn=0)
+        public ApiModel LivePlayUrl(string cid, int qn = 0)
         {
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"https://api.live.bilibili.com/room/v1/Room/playUrl",
-                parameter =$"cid={cid}&qn={qn}&platform=web"
+                parameter = $"cid={cid}&qn={qn}&platform=web"
             };
             //api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidVideoKey);
+            return api;
+        }
+        public class LiveInfo {
+            public const int flv = 0;
+            public const int ts = 1;
+            public const int mp4 = 2;
+        }
+        public class ProtocolInfo {
+            public const int http_stream = 0;
+            public const int http_hls = 1;
+        }
+        public class CodecInfo {
+            public const int AVC = 0;
+            public const int HEVC = 1;
+        }
+        public List<int> videofmt = new List<int> { LiveInfo.flv, LiveInfo.mp4 };//flv and ts/m3u8 is not supported by ffmpeg 
+        public List<int> codecfmt = new List<int> { CodecInfo.AVC, CodecInfo.HEVC };
+        public List<int> protocolfmt = new List<int> { ProtocolInfo.http_stream, ProtocolInfo.http_hls };
+        public string JoinFmt(List<int> fmts)
+        {
+            return string.Join(",", fmts);
+        }
+        public string protocolstr
+        {
+            get
+            {
+                return JoinFmt(protocolfmt);
+            }
+        }
+        public string videostr
+        {
+            get
+            {
+                return JoinFmt(videofmt);
+            }
+        } 
+        public string codecstr
+        {
+            get
+            {
+                return JoinFmt(codecfmt);
+            }
+        }
+        public ApiModel LivePlayUrlv2(string room_id, int qn = 0)
+        {
+            ApiModel api = new ApiModel()
+            {
+                method = RestSharp.Method.Get,
+                baseUrl = $"https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo",
+                parameter = $"room_id={room_id}&qn={qn}&protocol={protocolstr}&format={videostr}&codec={codecstr}"
+            };
             return api;
         }
 

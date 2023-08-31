@@ -261,7 +261,7 @@ namespace BiliLite
             {
                 var rootFrame = Window.Current.Content as Frame;
                 var mainPage = rootFrame.Content as MainPage;
-                if (mainPage.IsViewing())
+                if (mainPage!=null&&mainPage.IsViewing())
                 {
                     mainPage.CloseView();
                     e.Handled = true;

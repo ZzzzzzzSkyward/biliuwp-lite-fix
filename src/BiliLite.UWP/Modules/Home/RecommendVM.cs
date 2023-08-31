@@ -90,14 +90,12 @@ namespace BiliLite.Modules
                         if (Items == null)
                         {
                             Items = items;
+                            canloadmore = true;
                             //await GetRecommend(items.LastOrDefault().idx);
                         }
                         else
                         {
-                            foreach (var item in items)
-                            {
-                                Items.Add(item);
-                            }
+                            Items.Concat(items);
                         }
 
                     }
@@ -150,9 +148,16 @@ namespace BiliLite.Modules
            
         }
         //TODO防止页面无限调用此方法
+        private bool canloadmore = true;
+        private int last_index = 0;
 
         public async void LoadMore()
         {
+            if (!canloadmore)
+            {
+                await Task.Delay(1000);
+                return;
+            }
             if (Items == null || Items.Count == 0)
             {
                 return;
@@ -161,7 +166,12 @@ namespace BiliLite.Modules
             {
                 return;
             }
-            await GetRecommend(Items.LastOrDefault().idx);
+            LogHelper.Log("LoadMore",LogType.INFO);
+            string idx = Items.LastOrDefault().idx;
+            int idx1 = idx.ToInt32();
+            canloadmore = last_index!=idx1;
+            last_index = idx1;
+            await GetRecommend(idx);
         }
         public async void Refresh()
         {
@@ -172,6 +182,7 @@ namespace BiliLite.Modules
             }
             Banner = null;
             Items = null;
+            canloadmore = true;
             await GetRecommend();
         }
 
