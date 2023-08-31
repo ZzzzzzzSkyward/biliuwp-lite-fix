@@ -504,10 +504,6 @@ namespace BiliLite.Pages
         {
             videoDetailVM.DoFavorite(videoDetailVM.MyFavorite.Where(x => x.is_fav).Select(x => x.id).ToList(), avid);
         }
-        private void OnOpenWeb()
-        {
-
-        }
 
         private async void btnOpenWeb_Click(object sender, RoutedEventArgs e)
         {
