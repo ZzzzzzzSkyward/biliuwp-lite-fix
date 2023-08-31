@@ -29,19 +29,23 @@ namespace BiliLite.Helpers
         /// <param name="headers"></param>
         /// <param name="cookie"></param>
         /// <returns></returns>
-        public static DateTime lasttime=System.DateTime.Now;
-        public static TimeSpan dt = new TimeSpan(1);
-        public async static Task<HttpResults> Get( string url)
+        public static DateTime lasttime = System.DateTime.Now;
+        public static TimeSpan min_dt = new TimeSpan(1);
+        public static int concurrent_get_count = 1;
+        public static TimeSpan delay = new TimeSpan(0, 0, 0, 0, 1);
+        public async static Task<HttpResults> Get(string url)
         {
             return await Get(url, null);
         }
-        public async static Task<HttpResults> Get( string url, IDictionary<string, string> headers)
+        public async static Task<HttpResults> Get(string url, IDictionary<string, string> headers)
         {
             //wait 
-            var t=DateTime.Now;
-            if (t - lasttime < dt)
+            var t = DateTime.Now;
+            if (t - lasttime < min_dt)
             {
-                await Task.Delay(dt + (lasttime - t));
+                concurrent_get_count++;
+                await Task.Delay(delay * concurrent_get_count);
+                concurrent_get_count--;
             }
             Debug.WriteLine("GET:" + url);
             Utils.AddALog("[GET]" + url);
@@ -87,9 +91,6 @@ namespace BiliLite.Helpers
                     };
                     return httpResults;
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -116,7 +117,7 @@ namespace BiliLite.Helpers
                 HttpBaseProtocolFilter fiter = new HttpBaseProtocolFilter();
                 var cookies = fiter.CookieManager.GetCookies(new Uri("http://bilibili.com"));
                 //没有Cookie
-                if(cookies==null|| cookies.Count == 0)
+                if (cookies == null || cookies.Count == 0)
                 {
                     //访问一遍bilibili.com
                     await Get("https://www.bilibili.com");
@@ -292,7 +293,7 @@ namespace BiliLite.Helpers
                     var response = await client.PostAsync(new Uri(url), new HttpStringContent(body, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/x-www-form-urlencoded"));
                     if (!response.IsSuccessStatusCode)
                     {
-                        Utils.AddALog("[POST][FAIL]"+url+response.StatusCode.ToString());
+                        Utils.AddALog("[POST][FAIL]" + url + response.StatusCode.ToString());
                         return new HttpResults()
                         {
                             code = (int)response.StatusCode,
@@ -312,9 +313,6 @@ namespace BiliLite.Helpers
                     };
                     return httpResults;
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -327,9 +325,6 @@ namespace BiliLite.Helpers
                 };
             }
         }
-
-
-
 
         private static string StatusCodeToMessage(int code)
         {
@@ -368,18 +363,16 @@ namespace BiliLite.Helpers
         }
     }
 
-
     public class HttpResults
     {
         public int code { get; set; }
         public string message { get; set; }
         public string results { get; set; }
         public bool status { get; set; }
-
         //处理两个json的情况
         public JObject FindLongestValidJsonString(string input)
         {
-            JObject obj=null;
+            JObject obj = null;
             int start = 0;
             int end = 0;
             int maxLength = 0;
@@ -419,34 +412,32 @@ namespace BiliLite.Helpers
                     }
                 }
             }
-
             return obj;
         }
-    public async Task<T> GetJson<T>()
+        public async Task<T> GetJson<T>()
         {
-                 try
-                 {
-                     return JsonConvert.DeserializeObject<T>(results);
-                 }
-                 catch
-                 {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(results);
+            }
+            catch
+            {
 
-                 }
-                 try
-                 {
-                     return FindLongestValidJsonString(results).ToObject<T>();
-                 }
-                 catch(Exception e)
-                 {
-                     Console.WriteLine("解析json失败", e.ToString());
-                     Utils.AddALog("[JSON][FAIL]" + results.ToString().Substring(0,100));
-                 }
-                 return default(T);
-
+            }
+            try
+            {
+                return FindLongestValidJsonString(results).ToObject<T>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("解析json失败", e.ToString());
+                Utils.AddALog("[JSON][FAIL]" + results.ToString().Substring(0, 100));
+            }
+            return default(T);
         }
         public JObject GetJObject()
         {
-            JObject obj=JObject.Parse("{}");
+            JObject obj = JObject.Parse("{}");
             try
             {
                 obj = JObject.Parse(results);
@@ -462,7 +453,7 @@ namespace BiliLite.Helpers
                 var serialized = obj.ToString();
                 return obj;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Utils.ShowMessageToast("解析json对象失败", e.ToString());
                 Console.WriteLine(obj.ToString());
@@ -472,27 +463,11 @@ namespace BiliLite.Helpers
         }
         public async Task<ApiDataModel<T>> GetData<T>()
         {
-            try
-            {
-                return await GetJson<ApiDataModel<T>>();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
+            return await GetJson<ApiDataModel<T>>();
         }
         public async Task<ApiResultModel<T>> GetResult<T>()
         {
-            try
-            {
-                return await GetJson<ApiResultModel<T>>();
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-
+            return await GetJson<ApiResultModel<T>>();
         }
     }
 }
