@@ -1469,7 +1469,10 @@ namespace BiliLite.Controls
                 _playerVideo.Play();
                 PlayState = PlayState.Playing;
             }
-
+            if (PlayState == PlayState.Playing)
+            {
+                Buffering = false;
+            }
             PlayStateChanged?.Invoke(this, PlayState);
         }
         /// <summary>

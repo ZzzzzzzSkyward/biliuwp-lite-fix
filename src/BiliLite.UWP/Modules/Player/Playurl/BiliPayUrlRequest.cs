@@ -555,13 +555,20 @@ namespace BiliLite.Modules.Player.Playurl
         {
             //尝试WEB API读取播放地址
             var webResult = await GetPlayUrlUseWebApi(playInfo, qualityID);
+            //尝试GRPC API读取地址
+            var grpcResult = await GetPlayUrlUseGrpc(playInfo, qualityID);
             if (webResult.Success)
             {
                 return webResult;
             }
+            if (grpcResult.Success&&webResult.Success)
+            {
+                if (grpcResult.Qualites.Count> webResult.Qualites.Count)
+                {
+                    return grpcResult;
+                }
+            }
             AddMessage("[/x/player/playurl]", webResult.Message);
-            //尝试GRPC API读取地址
-            var grpcResult = await GetPlayUrlUseGrpc(playInfo, qualityID);
             if (grpcResult.Success)
             {
                 return grpcResult;
