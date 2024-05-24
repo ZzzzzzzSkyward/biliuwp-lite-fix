@@ -453,11 +453,11 @@ namespace BiliLite.Modules
     {
         public string up_id { get; set; }
         public string up_name { get; set; }
-        public int rid { get; set; }
-        public int tid { get; set; }
+        public long rid { get; set; }
+        public long tid { get; set; }
         public string tname { get; set; }
         public string rname { get; set; }
-        public int aid { get; set; }
+        public long aid { get; set; }
 
     }
     public class RecommendRcmdReasonStyleModel
