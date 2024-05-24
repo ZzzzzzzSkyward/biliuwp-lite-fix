@@ -1747,7 +1747,7 @@ namespace BiliLite.Controls
                 _ffmpegConfig.FFmpegOptions.Add("referer", referer);
             }
 
-            _ffmpegConfig.VideoDecoderMode = FFmpegType ? VideoDecoderMode.Automatic : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
+            _ffmpegConfig.Video.VideoDecoderMode = FFmpegType ? VideoDecoderMode.Automatic : VideoDecoderMode.ForceFFmpegSoftwareDecoder;
             return _ffmpegConfig;
         }
 

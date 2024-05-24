@@ -26,9 +26,9 @@
     <AppxBundle>Auto</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>
-    </PackageCertificateThumbprint>
-    <PackageCertificateKeyFile>BiliLite.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>E1E8CE1744856EC8FB6D9B40DECA2D4D30F328C5</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <AppxPackageDir>z:\</AppxPackageDir>
   </PropertyGroup>
@@ -858,13 +858,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FFmpegInteropX">
-      <Version>1.1.0-pre42</Version>
+      <Version>2.0.0-pre3</Version>
     </PackageReference>
     <PackageReference Include="FFmpegInteropX.FFmpegUWP">
       <Version>5.1.100</Version>
     </PackageReference>
     <PackageReference Include="Google.Protobuf">
-      <Version>3.23.0</Version>
+      <Version>3.26.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
@@ -909,7 +909,7 @@
       <Version>1.0.2</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
-      <Version>110.2.1-alpha.0.11</Version>
+      <Version>110.2.1-alpha.0.20</Version>
     </PackageReference>
     <PackageReference Include="SYEngine.uwp">
       <Version>1.0.7</Version>
