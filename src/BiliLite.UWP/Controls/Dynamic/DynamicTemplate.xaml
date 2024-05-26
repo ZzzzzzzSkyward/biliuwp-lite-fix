@@ -176,24 +176,27 @@
     <DataTemplate x:Key="Repost">
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
-                <Border BorderThickness="1"  BorderBrush="{ThemeResource ForegroundBorderColor}"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
-                    <ListView 
+                <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Margin="8 4 8 0">
+                    <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}"></TextBlock>
+                    <Border BorderThickness="1"  BorderBrush="{ThemeResource ForegroundBorderColor}"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
+                        <ListView 
                         SelectionMode="None" 
                         IsItemClickEnabled="false" 
                         ItemsSource="{Binding Path=OriginInfo}" 
                         
                         ItemTemplateSelector="{StaticResource select}"
                         ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                                <Setter Property="MaxWidth" Value="800"></Setter>
-                                <Setter Property="Margin" Value="0"></Setter>
-                                <Setter Property="Padding" Value="-4 0"></Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
-                </Border>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                    <Setter Property="MaxWidth" Value="800"></Setter>
+                                    <Setter Property="Margin" Value="0"></Setter>
+                                    <Setter Property="Padding" Value="-4 0"></Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Border>
+                </StackPanel>
             </local:DynamicItemControl.CardContent>
         </local:DynamicItemControl>
     </DataTemplate>

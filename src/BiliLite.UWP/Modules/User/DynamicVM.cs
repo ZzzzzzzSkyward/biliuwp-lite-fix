@@ -407,7 +407,7 @@ namespace BiliLite.Modules.User
                     var data = results.GetJObject();
                     if (data != null && (data["code"].ToInt32() == 0))
                     {
-                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel>>(data["data"]?["cards"]?.ToString() ?? "[]");
+                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel2024>>(data["data"]?["items"]?.ToString() ?? "[]");
                         if (items.Count > 0)
                         {
                             CanLoadMore = true;
@@ -415,7 +415,7 @@ namespace BiliLite.Modules.User
                         ObservableCollection<DynamicItemDisplayModel> _ls = new ObservableCollection<DynamicItemDisplayModel>();
                         foreach (var item in items)
                         {
-                            _ls.Add(ConvertToDisplay(item));
+                            _ls.Add(ConvertToDisplay2024(item));
                         }
                         if (Items == null)
                         {
@@ -466,7 +466,7 @@ namespace BiliLite.Modules.User
                     var data = results.GetJObject();
                     if (data["code"].ToInt32() == 0)
                     {
-                        var items = JsonConvert.DeserializeObject<DynamicCardModel>(data["data"]["card"].ToString());
+                        var items = JsonConvert.DeserializeObject<DynamicCardModel>(data["data"]["items"].ToString());
                         ObservableCollection<DynamicItemDisplayModel> _ls = new ObservableCollection<DynamicItemDisplayModel>();
                         _ls.Add(ConvertToDisplay(items));
                         Items = _ls;
@@ -744,6 +744,141 @@ namespace BiliLite.Modules.User
                     Type = DynamicDisplayType.Other,
                     IntType = 999,
                     DynamicID = item.desc.dynamic_id,
+                    ContentStr = "动态加载失败:\r\n" + JsonConvert.SerializeObject(item)
+                };
+            }
+
+        }
+        private DynamicItemDisplayModel ConvertToDisplay2024(DynamicCardModel2024 item)
+        {
+            try
+            {
+                var data = new DynamicItemDisplayModel()
+                {
+                    CommentCount = item.comment,
+                    Datetime = Utils.TimestampToDatetime(item.pubdate).ToString(),
+                    DynamicID = item.id_str,
+                    LikeCount = item.like,
+                    Mid = item.mid,
+                    ShareCount = item.forward,
+                    Time = Utils.HandelTimestamp(item.pubdate.ToString()),
+                    IntType = 0,// item.type,
+                    ReplyID = item.basic.rid_str,
+                    ReplyType = item.basic.comment_type,
+                    Type = DynamicParse.ParseType2024(item.type),
+                    UserCommand = UserCommand,
+                    LaunchUrlCommand = LaunchUrlCommand,
+                    WebCommand = WebCommand,
+                    TagCommand = TagCommand,
+                    LotteryCommand = LotteryCommand,
+                    VoteCommand = VoteCommand,
+                    IsSelf = item.mid == SettingHelper.Account.UserID,
+                    ImageCommand = ImageCommand,
+                    SaveImageCommand = SaveImageCommand,
+                    CommentCommand = CommentCommand,
+                    LikeCommand = LikeCommand,
+                    DeleteCommand = DeleteCommand,
+                    RepostCommand = RepostCommand,
+                    DetailCommand = DetailCommand,
+                    WatchLaterCommand = watchLaterVM.AddCommand,
+                    Liked = item.liked
+                };
+                if (data.Type == DynamicDisplayType.Other)
+                {
+                    return new DynamicItemDisplayModel()
+                    {
+                        Type = DynamicDisplayType.Other,
+                        IntType = 999,
+                        DynamicID = item.basic.rid_str,
+                        ContentStr = $"未适配的类型{data.IntType}:\r\n" + JsonConvert.SerializeObject(item)
+                    };
+                }
+                //prefix
+                if(data.Type == DynamicDisplayType.Repost)
+                {
+                    var orig = ConvertToDisplay2024(item.orig);
+                    orig.IsRepost = true;
+                    data.OriginInfo =new List<DynamicItemDisplayModel> { orig };
+                }
+                data.OneRowInfo = DynamicParse.ParseOneRowInfo2024(data, item);
+                //post fix
+                if (data.ImagesInfo != null)
+                {
+                    foreach (var i in data.ImagesInfo)
+                    {
+                        i.SaveImageCommand = SaveImageCommand;
+                        i.ImageCommand = ImageCommand;
+                    }
+                }
+                
+                data.ShowContent = false;
+                if ( item.owner!= null)
+                {
+                    data.UserName = item.owner;
+                    data.Photo =item.face?.ToString();
+                    data.Verify = AppHelper.TRANSPARENT_IMAGE;
+                    data.Mid = item.mid;
+                }
+                if (item.modules.module_author!= null)
+                {
+                    var d = item.modules.module_author;
+                    data.UserName = d.name;
+                    data.Photo = d.face;
+                    if (d.vip != null)
+                    {
+                        data.IsYearVip = d.vip.status == 1 && d.vip.type == 2;
+                    }
+                    switch (d.official_verify?.type ?? 3)
+                    {
+                        case 0:
+                            data.Verify = AppHelper.VERIFY_PERSONAL_IMAGE;
+                            break;
+                        case 1:
+                            data.Verify = AppHelper.VERIFY_OGANIZATION_IMAGE;
+                            break;
+                        default:
+                            data.Verify = AppHelper.TRANSPARENT_IMAGE;
+                            break;
+                    }
+                    if (!string.IsNullOrEmpty(d.pendant?.image))
+                    {
+                        data.Pendant = d.pendant.image;
+                    }
+                    //装扮
+                    data.DecorateName = d.decorate?.name;
+                    data.DecorateText = d.decorate?.fan?.number.ToString();
+                    data.DecorateColor = d.decorate?.fan?.color;
+                    data.DecorateImage = d.decorate?.card_url ;
+                }
+
+
+                /*
+                if (card.ContainsKey("apiSeasonInfo"))
+                {
+                    data.UserName = card["apiSeasonInfo"]["title"].ToString();
+                    data.Photo = card["apiSeasonInfo"]["cover"].ToString();
+                    data.TagName = card["apiSeasonInfo"]["type_name"].ToString();
+                    data.ShowTag = true;
+                    data.Time = data.Time + "更新了";
+                }
+                if (card.ContainsKey("season"))
+                {
+                    data.UserName = card["season"]["title"].ToString();
+                    data.Photo = card["season"]["cover"].ToString();
+                    data.TagName = card["season"]["type_name"].ToString();
+                    data.ShowTag = true;
+                    data.Time = data.Time + "更新了";
+                }
+                */
+                return data;
+            }
+            catch (Exception)
+            {
+                return new DynamicItemDisplayModel()
+                {
+                    Type = DynamicDisplayType.Other,
+                    IntType = 999,
+                    DynamicID = item.modules.module_dynamic.major.archive.jump_url,
                     ContentStr = "动态加载失败:\r\n" + JsonConvert.SerializeObject(item)
                 };
             }

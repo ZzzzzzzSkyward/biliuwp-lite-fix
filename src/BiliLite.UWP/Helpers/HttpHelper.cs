@@ -122,13 +122,16 @@ namespace BiliLite.Helpers
                     //访问一遍bilibili.com
                     await Get("https://www.bilibili.com");
                 }
-                cookies = fiter.CookieManager.GetCookies(new Uri("http://bilibili.com"));
-                string cookie = "";
-                foreach (var item in cookies)
+                if (!headers.Keys.Contains("Cookie"))
                 {
-                    cookie += $"{item.Name}={item.Value};";
+                    cookies = fiter.CookieManager.GetCookies(new Uri("http://bilibili.com"));
+                    string cookie = "";
+                    foreach (var item in cookies)
+                    {
+                        cookie += $"{item.Name}={item.Value};";
+                    }
+                    headers.Add("Cookie", cookie);
                 }
-                headers.Add("Cookie", cookie);
                 return await Get(url, headers);
             }
             catch (Exception ex)

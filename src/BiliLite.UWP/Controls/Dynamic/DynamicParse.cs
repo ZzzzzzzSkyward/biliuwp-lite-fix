@@ -10,6 +10,7 @@ using BiliLite.Helpers;
 using Newtonsoft.Json;
 using BiliLite.Models.Dynamic;
 using System.Xml;
+using BiliLite.Modules;
 
 namespace BiliLite.Controls.Dynamic
 {
@@ -131,7 +132,272 @@ namespace BiliLite.Controls.Dynamic
                     return DynamicDisplayType.Other;
             }
         }
-       
+        //纯文字
+        //视频
+        //音乐
+        //网页
+        //专题
+        //投票
+        //活动
+        //图片
+        //直播 4308
+        public static DynamicDisplayType ParseType2024(string type)
+        {
+            switch (type)
+            {
+                case "DYNAMIC_TYPE_FORWARD":
+                    return DynamicDisplayType.Repost;
+                case "DYNAMIC_TYPE_DRAW":
+                    return DynamicDisplayType.Photo;
+                case "DYNAMIC_TYPE_WORD":
+                    return DynamicDisplayType.Text;
+                case "DYNAMIC_TYPE_AV":
+                    return DynamicDisplayType.Video;
+                case "DYNAMIC_TYPE_SHORTVIDEO":
+                    return DynamicDisplayType.ShortVideo;
+                case "DYNAMIC_TYPE_ARTICLE":
+                    return DynamicDisplayType.Article;
+                case "DYNAMIC_TYPE_MUSIC":
+                    return DynamicDisplayType.Music;
+                case "DYNAMIC_TYPE_NONE":
+                    return DynamicDisplayType.Miss;
+                case "DYNAMIC_TYPE_OVG_SEASON":
+                case "DYNAMIC_TYPE_UGC_SEASON":
+                    return DynamicDisplayType.Season;
+                case "DYNAMIC_TYPE_LIVE_RCMD":
+                    return DynamicDisplayType.Live;
+                case "DYNAMIC_TYPE_LIVE":
+                    return DynamicDisplayType.LiveShare;
+                case "DYNAMIC_TYPE_MEDIALIST":
+                    return DynamicDisplayType.MediaList;
+                default:
+                    return DynamicDisplayType.Other;
+            }
+        }
+        public static DynamicItemDisplayOneRowInfo ParseOneRowInfo2024(DynamicItemDisplayModel data, Modules.DynamicCardModel2024 item)
+        {
+            var info = new DynamicItemDisplayOneRowInfo();
+            switch (data.Type)
+            {
+                case DynamicDisplayType.Video:
+                    {
+                        var duration = item.modules.module_dynamic.major.archive.duration_text;
+                        var coverText = duration;
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = item.pic + "@412w_232h_1c.jpg",
+                            CoverText = coverText,
+                            Subtitle = "播放:" + item.viewtext + " 弹幕:" + item.danmakutext,
+                            Tag = "视频",
+                            ID = item.aid,
+                            Desc = item.desc,
+                            Title = item.title,
+                        };
+                        info.Url = "http://b23.tv/av" + info.ID;
+                    }
+                    break;
+                case DynamicDisplayType.Season:
+                    {
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = item.pic + "@200w.jpg",
+                            CoverText = "",
+                            Subtitle = "播放:" + item.viewtext + " 弹幕:" + item.danmakutext,
+                            ID = item.aid.ToString(),
+                            Title = item.title,
+                            CoverWidth = 160,
+                            AID = item.aid,
+                        };
+                        if (string.IsNullOrEmpty(info.Title))
+                        {
+                            info.Title = item.title;
+                        }
+                        info.Url = "http://b23.tv/ss" + info.ID;
+                    }
+                    break;
+                case DynamicDisplayType.Music:
+                    {
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = item.pic.ToString() + "@200w.jpg",
+                            CoverParameter = "200w",
+                            Subtitle = "播放:" + item.viewtext + " 评论:" + item.comment.ToCountString(),
+                            ID = item.aid.ToString(),
+                            Title = item.title.ToString(),
+                            CoverWidth = 80,
+                            Tag = "音频",
+
+                        };
+                        info.Url = "http://b23.tv/au" + info.ID;
+                    }
+                    break;
+                case DynamicDisplayType.Web:
+                    {
+                        var cover = item.pic?.ToString() ?? "";
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = cover == "" ? "" : cover + "@200w.jpg",
+                            Subtitle = item.desc,
+                            ID = item.aid?.ToString() ?? "",//fixme
+                            Title = item.title?.ToString() ?? "",
+                            CoverWidth = 80,
+                        };
+                        info.Url = info.ID.ToString();
+                    }
+                    break;
+                case DynamicDisplayType.Article:
+                    {
+                        var cover = item.pic?.ToString() ?? "";
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = cover + "@412w_232h_1c.jpg",
+                            //CoverText = obj["words"].ToCountString()+"字",
+                            Subtitle = "浏览:" + item.viewtext + " 点赞:" + item.like.ToCountString(),
+                            ID = item.aid.ToString(),
+                            Title = item.title.ToString(),
+                            Desc = item.desc,
+                            Tag = "专栏",
+
+                        };
+                        info.Url = "https://www.bilibili.com/read/cv" + info.ID.ToString();
+                    }
+                    break;
+                case DynamicDisplayType.Live:
+                    {
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = item.pic.ToString() + "@412w_232h_1c.jpg",
+                            CoverText = "",
+                            Subtitle = "【直播有待修复】parent_area_name".ToString() + " · 人气:" + "item.live_play_info.online".ToCountString(),
+                            Tag = "直播",
+                            ID = item.aid.ToString(),
+                            Title = item.title.ToString(),
+                        };
+                        info.Url = "https://b23.tv/live" + info.ID;
+                    }
+                    break;
+                case DynamicDisplayType.LiveShare:
+                    {
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = item.pic.ToString() + "@412w_232h_1c.jpg",
+                            //fixme
+                            CoverText = item.modules.module_dynamic.major.archive.disable_preview==1?"直播已结束" : "",
+                            Subtitle = "【直播有待修复】area_v2_name".ToString(),
+                            Tag = "直播",
+                            ID = item.aid.ToString(),
+                            Title = item.title.ToString(),
+                        };
+                        info.Url = "https://b23.tv/live" + info.ID;
+                    }
+                    break;
+                case DynamicDisplayType.MediaList:
+                    {
+                        //TODO 合集这部分需要重写
+                        //https://t.bilibili.com/625835271145782341
+                        /*
+                        if (obj["videos"].ToInt32() == 1)
+                        {
+                            return ParseOneRowInfo(DynamicDisplayType.Video, obj);
+                        }
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Cover = obj["cover"].ToString() + "@412w_232h_1c.jpg",
+                            Subtitle = obj["media_count"].ToString() + "个内容",
+                            Tag = "收藏夹",
+                            ID = obj["id"].ToString(),
+                            Title = obj["title"].ToString(),
+                        };
+                        info.Url = "https://www.bilibili.com/medialist/detail/ml" + info.ID;
+                        */
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (data.Type == DynamicDisplayType.Photo)
+            {
+                var imgs=new List<string> { };
+                var objs = new List<DyanmicItemDisplayImageInfo>() { };
+                var imgsrc = item.modules?.module_dynamic?.major?.draw?.items; 
+                int i = 0;
+                if(imgsrc!=null)
+                foreach (var img in imgsrc)
+                {
+                        if (img.src != null)
+                        {
+                            imgs.Add(img.src);
+                            objs.Add(new DyanmicItemDisplayImageInfo()
+                            {
+                                ImageUrl = img.src,
+                                Height = img.height,
+                                Width = img.width,
+                                Index = i,
+                            });
+                        }
+                    i++;
+                }
+
+                //偷懒方法，点击图片时可以获取全部图片信息，好孩子不要学
+                objs.ForEach((x) => x.AllImages = imgs);
+
+                data.ImagesInfo = objs;
+            }
+
+            if (data.Type == DynamicDisplayType.Repost)
+            {
+                info = new DynamicItemDisplayOneRowInfo()
+                {
+                    Cover = item.pic + "@412w_232h_1c.jpg",
+                    CoverText = "转发",
+                    Subtitle = item.desc,
+                    Tag = "转发tag",
+                    ID = item.orig.aid,
+                    Desc = item.orig.desc,
+                    Title = item.orig.title,
+                };
+                info.Url = "http://b23.tv/av" + info.ID;
+            }
+            /*
+            //直播预约
+            if (display?.add_on_card_info != null)
+            {
+                var arr = new JArray();
+                foreach (var _info in display.add_on_card_info)
+                {
+                    var info = _info.reserve_attach_card;
+                    if (info == null) { continue; }
+                    var tp = info.type;
+                    if (tp != null && tp.ToString() == "reserve")
+                    {
+                        //这个是一个预约
+                        var time = info.desc_first?.text;
+                        var people = info.desc_second;
+                        var title = info.title;
+                        arr.Add(new JObject(
+                            new JProperty("time", time),
+                            new JProperty("people", people),
+                            new JProperty("title", title)
+                        ));
+                    }
+                }
+                extend_json["直播"] = arr;
+            }
+            */
+            /*
+            if (!string.IsNullOrEmpty(content))
+            {
+                data.ContentStr = content;
+                data.Content = DynamicParse.StringToRichText(item.desc.dynamic_id, content, item.display?.emoji_info?.emoji_details, extend_json);
+            }
+            else
+            {
+                data.ShowContent = false;
+            }
+            */
+            return info;
+        }
+
         public static DynamicItemDisplayOneRowInfo ParseOneRowInfo(DynamicDisplayType type, JObject obj)
         {
             DynamicItemDisplayOneRowInfo info = null;

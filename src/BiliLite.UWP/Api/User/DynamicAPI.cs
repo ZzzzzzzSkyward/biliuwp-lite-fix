@@ -49,11 +49,27 @@ namespace BiliLite.Api.User
                     //typeList = "268435455";
                     break;
             }
+            var typeName = "all";
+            switch (type)
+            {
+                case UserDynamicType.Video:
+                    typeName = "video";
+                    break;
+                case UserDynamicType.Season:
+                    typeName = "pgc";
+                    break;
+                case UserDynamicType.Article:
+                    typeName = "article";
+                    break;
+                default:
+                    break;
+            }
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new",
-                parameter = $"type_list={Uri.EscapeDataString(typeList)}&uid={SettingHelper.Account.UserID}",
+                baseUrl = "https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all",
+                parameter = $"type={typeName}",
+                need_cookie=true
             };
             //ApiModel api = new ApiModel()
             //{
@@ -75,7 +91,9 @@ namespace BiliLite.Api.User
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail",
+                //baseUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail",
+                //2024
+                baseUrl = "https://api.vc.bilibili.com/dynamic_repost/v1/dynamic_repost/repost_detail",
                 parameter = $"dynamic_id={id}",
             };
             //使用Web的API
@@ -122,18 +140,35 @@ namespace BiliLite.Api.User
                     //typeList = "268435455";
                     break;
             }
+            var typeString = "all";
+            switch (type)
+            {
+                case UserDynamicType.Video:
+                    typeString = "video";
+                    break;
+                case UserDynamicType.Season:
+                    typeString = "pgc";
+                    break;
+                case UserDynamicType.Article:
+                    typeString = "article";
+                    break;
+                default:
+                    break;
+            }
             
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_history",
-                parameter = $"offset_dynamic_id={dynamic_id}&type_list={Uri.EscapeDataString(typeList)}&uid={SettingHelper.Account.UserID}"
+                baseUrl = $"https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/all",
+                parameter = $"offset={dynamic_id}&type={typeString}",//&uid={SettingHelper.Account.UserID
+                need_cookie =true,
             };//使用Web的API
             if (SettingHelper.Account.Logined)
             {
                 api.parameter += $"&access_key={SettingHelper.Account.AccessKey}";
             }
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
+            
             return api;
         }
 
@@ -142,8 +177,8 @@ namespace BiliLite.Api.User
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history",
-                parameter = $"offset_dynamic_id={dynamic_id}&visitor_uid={SettingHelper.Account.UserID}&host_uid={mid}&need_top=1"
+                baseUrl = $"https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space",
+                parameter = $"offset={dynamic_id}&host_mid={mid}"
             };
             if (SettingHelper.Account.Logined)
             {

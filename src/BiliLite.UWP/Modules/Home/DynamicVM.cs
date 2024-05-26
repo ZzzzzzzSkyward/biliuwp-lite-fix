@@ -53,7 +53,7 @@ namespace BiliLite.Modules
                     var data = results.GetJObject();
                     if (data["code"].ToInt32() == 0)
                     {
-                        var items = JsonConvert.DeserializeObject<ObservableCollection<DynamicItemModel>>(data["data"]["cards"].ToString());
+                        var items = JsonConvert.DeserializeObject<ObservableCollection<DynamicItemModel>>(data["data"]["items"].ToString());
                         if (Items == null)
                         {
                             Items = items;
@@ -125,13 +125,13 @@ namespace BiliLite.Modules
         /// </summary>
         public string card { get; set; }
         public DynamicDescModel desc { get; set; }
-        public DynamicVideoCardModel video
+        public DynamicCardModel2024 video
         {
             get
             {
                 if (desc != null && desc.type == 8)
                 {
-                    return Newtonsoft.Json.JsonConvert.DeserializeObject<DynamicVideoCardModel>(card);
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<DynamicCardModel2024>(card);
                 }
                 return null;
             }
@@ -234,5 +234,303 @@ namespace BiliLite.Modules
         public string title { get; set; }
         public int is_finish { get; set; }
         public int season_id { get; set; }
+    }
+    public class DynamicCardModel2024
+    {
+        public DynamicCardModel2024_basic basic { get; set; }
+        public DynamicCardModel2024_modules modules { get; set; }
+        public DynamicCardModel2024 orig { get; set; }
+        public string type { get; set; }
+        public string id_str { get; set; }
+        public bool visible { get; set; }
+        public string title
+        {
+            get { return 
+                    modules?.module_dynamic?.major?.archive?.title
+                    ??
+                    modules?.module_dynamic?.major?.live?.title
+                    ??
+                    "";
+            }
+        }
+
+        public long pubdate
+        {
+            get { return modules?.module_author?.pub_ts??0; }
+        }
+        public string face
+        {
+            get { return modules?.module_author?.face??""; }
+        }
+
+        public string owner
+        {
+            get { return modules?.module_author?.name??""; }
+        }
+
+        public long mid
+        {
+            get
+            {
+                return modules?.module_author?.mid??0;
+            }
+        }
+
+        public string pic
+        {
+            get { return 
+                    modules?.module_dynamic?.major?.archive?.cover??
+                    modules?.module_dynamic?.major?.live?.cover??
+                    "";
+            }
+        }
+        public string aid
+        {
+            get { return 
+                    modules?.module_dynamic?.major?.archive?.aid??
+                    modules?.module_dynamic?.major?.live?.id?.ToString()??
+                    basic.rid_str??
+                    "0"; }
+        }
+        public string danmakutext
+        {
+            get { return modules?.module_dynamic?.major?.archive?.stat?.danmaku??"0"; }
+        }
+        public int danmaku
+        {
+            get
+            {
+                var text = danmakutext;
+                text = text.Replace("万", "0000").Replace("千", "000").Replace("百", "00").Replace("十", "0");
+                int result;
+                if (Int32.TryParse(text, out result))
+                {
+                    return result;
+                }
+                return 0;
+            }
+        }
+        public int view
+        {
+            get {
+                var text = modules?.module_dynamic?.major?.archive?.stat?.play ?? "0";
+                text = text.Replace("万", "0000").Replace("千","000").Replace("百","00").Replace("十","0");
+                int result;
+                if (Int32.TryParse(text, out result))
+                {
+                    return result;
+                }
+                return 0; }
+        }
+        public string viewtext
+        {
+            get { return modules?.module_dynamic?.major?.archive?.stat?.play ?? "0"; }
+        }
+        public int like
+        {
+            get {
+                return  modules?.module_stat?.like?.count??0;
+            }
+        }
+        public int comment
+        {
+            get {
+                return modules?.module_stat?.comment?.count??0;
+            }
+        }
+        public int forward
+        {
+            get {
+                return modules?.module_stat?.forward?.count??0;
+            }
+        }
+        public bool liked
+        {
+            get
+            {
+                return modules?.module_stat?.like?.status??false;
+            }
+        }
+        public string desc
+        {
+            get
+            {
+                return modules?.module_dynamic?.desc?.text ?? "";
+            }
+        }
+    }
+    public class DynamicCardModel2024_basic {
+        public string comment_id_str { get; set; }
+        public int comment_type { get; set; }
+        public string rid_str { get; set; }
+    }
+    public class DynamicCardModel2024_modules
+    {
+        public DynamicCardModel2024_author module_author;
+        public DynamicCardModel2024_stat module_stat;
+        public DynamicCardModel2024_dynamic module_dynamic;
+    }
+    public class DynamicCardModel2024_author
+    {
+        public DynamicCardModel2024_avatar avatar { get; set; }
+        public DynamicCardModel2024_decorate decorate { get; set; }
+        public DynamicCardModel2024_vip vip{ get; set; }
+        public DynamicCardModel2024_off official_verify{ get; set; }
+        public DynamicCardModel2024_pendant pendant{ get; set; }
+        public long mid { get; set; }
+        public string name { get; set; }
+        public string pub_time { get; set; }
+        public string type { get; set; }
+        public string pub_action { get; set; }
+        public string pub_location_text { get; set; }
+        public string label { get; set; }
+        public string face { get; set; }
+        public long pub_ts { get; set; }
+    }
+    public class DynamicCardModel2024_avatar
+    {
+        public string mid { get; set; }
+    }
+    public class DynamicCardModel2024_off
+    {
+        public string desc { get; set; }
+        public int type { get; set; }
+    }
+    public class DynamicCardModel2024_vip
+    {
+        public string nickname_color { get; set; }
+        public int status { get; set; }
+        public int type { get; set; }
+        public int theme_type { get; set; }
+    }
+    public class DynamicCardModel2024_pendant
+    {
+        public string image { get; set; }
+        public string image_enhance { get; set; }
+        public int expire { get; set; }
+        public int pid { get; set; }
+        public int n_pid { get; set; }
+        public string name { get; set; }
+    }
+    public class DynamicCardModel2024_decorate
+    {
+        public string name { get; set; }
+        public string card_url { get; set; }
+        public string jump_url { get; set; }
+        public DynamicCardModel2024_fan fan { get; set; }
+        public int type { get; set; }
+    }
+    public class DynamicCardModel2024_face
+    {
+        public string mid { get; set; }
+    }
+    public class DynamicCardModel2024_fan
+    {
+        public bool is_fan { get; set; }
+        public string color { get; set; }
+        public int number { get; set; }
+    }
+    public class DynamicCardModel2024_stat
+    {
+        public DynamicCardModel2024_like like { get; set; }
+        public DynamicCardModel2024_forward forward { get; set; }
+        public DynamicCardModel2024_comment comment { get; set; }
+    }
+    public class DynamicCardModel2024_like
+    {
+        public int count { get; set; }
+        public bool forbidden { get; set; }
+        public bool status { get; set; }
+    }
+    public class DynamicCardModel2024_forward
+    {
+        public int count { get; set; }
+        public bool forbidden { get; set; }
+    }
+    public class DynamicCardModel2024_comment
+    {
+        public int count { get; set; }
+        public bool forbidden { get; set; }
+    }
+    public class DynamicCardModel2024_dynamic
+    {
+        //public string additional { get; set; }
+        public DynamicCardModel2024_desc desc { get; set; }
+        //public string topic { get; set; }
+        public DynamicCardModel2024_major major {get; set; }
+    }
+    public class DynamicCardModel2024_desc
+    {
+        public System.Collections.Generic.List<DynamicCardModel2024_node> rich_text_nodes { get; set; }
+        public string text { get; set; }
+    }
+    public class DynamicCardModel2024_node
+    {
+        public string orig_text { get; set; }
+        public string text { get; set; }
+        public string type { get; set; }
+}
+    public class DynamicCardModel2024_major
+    {
+        public DynamicCardModel2024_archive archive { get; set; }
+        public DynamicCardModel2024_draw draw { get; set; }
+        public DynamicCardModel2024_live live { get; set; }
+        public DynamicCardModel2024_live_rcmd live_rcmd { get; set; }
+        public string type { get; set; }
+    }
+    public class DynamicCardModel2024_live_rcmd
+    {
+        public string content { get; set; }
+    }
+    public class DynamicCardModel2024_live
+    {
+        //public obj badge {get; set;}
+        public string cover { get; set; }
+        public string desc_first{ get; set; }
+        public string desc_second{ get; set; }
+        public string id{ get; set; }
+        public string jump_url{ get; set; }
+        public int live_state{ get; set; }
+        public string title{ get; set; }
+        public int style { get; set; }
+
+    }
+    public class DynamicCardModel2024_archive
+    {
+        public string aid { get; set; }
+        public DynamicCardModel2024_badge badge { get; set; }
+        public string bvid { get; set; }
+        public string cover { get; set; }
+        public string desc { get; set; }
+        public int disable_preview { get; set; }
+        public string duration_text { get; set; }
+        public string jump_url { get; set; }
+        public string title { get; set; }
+        public int type { get; set; }
+        public DynamicCardModel2024_astat stat;
+    }
+    public class DynamicCardModel2024_badge
+    {
+        public string bg_color { get; set; }
+        public string color { get; set; }
+        public string text { get; set; }
+        //public string icon_url { get; set; }
+    }
+    public class DynamicCardModel2024_draw
+    {
+        public long id { get; set; }
+        public System.Collections.Generic.List<DynamicCardModel2024_pic> items { get; set; }
+    }
+    public class DynamicCardModel2024_pic
+    {
+        public int height { get; set; }
+        public int width { get; set; }
+        public float size { get; set; }
+        public string src{ get; set; }
+    }
+    public class DynamicCardModel2024_astat
+    {
+        public string danmaku { get; set; }
+        public string play { get; set; }
     }
 }

@@ -222,11 +222,11 @@ namespace BiliLite.Api
             wbitoken_current.sub_url = subKey;
             return (imgKey, subKey);
         }
-        public static async  Task<bool> LoadWbiKey()
+        public static async Task<bool> LoadWbiKey()
         {
             if (wbitoken_current.img_url == null)
             {
-            await GetWbiKeys();
+                await GetWbiKeys();
                 return true;
             }
             return false;
