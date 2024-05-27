@@ -255,7 +255,7 @@ namespace BiliLite.Api
 
             // 为请求参数进行 wbi 签名
             string mixinKey = GetMixinKey(imgKey + subKey);
-            long currentTime = (long)Math.Round(DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+            long currentTime = (long)Math.Round(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
 
             var queryString = HttpUtility.ParseQueryString(url);
 
