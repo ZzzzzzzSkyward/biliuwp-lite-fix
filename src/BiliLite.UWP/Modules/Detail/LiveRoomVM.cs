@@ -655,7 +655,7 @@ namespace BiliLite.Modules
         {
             try
             {
-                var uid = 0;
+                long uid = 0;
                 if (SettingHelper.Account.Logined)
                 {
                     uid = SettingHelper.Account.UserID;

@@ -132,60 +132,56 @@ namespace BiliLite.Controls.Dynamic
                     return DynamicDisplayType.Other;
             }
         }
-        //纯文字
-        //视频
-        //音乐
-        //网页
-        //专题
-        //投票
-        //活动
-        //图片
-        //直播 4308
+        //20240527
         public static DynamicDisplayType ParseType2024(string type)
         {
             switch (type)
             {
+                case "DYNAMIC_TYPE_WORD":
+                    return DynamicDisplayType.Text;
                 case "DYNAMIC_TYPE_FORWARD":
                     return DynamicDisplayType.Repost;
                 case "DYNAMIC_TYPE_DRAW":
                     return DynamicDisplayType.Photo;
-                case "DYNAMIC_TYPE_WORD":
-                    return DynamicDisplayType.Text;
                 case "DYNAMIC_TYPE_AV":
                     return DynamicDisplayType.Video;
-                case "DYNAMIC_TYPE_SHORTVIDEO":
-                    return DynamicDisplayType.ShortVideo;
                 case "DYNAMIC_TYPE_ARTICLE":
                     return DynamicDisplayType.Article;
                 case "DYNAMIC_TYPE_MUSIC":
                     return DynamicDisplayType.Music;
                 case "DYNAMIC_TYPE_NONE":
                     return DynamicDisplayType.Miss;
-                case "DYNAMIC_TYPE_OVG_SEASON":
-                case "DYNAMIC_TYPE_UGC_SEASON":
+                case "DYNAMIC_TYPE_PGC_UNION":
                     return DynamicDisplayType.Season;
+                case "DYNAMIC_TYPE_UGC_SEASON":
+                    return DynamicDisplayType.MediaList;
                 case "DYNAMIC_TYPE_LIVE_RCMD":
                     return DynamicDisplayType.Live;
                 case "DYNAMIC_TYPE_LIVE":
                     return DynamicDisplayType.LiveShare;
-                case "DYNAMIC_TYPE_MEDIALIST":
-                    return DynamicDisplayType.MediaList;
                 default:
                     return DynamicDisplayType.Other;
             }
         }
         public static DynamicItemDisplayOneRowInfo ParseOneRowInfo2024(DynamicItemDisplayModel data, Modules.DynamicCardModel2024 item)
         {
-            var info = new DynamicItemDisplayOneRowInfo();
+            var info = new DynamicItemDisplayOneRowInfo(){
+                Cover = item.pic,
+                CoverText = item.durationtext,
+                Subtitle=item.desc,
+                ID=item.aid,
+                Desc=item.desc,
+                Title=item.title,
+            };
             switch (data.Type)
             {
                 case DynamicDisplayType.Video:
                     {
-                        var duration = item.modules.module_dynamic.major.archive.duration_text;
+                        var duration = item.durationtext ?? "";
                         var coverText = duration;
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = item.pic + "@412w_232h_1c.jpg",
+                            Cover = item.pic,
                             CoverText = coverText,
                             Subtitle = "播放:" + item.viewtext + " 弹幕:" + item.danmakutext,
                             Tag = "视频",
@@ -200,10 +196,10 @@ namespace BiliLite.Controls.Dynamic
                     {
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = item.pic + "@200w.jpg",
+                            Cover = item.pic,
                             CoverText = "",
                             Subtitle = "播放:" + item.viewtext + " 弹幕:" + item.danmakutext,
-                            ID = item.aid.ToString(),
+                            ID = item.aid,
                             Title = item.title,
                             CoverWidth = 160,
                             AID = item.aid,
@@ -219,11 +215,11 @@ namespace BiliLite.Controls.Dynamic
                     {
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = item.pic.ToString() + "@200w.jpg",
+                            Cover = item.pic,
                             CoverParameter = "200w",
                             Subtitle = "播放:" + item.viewtext + " 评论:" + item.comment.ToCountString(),
-                            ID = item.aid.ToString(),
-                            Title = item.title.ToString(),
+                            ID = item.aid,
+                            Title = item.title,
                             CoverWidth = 80,
                             Tag = "音频",
 
@@ -238,8 +234,8 @@ namespace BiliLite.Controls.Dynamic
                         {
                             Cover = cover == "" ? "" : cover + "@200w.jpg",
                             Subtitle = item.desc,
-                            ID = item.aid?.ToString() ?? "",//fixme
-                            Title = item.title?.ToString() ?? "",
+                            ID = item.aid,//fixme
+                            Title = item.title,
                             CoverWidth = 80,
                         };
                         info.Url = info.ID.ToString();
@@ -247,31 +243,31 @@ namespace BiliLite.Controls.Dynamic
                     break;
                 case DynamicDisplayType.Article:
                     {
-                        var cover = item.pic?.ToString() ?? "";
+                        var cover = item.pic ?? "";
                         info = new DynamicItemDisplayOneRowInfo()
                         {
                             Cover = cover + "@412w_232h_1c.jpg",
                             //CoverText = obj["words"].ToCountString()+"字",
-                            Subtitle = "浏览:" + item.viewtext + " 点赞:" + item.like.ToCountString(),
-                            ID = item.aid.ToString(),
-                            Title = item.title.ToString(),
+                            Subtitle = "浏览:" + item.viewtext + " 点赞:" + item.like.ToCountString()+" ID:"+item.aid,
+                            ID = item.aid,
+                            Title = item.title,
                             Desc = item.desc,
                             Tag = "专栏",
 
                         };
-                        info.Url = "https://www.bilibili.com/read/cv" + info.ID.ToString();
+                        info.Url = "https://www.bilibili.com/read/cv" + info.ID;
                     }
                     break;
                 case DynamicDisplayType.Live:
                     {
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = item.pic.ToString() + "@412w_232h_1c.jpg",
+                            Cover = item.pic,
                             CoverText = "",
-                            Subtitle = "【直播有待修复】parent_area_name".ToString() + " · 人气:" + "item.live_play_info.online".ToCountString(),
+                            Subtitle = "【直播有待修复】parent_area_name" + " · 人气:" + item.viewtext,
                             Tag = "直播",
-                            ID = item.aid.ToString(),
-                            Title = item.title.ToString(),
+                            ID = item.aid,
+                            Title = item.title,
                         };
                         info.Url = "https://b23.tv/live" + info.ID;
                     }
@@ -280,36 +276,28 @@ namespace BiliLite.Controls.Dynamic
                     {
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = item.pic.ToString() + "@412w_232h_1c.jpg",
+                            Cover = item.pic,
                             //fixme
-                            CoverText = item.modules.module_dynamic.major.archive.disable_preview==1?"直播已结束" : "",
-                            Subtitle = "【直播有待修复】area_v2_name".ToString(),
+                            CoverText = item.modules.module_dynamic.major.live?.live_state==0?"直播已结束" : "",
+                            Subtitle = "【直播有待修复】area_v2_name",
                             Tag = "直播",
-                            ID = item.aid.ToString(),
-                            Title = item.title.ToString(),
+                            ID = item.aid,
+                            Title = item.title,
                         };
                         info.Url = "https://b23.tv/live" + info.ID;
                     }
                     break;
                 case DynamicDisplayType.MediaList:
                     {
-                        //TODO 合集这部分需要重写
-                        //https://t.bilibili.com/625835271145782341
-                        /*
-                        if (obj["videos"].ToInt32() == 1)
-                        {
-                            return ParseOneRowInfo(DynamicDisplayType.Video, obj);
-                        }
                         info = new DynamicItemDisplayOneRowInfo()
                         {
-                            Cover = obj["cover"].ToString() + "@412w_232h_1c.jpg",
-                            Subtitle = obj["media_count"].ToString() + "个内容",
-                            Tag = "收藏夹",
-                            ID = obj["id"].ToString(),
-                            Title = obj["title"].ToString(),
+                            Cover = item.pic??"" + "@412w_232h_1c.jpg",
+                            Subtitle = "播放:"+item.viewtext+" 点赞:"+item.like,
+                            Tag = "合集",
+                            ID = item.aid,
+                            Title = item.title,
                         };
-                        info.Url = "https://www.bilibili.com/medialist/detail/ml" + info.ID;
-                        */
+                        info.Url = item.jumpurl;
                     }
                     break;
                 default:
@@ -348,7 +336,7 @@ namespace BiliLite.Controls.Dynamic
             {
                 info = new DynamicItemDisplayOneRowInfo()
                 {
-                    Cover = item.pic + "@412w_232h_1c.jpg",
+                    Cover = item.pic,
                     CoverText = "转发",
                     Subtitle = item.desc,
                     Tag = "转发tag",
@@ -356,34 +344,8 @@ namespace BiliLite.Controls.Dynamic
                     Desc = item.orig.desc,
                     Title = item.orig.title,
                 };
-                info.Url = "http://b23.tv/av" + info.ID;
+                info.Url = data.OriginInfo?[0]?.OneRowInfo?.Url??item.jumpurl??"";
             }
-            /*
-            //直播预约
-            if (display?.add_on_card_info != null)
-            {
-                var arr = new JArray();
-                foreach (var _info in display.add_on_card_info)
-                {
-                    var info = _info.reserve_attach_card;
-                    if (info == null) { continue; }
-                    var tp = info.type;
-                    if (tp != null && tp.ToString() == "reserve")
-                    {
-                        //这个是一个预约
-                        var time = info.desc_first?.text;
-                        var people = info.desc_second;
-                        var title = info.title;
-                        arr.Add(new JObject(
-                            new JProperty("time", time),
-                            new JProperty("people", people),
-                            new JProperty("title", title)
-                        ));
-                    }
-                }
-                extend_json["直播"] = arr;
-            }
-            */
             /*
             if (!string.IsNullOrEmpty(content))
             {

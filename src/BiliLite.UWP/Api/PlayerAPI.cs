@@ -7,6 +7,9 @@ namespace BiliLite.Api
 {
     public class PlayerAPI
     {
+        public static Dictionary<string, string> VideoHeader = new Dictionary<string, string>{
+            {"Referer","https://www.bilibili.com/" }
+        };
         public ApiModel VideoPlayUrl(string aid, string cid, int qn, bool dash, bool proxy = false, string area = "")
         {
             var baseUrl = ApiHelper.API_BASE_URL;
@@ -18,19 +21,30 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"{baseUrl}/x/player/playurl",
-                parameter = $"avid={aid}&cid={cid}&qn={qn}&type=&otype=json&mid={(SettingHelper.Account.Logined ? SettingHelper.Account.Profile.mid.ToString() : "")}",
-                need_cookie = true,
+                baseUrl = $"{baseUrl}/x/player/wbi/playurl",
+                parameter = $"avid={aid}&cid={cid}&qn={qn}&type=&otype=json",
+                need_cookie = !ApiHelper.need_refresh_cookie,
+                headers = VideoHeader,
             };
+            var fnval = 0;
             if (dash)
             {
-                api.parameter += "&fourk=1&fnver=0&fnval=4048";
+                fnval += 16;//dash
+                fnval += 128;//4k as fourk
             }
+            else
+            {
+                fnval += 1;//mp4
+            }
+            api.parameter += $"&fourk=1&fnver=0&fnval={fnval}";
 
-            api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.WebVideoKey);
             if (proxy)
             {
                 api.parameter += $"&area={area}";
+            }
+            else
+            {
+                api.parameter += ApiHelper.GetWbiSign(api.parameter);
             }
             return api;
         }

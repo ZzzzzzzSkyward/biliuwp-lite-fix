@@ -65,7 +65,8 @@ namespace BiliLite.Helpers
                     }
                     if (url.Contains("bilibili.com") || url.Contains("pgc/player/") || url.Contains("x/web-interface"))
                     {
-                        client.DefaultRequestHeaders.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0");
+                        if(!client.DefaultRequestHeaders.Keys.Contains("User-Agent"))
+                            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0");
                     }
                     Console.WriteLine(url);
                     var response = await client.GetAsync(new Uri(url));
@@ -115,16 +116,20 @@ namespace BiliLite.Helpers
                     headers = new Dictionary<string, string>();
                 }
                 HttpBaseProtocolFilter fiter = new HttpBaseProtocolFilter();
-                var cookies = fiter.CookieManager.GetCookies(new Uri("http://bilibili.com"));
-                //没有Cookie
-                if (cookies == null || cookies.Count == 0)
+                if (!headers.Keys.Contains("User-Agent"))
                 {
-                    //访问一遍bilibili.com
-                    await Get("https://www.bilibili.com");
+                    //headers.Add("User-Agent", "Mozilla/5.0 BiliDroid/4.4.4 (bbcallen@gmail.com)");
                 }
                 if (!headers.Keys.Contains("Cookie"))
                 {
-                    cookies = fiter.CookieManager.GetCookies(new Uri("http://bilibili.com"));
+                    var cookies = fiter.CookieManager.GetCookies(new Uri("https://www.bilibili.com"));
+                    //没有Cookie
+                    if (cookies == null || cookies.Count == 0)
+                    {
+                        //访问一遍bilibili.com
+                        await Get("https://www.bilibili.com");
+                        cookies = fiter.CookieManager.GetCookies(new Uri("https://www.bilibili.com"));
+                    }
                     string cookie = "";
                     foreach (var item in cookies)
                     {

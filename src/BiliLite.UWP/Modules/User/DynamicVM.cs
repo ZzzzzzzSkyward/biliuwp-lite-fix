@@ -753,6 +753,17 @@ namespace BiliLite.Modules.User
         {
             try
             {
+                var t = DynamicParse.ParseType2024(item.type);
+                if (t == DynamicDisplayType.Other)
+                {
+                    return new DynamicItemDisplayModel()
+                    {
+                        Type = DynamicDisplayType.Other,
+                        IntType = 999,
+                        DynamicID = item.id_str,
+                        ContentStr = $"未适配的类型{item.type}:\r\n" + JsonConvert.SerializeObject(item)
+                    };
+                }
                 var data = new DynamicItemDisplayModel()
                 {
                     CommentCount = item.comment,
@@ -762,10 +773,10 @@ namespace BiliLite.Modules.User
                     Mid = item.mid,
                     ShareCount = item.forward,
                     Time = Utils.HandelTimestamp(item.pubdate.ToString()),
-                    IntType = 0,// item.type,
+                    IntType = t.ToInt32(),// item.type,
                     ReplyID = item.basic.rid_str,
                     ReplyType = item.basic.comment_type,
-                    Type = DynamicParse.ParseType2024(item.type),
+                    Type = t,
                     UserCommand = UserCommand,
                     LaunchUrlCommand = LaunchUrlCommand,
                     WebCommand = WebCommand,
@@ -783,16 +794,6 @@ namespace BiliLite.Modules.User
                     WatchLaterCommand = watchLaterVM.AddCommand,
                     Liked = item.liked
                 };
-                if (data.Type == DynamicDisplayType.Other)
-                {
-                    return new DynamicItemDisplayModel()
-                    {
-                        Type = DynamicDisplayType.Other,
-                        IntType = 999,
-                        DynamicID = item.basic.rid_str,
-                        ContentStr = $"未适配的类型{data.IntType}:\r\n" + JsonConvert.SerializeObject(item)
-                    };
-                }
                 //prefix
                 if(data.Type == DynamicDisplayType.Repost)
                 {

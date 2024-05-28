@@ -168,7 +168,7 @@
     <DataTemplate x:Key="Other">
         <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="{ThemeResource ForegroundBorderColor}" CornerRadius="4">
             <StackPanel Margin="12">
-                <TextBlock TextWrapping="Wrap">无法显示此动态,请将以下内容复制给开发者适配</TextBlock>
+                <TextBlock TextWrapping="Wrap">无法显示此动态,有待修复</TextBlock>
                 <TextBlock Margin="0 0 8 0" Text="{Binding Path=ContentStr}" TextWrapping="Wrap" IsTextSelectionEnabled="True"></TextBlock>
             </StackPanel>
         </Border>
@@ -177,7 +177,7 @@
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
                 <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Margin="8 4 8 0">
-                    <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}"></TextBlock>
+                    <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" HorizontalAlignment="Left" HorizontalTextAlignment="Left" MaxWidth="800"></TextBlock>
                     <Border BorderThickness="1"  BorderBrush="{ThemeResource ForegroundBorderColor}"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
                         <ListView 
                         SelectionMode="None" 

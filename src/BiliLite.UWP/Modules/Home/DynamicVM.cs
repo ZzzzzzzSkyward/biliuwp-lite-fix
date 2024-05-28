@@ -250,7 +250,38 @@ namespace BiliLite.Modules
                     ??
                     modules?.module_dynamic?.major?.live?.title
                     ??
+                    modules?.module_dynamic?.major?.article?.title
+                    ??
+                    modules?.module_dynamic?.major?.ugc_season?.title
+                    ??
+                    modules?.module_dynamic?.major?.pgc?.title
+                    ??
                     "";
+            }
+        }
+        public string jumpurl
+        {
+            get
+            {
+                var url=
+                    modules?.module_dynamic?.major?.archive?.jump_url ??
+                    modules?.module_dynamic?.major?.article?.jump_url ??
+                    modules?.module_dynamic?.major?.pgc?.jump_url ??
+                    modules?.module_dynamic?.major?.ugc_season?.jump_url ??
+                    modules?.module_dynamic?.major?.live?.jump_url ??
+                     "";
+                if (url.Length==0) return url;
+                if (url[0] == '/') return "https:" + url;
+                return url;
+            }
+        }
+        public string durationtext
+        {
+            get
+            {
+                return
+                    modules.module_dynamic.major?.archive?.duration_text ??
+                    modules.module_dynamic.major?.ugc_season?.duration_text ?? "";
             }
         }
 
@@ -281,6 +312,9 @@ namespace BiliLite.Modules
             get { return 
                     modules?.module_dynamic?.major?.archive?.cover??
                     modules?.module_dynamic?.major?.live?.cover??
+                    modules?.module_dynamic?.major?.article?.covers?[0]??
+                    modules?.module_dynamic?.major?.pgc?.cover??
+                    modules?.module_dynamic?.major?.ugc_season?.cover??
                     "";
             }
         }
@@ -313,7 +347,7 @@ namespace BiliLite.Modules
         public int view
         {
             get {
-                var text = modules?.module_dynamic?.major?.archive?.stat?.play ?? "0";
+                var text = viewtext;
                 text = text.Replace("万", "0000").Replace("千","000").Replace("百","00").Replace("十","0");
                 int result;
                 if (Int32.TryParse(text, out result))
@@ -324,7 +358,15 @@ namespace BiliLite.Modules
         }
         public string viewtext
         {
-            get { return modules?.module_dynamic?.major?.archive?.stat?.play ?? "0"; }
+            get
+            {
+                return modules?.module_dynamic?.major?.archive?.stat?.play ??
+                  modules.module_dynamic.major?.article?.label ??
+                  modules.module_dynamic.major?.live?.desc_second ??
+                  modules.module_dynamic.major?.pgc?.stat?.play ??
+                  modules.module_dynamic.major?.ugc_season?.stat?.play ??
+                  "0";
+            }
         }
         public int like
         {
@@ -355,7 +397,10 @@ namespace BiliLite.Modules
         {
             get
             {
-                return modules?.module_dynamic?.desc?.text ?? "";
+                return
+                    modules?.module_dynamic?.desc?.text ??
+                    modules?.module_dynamic?.major?.article?.desc ??
+                    "";
             }
         }
     }
@@ -475,12 +520,55 @@ namespace BiliLite.Modules
         public DynamicCardModel2024_archive archive { get; set; }
         public DynamicCardModel2024_draw draw { get; set; }
         public DynamicCardModel2024_live live { get; set; }
+        public DynamicCardModel2024_article article { get; set; }
+        public DynamicCardModel2024_season pgc{ get; set; }
+        public DynamicCardModel2024_list ugc_season{ get; set; }
         public DynamicCardModel2024_live_rcmd live_rcmd { get; set; }
         public string type { get; set; }
     }
     public class DynamicCardModel2024_live_rcmd
     {
         public string content { get; set; }
+    }
+    public class DynamicCardModel2024_article
+    {
+        public System.Collections.Generic.List<string> covers { get; set; }
+        public string desc { get; set; }
+        public int id { get; set; }
+        public string jump_url{ get; set; }
+        public string label{ get; set; }
+        public string title{ get; set; }
+    }
+    public class DynamicCardModel2024_season
+    {
+        //public object badge{ get; set; }
+        public string cover{ get; set; }
+        public int epid{ get; set; }
+        public int season_id{ get; set; }
+        public DynamicCardModel2024_astat stat { get; set; }
+        /*1：番剧
+2：电影
+3：纪录片
+4：国创
+5：电视剧
+6：漫画
+7：综艺*/
+        public int sub_type{ get; set; }
+        public string jump_url{ get; set; }
+        public int type{ get; set; }
+        public string title{ get; set; }
+    }
+    public class DynamicCardModel2024_list
+    {
+        public long aid{ get; set; }
+        //public object badge{ get; set; }
+        public string cover{ get; set; }
+        public string desc{ get; set; }
+        public int disable_preview{ get; set; }
+        public string duration_text{ get; set; }
+        public string jump_url{ get; set; }
+        public DynamicCardModel2024_astat stat { get; set; }
+        public string title{ get; set; }
     }
     public class DynamicCardModel2024_live
     {

@@ -301,7 +301,29 @@ namespace BiliLite.Api
             headers.Add("Referer", "https://www.bilibili.com/");
             return headers;
         }
-
+        private static bool has_inited_cookie = false;
+        public static bool need_refresh_cookie;
+        public async static Task<bool> NeedRefreshCookie()
+        {
+            if (has_inited_cookie) return need_refresh_cookie;
+            var url = "https://passport.bilibili.com/x/passport-login/web/cookie/info";
+            var api = new ApiModel() {
+                need_cookie = true,
+                method = RestSharp.Method.Get,
+                baseUrl = url,
+            };
+            var result = await api.Request();
+            if (result.code==200)
+            {
+                var j = result.GetJObject();
+                has_inited_cookie = true;
+                if (j["data"] != null)
+                    need_refresh_cookie = (bool)(j["data"]["refresh"] ?? false);
+                else
+                    need_refresh_cookie = true;
+            }
+            return need_refresh_cookie;
+        }
     }
     public class ApiKeyInfo
     {

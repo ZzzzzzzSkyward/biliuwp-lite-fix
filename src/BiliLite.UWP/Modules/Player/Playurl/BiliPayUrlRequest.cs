@@ -581,6 +581,7 @@ namespace BiliLite.Modules.Player.Playurl
         {
             try
             {
+                await ApiHelper.NeedRefreshCookie();
                 var webApiResult = await (playerAPI.VideoPlayUrl(aid: playInfo.avid, cid: playInfo.cid, qn: qualityID, dash: CodecMode != PlayUrlCodecMode.FLV, false, playInfo.area)).Request();
                 if (!webApiResult.status)
                 {
