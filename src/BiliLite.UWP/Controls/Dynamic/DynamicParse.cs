@@ -73,6 +73,10 @@ namespace BiliLite.Controls.Dynamic
         /// </summary>
         Miss,
         /// <summary>
+        /// 直播预约
+        /// </summary>
+        Reserve,
+        /// <summary>
         /// 其他
         /// </summary>
         Other
@@ -163,6 +167,32 @@ namespace BiliLite.Controls.Dynamic
                     return DynamicDisplayType.Other;
             }
         }
+        public static string GetDynamicSubType(string subtype)
+        {
+            switch (subtype)
+            {
+                case "ADDITIONAL_TYPE_NONE":
+                    return "none";
+                case "ADDITIONAL_TYPE_PGC":
+                    return "pgc";
+                case "ADDITIONAL_TYPE_GOODS"://商品信息
+                    return "goods";
+                case "ADDITIONAL_TYPE_VOTE":// 投票  716365292050055176
+                    return "vote";
+                case "ADDITIONAL_TYPE_COMMON":// 一般类型 游戏716357878942793745
+                    return "common";
+                case "ADDITIONAL_TYPE_MATCH":
+                    return "match";
+                case "ADDITIONAL_TYPE_UP_RCMD":
+                    return "recommend";
+                case "ADDITIONAL_TYPE_UGC":// 视频跳转 716489253410832401
+                    return "ugc";
+                case "ADDITIONAL_TYPE_RESERVE":
+                    return "reserve";
+                default:
+                    return subtype;
+            }
+        }
         public static DynamicItemDisplayOneRowInfo ParseOneRowInfo2024(DynamicItemDisplayModel data, Modules.DynamicCardModel2024 item)
         {
             var info = new DynamicItemDisplayOneRowInfo(){
@@ -175,6 +205,24 @@ namespace BiliLite.Controls.Dynamic
             };
             switch (data.Type)
             {
+                case DynamicDisplayType.Text:
+                    {
+                        if (GetDynamicSubType(item.modules.module_dynamic.additional?.type ?? "") == "reserve")
+                        {
+                            data.Type = DynamicDisplayType.Reserve;
+                            info = new DynamicItemDisplayOneRowInfo()
+                            {
+                                Title = item.title,
+                                Desc = item.modules.module_dynamic.additional.reserve.desc1?.text ?? "" + " " +
+                                item.modules.module_dynamic.additional.reserve.desc2?.text ?? "",
+                                Subtitle = item.desc,
+                                CoverText=item.modules.module_dynamic.additional.reserve.button?.text,
+                                Cover=item.modules.module_dynamic.additional.reserve.button?.icon_url,
+                                Url=item.modules.module_dynamic.additional.reserve.jump_url??item.jumpurl??"",
+                            };
+                        }
+                    }
+                    break;
                 case DynamicDisplayType.Video:
                     {
                         var duration = item.durationtext ?? "";
@@ -298,6 +346,14 @@ namespace BiliLite.Controls.Dynamic
                             Title = item.title,
                         };
                         info.Url = item.jumpurl;
+                    }
+                    break;
+                case DynamicDisplayType.Photo:
+                    {
+                        info = new DynamicItemDisplayOneRowInfo()
+                        {
+                            Desc=item.desc,
+                        };
                     }
                     break;
                 default:

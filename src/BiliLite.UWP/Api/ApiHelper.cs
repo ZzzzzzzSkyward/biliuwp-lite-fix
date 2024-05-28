@@ -302,10 +302,22 @@ namespace BiliLite.Api
             return headers;
         }
         private static bool has_inited_cookie = false;
-        public static bool need_refresh_cookie;
+        private static bool _need_refresh_cookie;
+        public static bool need_refresh_cookie
+        {
+            get
+            {
+                if (!has_inited_cookie)
+                {
+                    NeedRefreshCookie();
+                    return false;
+                }
+                return _need_refresh_cookie;
+            }
+        }
         public async static Task<bool> NeedRefreshCookie()
         {
-            if (has_inited_cookie) return need_refresh_cookie;
+            if (has_inited_cookie) return _need_refresh_cookie;
             var url = "https://passport.bilibili.com/x/passport-login/web/cookie/info";
             var api = new ApiModel() {
                 need_cookie = true,
@@ -318,11 +330,11 @@ namespace BiliLite.Api
                 var j = result.GetJObject();
                 has_inited_cookie = true;
                 if (j["data"] != null)
-                    need_refresh_cookie = (bool)(j["data"]["refresh"] ?? false);
+                    _need_refresh_cookie = (bool)(j["data"]["refresh"] ?? false);
                 else
-                    need_refresh_cookie = true;
+                    _need_refresh_cookie = true;
             }
-            return need_refresh_cookie;
+            return _need_refresh_cookie;
         }
     }
     public class ApiKeyInfo

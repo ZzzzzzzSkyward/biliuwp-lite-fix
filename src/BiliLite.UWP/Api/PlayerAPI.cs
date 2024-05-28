@@ -1,5 +1,6 @@
 ﻿using BiliLite.Helpers;
 using BiliLite.Models;
+using BiliLite.Modules.Player.Playurl;
 using System;
 using System.Collections.Generic;
 
@@ -31,19 +32,28 @@ namespace BiliLite.Api
             {
                 fnval += 16;//dash
                 fnval += 128;//4k as fourk
+                var CodecMode = (PlayUrlCodecMode)SettingHelper.GetValue<int>(SettingHelper.Player.DEFAULT_VIDEO_TYPE, 1);
+                if (CodecMode == PlayUrlCodecMode.DASH_AV1)
+                {
+                    fnval += 2048;//av1
+                }
             }
             else
             {
                 fnval += 1;//mp4
             }
             api.parameter += $"&fourk=1&fnver=0&fnval={fnval}";
-
+            if (SettingHelper.Account.Logined)
+            {
+                api.parameter += $"&access_key={SettingHelper.Account.AccessKey}&mid={SettingHelper.Account.Profile.mid}";
+            }
             if (proxy)
             {
                 api.parameter += $"&area={area}";
             }
             else
             {
+                //api.parameter += ApiHelper.GetSign(api.parameter,ApiHelper.AndroidKey);
                 api.parameter += ApiHelper.GetWbiSign(api.parameter);
             }
             return api;
