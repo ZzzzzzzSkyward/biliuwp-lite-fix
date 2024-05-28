@@ -95,15 +95,18 @@
     </DataTemplate>
     <DataTemplate x:Key="Text">
         <local:DynamicItemControl Model="{Binding}">
-            <TextBlock Text="{Binding Path=OneRowInfo.Desc}"></TextBlock>
+            <local:DynamicItemControl.CardContent>
+                <StackPanel>
+                    <TextBlock Text="{Binding Path=OneRowInfo.Desc}" MaxWidth="800" Margin="8 8 8 8" Foreground="{ThemeResource ForegroundTextColor}" IsTextSelectionEnabled="True" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" HorizontalTextAlignment="Left"></TextBlock>
+                </StackPanel>
+            </local:DynamicItemControl.CardContent>
         </local:DynamicItemControl>
     </DataTemplate>
     <DataTemplate x:Key="Photo1x1">
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
                 <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock IsTextSelectionEnabled="True" Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left"></TextBlock>
                     <Border HorizontalAlignment="Left" CornerRadius="4" MaxHeight="500" MaxWidth="400">
                         <Grid>
                             <HyperlinkButton Padding="0" Command="{Binding Path=ImageCommand}" CommandParameter="{Binding Path=ImagesInfo[0]}">
@@ -135,7 +138,7 @@
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock IsTextSelectionEnabled="True" Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left"></TextBlock>
                     <GridView MaxWidth="400" SelectionMode="None"
                           HorizontalAlignment="Left" ItemsSource="{Binding Path=ImagesInfo}" >
 
@@ -168,7 +171,7 @@
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"></TextBlock>
+                    <TextBlock IsTextSelectionEnabled="True" Text="{Binding Path=OneRowInfo.Desc}" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left"></TextBlock>
                     <GridView MaxWidth="300" SelectionMode="None"
                           HorizontalAlignment="Left" ItemsSource="{Binding Path=ImagesInfo}">
                         <GridView.ItemTemplate>
@@ -207,7 +210,7 @@
         <local:DynamicItemControl Model="{Binding}">
             <local:DynamicItemControl.CardContent>
                 <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Margin="8 4 8 0">
-                    <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" HorizontalAlignment="Left" HorizontalTextAlignment="Left" MaxWidth="800"></TextBlock>
+                    <TextBlock IsTextSelectionEnabled="True" Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Subtitle}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" HorizontalAlignment="Left" HorizontalTextAlignment="Left" MaxWidth="800"></TextBlock>
                     <Border BorderThickness="1"  BorderBrush="{ThemeResource ForegroundBorderColor}"  CornerRadius="4" Background="{ThemeResource TopPaneBackground}">
                         <ListView 
                         SelectionMode="None" 
