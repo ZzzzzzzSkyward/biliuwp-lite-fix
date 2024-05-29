@@ -208,6 +208,8 @@ namespace BiliLite
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
             deferral.Complete();
         }
 

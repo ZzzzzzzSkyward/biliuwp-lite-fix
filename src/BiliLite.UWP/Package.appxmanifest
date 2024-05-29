@@ -63,9 +63,9 @@
     <rescap:Capability Name="broadFileSystemAccess"/>
     <uap:Capability Name="picturesLibrary"/>
     <rescap:Capability Name="documentsLibrary"/>
-    <uap3:Capability Name="backgroundMediaPlayback"/>
     <uap:Capability Name="removableStorage"/>
     <rescap:Capability Name="confirmAppClose"/>
     <Capability Name="internetClient"/>
+    <uap3:Capability Name="backgroundMediaPlayback"/>
   </Capabilities>
 </Package>
