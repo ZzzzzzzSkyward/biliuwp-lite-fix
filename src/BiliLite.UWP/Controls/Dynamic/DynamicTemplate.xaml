@@ -25,7 +25,7 @@
                     <TextBlock Text="{Binding Path=OneRowInfo.Subtitle}" Margin="0 0" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"></TextBlock>
                     <Border BorderThickness="1" HorizontalAlignment="Stretch"  BorderBrush="{ThemeResource ForegroundTextColor}" CornerRadius="4">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="4 4 4 4">
-                            <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Title}" FontSize="20" Foreground="{ThemeResource ForegroundTextColor}" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Margin="0 0 0 0" Text="{Binding Path=OneRowInfo.Title}" FontSize="20" Foreground="{ThemeResource TextColor}" TextWrapping="Wrap"></TextBlock>
                             <TextBlock Margin="0 8 0 0" Text="{Binding Path=OneRowInfo.Desc}" FontSize="14" Foreground="{ThemeResource ForegroundTextColor}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap"></TextBlock>
                         </StackPanel>
                         <!--HyperlinkButton Command="{Binding Path=LaunchUrlCommand}" CommandParameter="{Binding Path=OneRowInfo.Url}" Background="#dd00a9" CornerRadius="2" HorizontalAlignment="Right" Margin="0 0 8 0" Height="40">

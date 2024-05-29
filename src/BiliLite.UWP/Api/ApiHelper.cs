@@ -25,7 +25,7 @@ namespace BiliLite.Api
         }
         // BiliLite.WebApi 项目部署的服务器
         //public static string baseUrl = "http://localhost:5000";
-        public const string IL_BASE_URL = "https://biliapi.iliili.cn";
+        public const string IL_BASE_URL = "https://biliapi.iliili.cn";//已失效
 
         // GIT RAW路径
         public const string GIT_RAW_URL = "https://git.nsapps.cn/xiaoyaocz/BiliLite/raw/master/";
