@@ -212,6 +212,9 @@
     <Compile Include="Controls\Dynamic\DynamicItemControl.xaml.cs">
       <DependentUpon>DynamicItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Dynamic\RichTextControl.xaml.cs">
+      <DependentUpon>RichTextControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Dynamic\DynamicItemDataTemplateSelector.cs" />
     <Compile Include="Controls\Dynamic\DynamicParse.cs" />
     <Compile Include="Controls\ImageViewerControl.xaml.cs">
@@ -632,6 +635,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Dynamic\DynamicItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dynamic\RichTextControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

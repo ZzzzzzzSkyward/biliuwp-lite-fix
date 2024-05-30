@@ -376,6 +376,12 @@ namespace BiliLite.Modules.User
             }
             await sendDynamicDialog.ShowAsync();
         }
+        // 设置json序列化忽略null
+        // 这样就不会报null的错误了
+        public JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
         public async Task GetDynamicItems(string idx = "")
         {
             try
@@ -400,14 +406,13 @@ namespace BiliLite.Modules.User
                     default:
                         break;
                 }
-
                 var results = await api.Request();
                 if (results.status)
                 {
                     var data = results.GetJObject();
                     if (data != null && (data["code"].ToInt32() == 0))
                     {
-                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel2024>>(data["data"]?["items"]?.ToString() ?? "[]");
+                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel2024>>(data["data"]?["items"]?.ToString() ?? "[]",jsonSerializerSettings);
                         if (items.Count > 0)
                         {
                             CanLoadMore = true;
@@ -466,9 +471,9 @@ namespace BiliLite.Modules.User
                     var data = results.GetJObject();
                     if (data["code"].ToInt32() == 0)
                     {
-                        var items = JsonConvert.DeserializeObject<DynamicCardModel>(data["data"]["items"].ToString());
+                        var item = JsonConvert.DeserializeObject<DynamicCardModel2024>(data["data"]?["item"]?.ToString() ?? "[]", jsonSerializerSettings);
                         ObservableCollection<DynamicItemDisplayModel> _ls = new ObservableCollection<DynamicItemDisplayModel>();
-                        _ls.Add(ConvertToDisplay(items));
+                        _ls.Add(ConvertToDisplay2024(item));
                         Items = _ls;
                     }
                     else

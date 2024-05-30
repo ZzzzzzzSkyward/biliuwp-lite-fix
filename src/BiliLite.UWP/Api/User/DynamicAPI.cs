@@ -93,15 +93,15 @@ namespace BiliLite.Api.User
                 method = RestSharp.Method.Get,
                 //baseUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail",
                 //2024
-                baseUrl = "https://api.vc.bilibili.com/dynamic_repost/v1/dynamic_repost/repost_detail",
-                parameter = $"dynamic_id={id}",
+                baseUrl = "https://api.bilibili.com/x/polymer/web-dynamic/v1/detail",
+                parameter = $"id={id}&timezone_offset=-480&platform=web&gaia_source=main_web",
             };
             //使用Web的API
             if (SettingHelper.Account.Logined)
             {
                 api.parameter += $"&access_key={SettingHelper.Account.AccessKey}";
             }
-       
+            api.parameter += ApiHelper.GetWbiSign(api.parameter);       
             return api;
         }
         public ApiModel DynamicRepost(string id,string offset="")

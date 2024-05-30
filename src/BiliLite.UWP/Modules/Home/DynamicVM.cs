@@ -1,13 +1,13 @@
 ﻿using BiliLite.Helpers;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-
 namespace BiliLite.Modules
 {
     public class DynamicVM : IModules
@@ -434,12 +434,20 @@ namespace BiliLite.Modules
                     "";
             }
         }
+        public string richtext
+        {
+            get
+            {
+                return modules?.module_dynamic?.desc?.richtext;
+            }
+        }
     }
     public class DynamicCardModel2024_basic
     {
         public string comment_id_str { get; set; }
         public int comment_type { get; set; }
         public string rid_str { get; set; }
+        //public object like_icon
     }
     public class DynamicCardModel2024_modules
     {
@@ -462,7 +470,9 @@ namespace BiliLite.Modules
         public string pub_location_text { get; set; }
         public string label { get; set; }
         public string face { get; set; }
+        public string jump_url { get; set; }
         public long pub_ts { get; set; }
+        public bool following { get; set; }
     }
     public class DynamicCardModel2024_avatar
     {
@@ -509,44 +519,105 @@ namespace BiliLite.Modules
     }
     public class DynamicCardModel2024_stat
     {
-        public DynamicCardModel2024_like like { get; set; }
-        public DynamicCardModel2024_forward forward { get; set; }
         public DynamicCardModel2024_comment comment { get; set; }
-    }
-    public class DynamicCardModel2024_like
-    {
-        public int count { get; set; }
-        public bool forbidden { get; set; }
-        public bool status { get; set; }
+        public DynamicCardModel2024_forward forward { get; set; }
+        public DynamicCardModel2024_like like { get; set; }
     }
     public class DynamicCardModel2024_forward
     {
         public int count { get; set; }
         public bool forbidden { get; set; }
     }
-    public class DynamicCardModel2024_comment
+    public class DynamicCardModel2024_comment : DynamicCardModel2024_forward
     {
-        public int count { get; set; }
-        public bool forbidden { get; set; }
+    }
+    public class DynamicCardModel2024_like : DynamicCardModel2024_forward
+    {
+        public bool status { get; set; }
     }
     public class DynamicCardModel2024_dynamic
     {
-        //public string additional { get; set; }
-        public DynamicCardModel2024_desc desc { get; set; }
-        //public string topic { get; set; }
-        public DynamicCardModel2024_major major { get; set; }
+        //public DynamicCardModel2024_topic topic { get; set; }
         public DynamicCardModel2024_add additional { get; set; }
+        public DynamicCardModel2024_desc desc { get; set; }
+        public DynamicCardModel2024_major major { get; set; }
     }
     public class DynamicCardModel2024_desc
     {
-        public System.Collections.Generic.List<DynamicCardModel2024_node> rich_text_nodes { get; set; }
+        public static int maxlength = 1000;
+        public List<DynamicCardModel2024_node> rich_text_nodes { get; set; }
         public string text { get; set; }
+        public static int BEGIN = 0;
+        public static int END = 1;
+        public string richtext
+        {
+            get
+            {
+                var str = "";
+                var state = END;
+                foreach (var s in rich_text_nodes)
+                {
+                    var t = s.richtext;
+                    if (!string.IsNullOrEmpty(t))
+                    {
+                        if (s.type == "RICH_TEXT_NODE_TYPE_TEXT")
+                        {
+                            if (state == BEGIN)
+                            {
+                                str += "</Paragraph>";
+                            }
+                            else
+                            {
+                            }
+                            str += "<Paragraph>";
+                            state = BEGIN;
+                        }
+                        else
+                        {
+                            if (state == BEGIN) { }
+                            else
+                            {
+                                str += "<Paragraph>";
+                            }
+                            state = BEGIN;
+                        }
+                        str += $"{s.richtext}";
+                    }
+                    if (str.Length > maxlength) break;
+                }
+                if (state == BEGIN)
+                {
+                    str += "</Paragraph>";
+                }
+                return str;
+            }
+        }
     }
     public class DynamicCardModel2024_node
     {
         public string orig_text { get; set; }
         public string text { get; set; }
         public string type { get; set; }
+        public string jump_url { get; set; }
+        public string icon_name { get; set; }
+        public string rid { get; set; }
+        //goods
+        public DynamicCardModel2024_emojiinfo emoji { get; set; }
+        //解析出富文本
+        public string richtext
+        {
+            get
+            {
+                return Parser.ParseRichText(this);
+            }
+        }
+    }
+    public class DynamicCardModel2024_emojiinfo
+    {
+        public string icon_url { get; set; }
+        public string text { get; set; }
+        public int size { get; set; }//12,不知道
+        public int type { get; set; }//123,不知道
     }
     public class DynamicCardModel2024_add
     {
@@ -653,7 +724,7 @@ namespace BiliLite.Modules
     }
     public class DynamicCardModel2024_article
     {
-        public System.Collections.Generic.List<string> covers { get; set; }
+        public List<string> covers { get; set; }
         public string desc { get; set; }
         public int id { get; set; }
         public string jump_url { get; set; }
@@ -728,7 +799,7 @@ namespace BiliLite.Modules
     public class DynamicCardModel2024_draw
     {
         public long id { get; set; }
-        public System.Collections.Generic.List<DynamicCardModel2024_pic> items { get; set; }
+        public List<DynamicCardModel2024_pic> items { get; set; }
     }
     public class DynamicCardModel2024_pic
     {
@@ -736,10 +807,116 @@ namespace BiliLite.Modules
         public int width { get; set; }
         public float size { get; set; }
         public string src { get; set; }
+        //public List<string> tags {get; set;}
     }
     public class DynamicCardModel2024_astat
     {
         public string danmaku { get; set; }
         public string play { get; set; }
+    }
+    //原来位于DynamicParse.cs
+    public static class Parser
+    {
+        public static string escapexaml(string text)
+        {
+
+            text = text.Replace("&", "&amp;");
+            text = text.Replace("<", "&lt;");
+            text = text.Replace(">", "&gt;");
+            text = text.Replace("\"", "&quot;");
+            text = text.Replace("'", "&apos;");
+            text = text.Replace("\r\n", "\n");
+
+            return text;
+        }
+        public static List<string> HTTP(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
+            {
+                text = escapexaml(text);
+            }
+            return text.Split('\n').ToList();
+        }
+        public static string At(DynamicCardModel2024_node node, string text)
+        {
+            if (node.type != "RICH_TEXT_NODE_TYPE_AT") return text;
+            var mid = node.rid;
+            if (string.IsNullOrEmpty(mid)) return text;
+            var url = $"https://space.bilibili.com/{mid}";
+            url = escapexaml(url);
+            return $"<InlineUIContainer><HyperlinkButton NavigateUri=\"{url}\">{text}<ToolTipService.ToolTip>" +
+                $"{url}" +
+        "</ToolTipService.ToolTip ></HyperlinkButton></InlineUIContainer>";
+        }
+        public static string Topic(DynamicCardModel2024_node node, string text)
+        {
+            if (node.type != "RICH_TEXT_NODE_TYPE_TOPIC") return text;
+            var url = node.jump_url;
+            url = escapexaml(url);
+            //replace the whole text with a hyperlink to url
+            return $"<InlineUIContainer><HyperlinkButton NavigateUri=\"{url}\">{text}</HyperlinkButton></InlineUIContainer>";
+        }
+        public static string Web(DynamicCardModel2024_node node, string text)
+        {
+            if (node.type != "RICH_TEXT_NODE_TYPE_WEB") return text;
+            var url = node.jump_url;
+            url = escapexaml(url);
+            //replace the whole text with a hyperlink to url
+            return $"<InlineUIContainer><HyperlinkButton NavigateUri=\"{url}\">{url}</HyperlinkButton></InlineUIContainer>";
+        }
+        public static string Emoji(DynamicCardModel2024_node node, string text)
+        {
+            var emojidata = node.emoji;
+            if (null == emojidata) return text;
+            var type = emojidata.type;
+            var size = emojidata.size;
+            var url = emojidata.icon_url;
+            if (string.IsNullOrEmpty(url)) return text;
+            url = escapexaml(url);
+            //replace [emojidata.text] with <InlineUIContainer><Border Margin=""0 -4 4 -4""><Image Source=""{emojidata.icon_url}"" MaxWidth=""{emojidata.size*1em}"" MaxHeight=""{emojidata.size*1em}""/></Border></InlineUIContainer>
+            return
+                $"<InlineUIContainer><Border Margin=\"0 -4 4 -4\"><Image Source=\"{url}\" MaxWidth=\"{emojidata.size * 18}\" MaxHeight=\"{emojidata.size * 18}\"/></Border></InlineUIContainer>";
+        }
+
+        public static string ParseRichText(DynamicCardModel2024_node node)
+        {
+            var str = "";
+            if (node.text != null)
+            {
+                str = node.text;
+            }
+            var strs = HTTP(str);
+            for (var i = 0; i < strs.Count; i++)
+            {
+                strs[i] = Emoji(node, strs[i]);
+                strs[i] = Topic(node, strs[i]);
+                strs[i] = At(node, strs[i]);
+                strs[i] = Web(node, strs[i]);
+            }
+            str = "";
+            foreach (var s in strs)
+            {
+                str += $"{s}\n";
+            }
+            return str;
+        }
+        public static string ParseText(string text)
+        {
+            var str = "";
+            if (text != null)
+            {
+                str = text;
+            }
+            var strs = HTTP(str);
+            for (var i = 0; i < strs.Count; i++)
+            {
+            }
+            str = "";
+            foreach (var s in strs)
+            {
+                str += $"<Paragraph>{s}</Paragraph>\n";
+            }
+            return str;
+        }
     }
 }
