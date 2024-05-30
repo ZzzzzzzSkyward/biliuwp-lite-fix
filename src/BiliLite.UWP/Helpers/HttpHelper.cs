@@ -471,11 +471,27 @@ namespace BiliLite.Helpers
         }
         public async Task<ApiDataModel<T>> GetData<T>()
         {
+            try
+            {
             return await GetJson<ApiDataModel<T>>();
+        }
+            catch (Exception)
+            {
+                return null;
+            }
+
         }
         public async Task<ApiResultModel<T>> GetResult<T>()
         {
+            try
+            {
             return await GetJson<ApiResultModel<T>>();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
         }
     }
 }

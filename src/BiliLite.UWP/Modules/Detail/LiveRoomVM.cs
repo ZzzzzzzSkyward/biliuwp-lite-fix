@@ -547,8 +547,7 @@ namespace BiliLite.Modules
                     }
                     else
                     {
-                        Utils.ShowMessageToast("无法获取或解析直播间播放地址");
-                    }
+                    Utils.ShowMessageToast(results.message);
                 }
             }
             catch (Exception)
