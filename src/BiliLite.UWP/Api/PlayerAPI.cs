@@ -202,7 +202,7 @@ namespace BiliLite.Api
         /// <param name="type">类型 3=视频，4=番剧</param>
         /// <param name="progress">进度/秒</param>
         /// <returns></returns>
-        public ApiModel SeasonHistoryReport(string aid,string cid, int progress, int sid=0,string epid="0",int type=3)
+        public ApiModel SeasonHistoryReport(string aid,string cid, int progress, long sid=0,string epid="0",int type=3)
         {
             ApiModel api = new ApiModel()
             {

@@ -1205,7 +1205,7 @@ namespace BiliLite.Controls
             }
         }
         public CommentMemberModel pendant { get; set; }
-        public int pid { get; set; }
+        public long pid { get; set; }
         public string name { get; set; }
         public string image { get; set; }
 
