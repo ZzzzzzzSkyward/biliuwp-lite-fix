@@ -163,7 +163,7 @@ namespace BiliLite.Controls
                 ObservableCollection<CommentModel> ls = new ObservableCollection<CommentModel>();
 
 
-                var re = await commentApi.Comment(_loadCommentInfo.Oid, _loadCommentInfo.CommentSort, _page, _loadCommentInfo.CommentMode, offsetStr: cursor?.PaginationReply?.NextOffset).Request();
+                var re = await commentApi.Comment(_loadCommentInfo.Oid, _loadCommentInfo.CommentSort, _page, _loadCommentInfo.CommentMode, offset: _page).Request();
                 if (re.status)
                 {
                     dataCommentModel m;
@@ -237,10 +237,11 @@ namespace BiliLite.Controls
                         {
                             closeRepost.Visibility = Visibility.Visible;
                             btn_LoadMore.Visibility = Visibility.Collapsed;
+                            Utils.ShowMessageToast("评论区已关闭");
                         }
                         else
                         {
-                            Utils.ShowMessageToast(m.message,"");
+                            Utils.ShowMessageToast(m.message);
                         }
                     }
                 }
@@ -642,6 +643,7 @@ namespace BiliLite.Controls
 
         }
         CommentModel selectComment;
+
         private void btnFace_Click(object sender, RoutedEventArgs e)
         {
             selectComment = (sender as Button).DataContext as CommentModel;

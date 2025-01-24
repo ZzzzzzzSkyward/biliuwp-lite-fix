@@ -779,7 +779,9 @@ namespace BiliLite.Controls.Dynamic
                         var d = content.Substring(item.location, item.length);
                         var index = input.IndexOf(d);
                         input = input.Remove(index, item.length);
-                        var run = @"<InlineUIContainer><HyperlinkButton Command=""{Binding UserCommand}""  IsEnabled=""True"" Margin=""0 -4 4 -4"" Padding=""0"" " + string.Format(@" Tag=""{1}""  CommandParameter=""{1}"" ><TextBlock>{0}</TextBlock></HyperlinkButton></InlineUIContainer>", d.Replace("@", "^x$%^"), item.data);
+                        var run = @"<InlineUIContainer>\
+<HyperlinkButton Command=""{Binding UserCommand}""  IsEnabled=""True"" Margin=""0 -4 4 -4"" Padding=""0"" " + string.Format(@" Tag=""{1}""  CommandParameter=""{1}"" >\
+<TextBlock>{0}</TextBlock></HyperlinkButton></InlineUIContainer>", d.Replace("@", "^x$%^"), item.data);
                         input = input.Insert(index, run);
                     }
                     catch (Exception)

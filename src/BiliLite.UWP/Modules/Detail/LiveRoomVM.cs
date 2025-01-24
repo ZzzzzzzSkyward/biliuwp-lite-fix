@@ -547,7 +547,8 @@ namespace BiliLite.Modules
                     }
                     else
                     {
-                    Utils.ShowMessageToast(results.message);
+                        //Utils.ShowMessageToast(result1.message);
+                    }
                 }
             }
             catch (Exception)

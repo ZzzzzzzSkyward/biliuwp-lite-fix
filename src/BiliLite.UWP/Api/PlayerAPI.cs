@@ -24,7 +24,7 @@ namespace BiliLite.Api
                 method = RestSharp.Method.Get,
                 baseUrl = $"{baseUrl}/x/player/wbi/playurl",
                 parameter = $"avid={aid}&cid={cid}&qn={qn}&type=&otype=json",
-                need_cookie = !ApiHelper.need_refresh_cookie,
+                need_cookie = true,
                 headers = VideoHeader,
             };
             var fnval = 0;
@@ -45,7 +45,7 @@ namespace BiliLite.Api
             api.parameter += $"&fourk=1&fnver=0&fnval={fnval}";
             if (SettingHelper.Account.Logined)
             {
-                api.parameter += $"&access_key={SettingHelper.Account.AccessKey}&mid={SettingHelper.Account.Profile.mid}";
+                //api.parameter += $"&access_key={SettingHelper.Account.AccessKey}&mid={SettingHelper.Account.Profile.mid}";
             }
             if (proxy)
             {
@@ -247,9 +247,11 @@ namespace BiliLite.Api
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Get,
-                baseUrl = $"{ApiHelper.API_BASE_URL}/x/player/v2",
+                baseUrl = $"{ApiHelper.API_BASE_URL}/x/player/wbi/v2",
                 parameter = $"cid={cid}&aid={aid}&bvid={bvid}",
+                need_cookie=true,
             };
+            api.parameter += ApiHelper.GetWbiSign(api.parameter);
             return api;
         }
         /// <summary>
