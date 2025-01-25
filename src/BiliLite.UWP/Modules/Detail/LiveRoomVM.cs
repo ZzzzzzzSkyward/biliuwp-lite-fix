@@ -547,7 +547,7 @@ namespace BiliLite.Modules
                     }
                     else
                     {
-                        //Utils.ShowMessageToast(result1.message);
+                        Utils.ShowMessageToast("获取直播间信息失败");
                     }
                 }
             }

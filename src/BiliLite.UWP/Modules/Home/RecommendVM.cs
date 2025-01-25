@@ -248,7 +248,7 @@ namespace BiliLite.Modules
                     }
                     else
                     {
-                        return ad_info.creative_content.title;
+                        return ad_info.creative_content?.title ?? "";
                     }
                 }
                 return _title;
