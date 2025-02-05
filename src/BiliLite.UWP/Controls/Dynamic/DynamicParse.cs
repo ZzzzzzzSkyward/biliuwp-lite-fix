@@ -274,7 +274,7 @@ namespace BiliLite.Controls.Dynamic
                         {
                             info.Title = item.title;
                         }
-                        info.Url = "http://b23.tv/ss" + info.ID;
+                        info.Url = item.jumpurl;
                     }
                     break;
                 case DynamicDisplayType.Music:

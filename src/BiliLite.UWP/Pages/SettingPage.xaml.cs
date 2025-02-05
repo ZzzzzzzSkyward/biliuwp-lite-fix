@@ -40,9 +40,6 @@ namespace BiliLite.Pages
     public sealed partial class SettingPage : BasePage
     {
         SettingVM settingVM;
-        private string _cookie;
-        private string _token;
-
         public SettingPage()
         {
             this.InitializeComponent();
