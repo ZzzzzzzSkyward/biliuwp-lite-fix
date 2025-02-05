@@ -168,7 +168,6 @@ namespace BiliLite.Api.User
                 api.parameter += $"&access_key={SettingHelper.Account.AccessKey}";
             }
             api.parameter += ApiHelper.GetSign(api.parameter, ApiHelper.AndroidKey);
-            
             return api;
         }
 
