@@ -1256,20 +1256,12 @@ FallbackColor=""#ffffff"" />
             set
             {
                 if (String.IsNullOrEmpty(value)) return;
-                SettingHelper.SetValue<string>("CookieCSRF",value);
+                SettingHelper.SetValue<string>("CookieCSRF", value);
                 var filter = new HttpBaseProtocolFilter();
                 var cookies = filter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
-                try
-                {
-                    var one = cookies.First(x => x.Name == "bili_jct");
-                    one.Value = value;
-                }
-                catch
-                {
-                    var c = new Windows.Web.Http.HttpCookie("bili_jct", "bilibili.com", "/");
-                    c.Value = value;
-                    filter.CookieManager.SetCookie(c);
-                }
+                var c = new Windows.Web.Http.HttpCookie("bili_jct", "bilibili.com", "/");
+                c.Value = value;
+                filter.CookieManager.SetCookie(c);
                 OnPropertyChanged(nameof(Cookie));
             }
         }
@@ -1296,18 +1288,10 @@ FallbackColor=""#ffffff"" />
                 var filter = new HttpBaseProtocolFilter();
                 var cookies = filter.CookieManager.GetCookies(new Uri("https://bilibili.com"));
                 SettingHelper.SetValue<string>("CookieSESSDATA", value);
-                try
-                {
-                    var one = cookies.First(x => x.Name == "SESSDATA");
-                    one.Value = value;
-                }
-                catch
-                {
-                    var c = new Windows.Web.Http.HttpCookie("SESSDATA", "bilibili.com", "/");
-                    c.Value = value;
-                    filter.CookieManager.SetCookie(c);
-                    OnPropertyChanged(nameof(CookieSESSDATA));
-                }
+                var c = new Windows.Web.Http.HttpCookie("SESSDATA", "bilibili.com", "/");
+                c.Value = value;
+                filter.CookieManager.SetCookie(c);
+                OnPropertyChanged(nameof(CookieSESSDATA));
             }
         }
 
