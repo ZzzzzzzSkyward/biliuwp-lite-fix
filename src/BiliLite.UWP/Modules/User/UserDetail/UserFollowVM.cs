@@ -118,11 +118,9 @@ namespace BiliLite.Modules.User.UserDetail
                 CanLoadMore = false;
                 Loading = true;
                 CurrentTid = SelectTid.tagid;
-                var api = userDetailAPI.Followings(mid, Page, 30, tid: CurrentTid, keyword: Keyword, (FollowingsOrder)SelectOrder);
-                if (IsFans)
-                {
-                    api = userDetailAPI.Followers(mid, Page);
-                }
+                var api = IsFans
+                    ? userDetailAPI.Followers(mid, Page)
+                    : await userDetailAPI.Followings(mid, Page, 30, tid: CurrentTid, keyword: Keyword, (FollowingsOrder)SelectOrder);
                 var results = await api.Request();
                 if (results.status)
                 {
