@@ -2163,9 +2163,10 @@ namespace BiliLite.Controls
             {
                 try
                 {
-                gestureRecognizer.ProcessDownEvent(ps[0]);
-                e.Handled = true;
-                }catch(Exception ex) { }
+                    gestureRecognizer.ProcessDownEvent(ps[0]);
+                    e.Handled = true;
+                }
+                catch (Exception ex) { }
             }
         }
 

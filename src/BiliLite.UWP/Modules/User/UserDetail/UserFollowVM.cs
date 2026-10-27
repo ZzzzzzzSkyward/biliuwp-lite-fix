@@ -17,7 +17,7 @@ namespace BiliLite.Modules.User.UserDetail
     {
         public string mid { get; set; }
         private readonly UserDetailAPI userDetailAPI;
-        readonly bool IsFans=false; 
+        readonly bool IsFans = false;
         public UserFollowVM(bool isfans)
         {
             userDetailAPI = new UserDetailAPI();
@@ -30,7 +30,7 @@ namespace BiliLite.Modules.User.UserDetail
                     tagid=-1
                 }
             };
-            SelectTid= Tlist.First();
+            SelectTid = Tlist.First();
             IsFans = isfans;
         }
 
@@ -94,7 +94,7 @@ namespace BiliLite.Modules.User.UserDetail
                 if (results.status)
                 {
                     var data = await results.GetData<JArray>();
-                    var items = JsonConvert.DeserializeObject<ObservableCollection<FollowTlistItemModel>>(data.data.ToString() );
+                    var items = JsonConvert.DeserializeObject<ObservableCollection<FollowTlistItemModel>>(data.data.ToString());
                     if (items != null && items.Count > 0)
                     {
                         foreach (var item in items)
@@ -106,7 +106,7 @@ namespace BiliLite.Modules.User.UserDetail
             }
             catch (Exception ex)
             {
-                Console.WriteLine("关注分组加载失败:"+ex);
+                Console.WriteLine("关注分组加载失败:" + ex);
             }
         }
 
@@ -118,7 +118,7 @@ namespace BiliLite.Modules.User.UserDetail
                 CanLoadMore = false;
                 Loading = true;
                 CurrentTid = SelectTid.tagid;
-                var api = userDetailAPI.Followings(mid, Page,30,tid:CurrentTid,keyword:Keyword, (FollowingsOrder)SelectOrder);
+                var api = userDetailAPI.Followings(mid, Page, 30, tid: CurrentTid, keyword: Keyword, (FollowingsOrder)SelectOrder);
                 if (IsFans)
                 {
                     api = userDetailAPI.Followers(mid, Page);
@@ -126,9 +126,9 @@ namespace BiliLite.Modules.User.UserDetail
                 var results = await api.Request();
                 if (results.status)
                 {
-                    var data =  results.GetJObject();
-                    var successful = data["code"].ToInt32()==0;
-                    
+                    var data = results.GetJObject();
+                    var successful = data["code"].ToInt32() == 0;
+
                     if (successful)
                     {
                         var listStr = data["data"] is JArray ? data["data"].ToString() : data["data"]["list"].ToString();
@@ -151,8 +151,8 @@ namespace BiliLite.Modules.User.UserDetail
 
 
 
-                       // var count = data.data["total"]?.ToInt32() ?? 0;
-                        if (items.Count==0)
+                        // var count = data.data["total"]?.ToInt32() ?? 0;
+                        if (items.Count == 0)
                         {
                             CanLoadMore = false;
                         }
@@ -214,7 +214,7 @@ namespace BiliLite.Modules.User.UserDetail
         public string uname { get; set; }
         public string face { get; set; }
 
-      
+
         public UserFollowOfficialVerifyItem official_verify { get; set; }
         public string Verify
         {
@@ -248,7 +248,7 @@ namespace BiliLite.Modules.User.UserDetail
             }
         }
     }
-  
+
     public class UserFollowOfficialVerifyItem
     {
         public string desc { get; set; }

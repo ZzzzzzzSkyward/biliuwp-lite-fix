@@ -22,8 +22,8 @@ namespace BiliLite.Modules.User.UserDetail
             userDetailAPI = new UserDetailAPI();
             RefreshSubmitArticleCommand = new RelayCommand(Refresh);
             LoadMoreSubmitArticleCommand = new RelayCommand(LoadMore);
-            
-           
+
+
         }
 
         public int SelectOrder { get; set; } = 0;
@@ -52,7 +52,7 @@ namespace BiliLite.Modules.User.UserDetail
             set { _SubmitArticleItems = value; DoPropertyChanged("SubmitArticleItems"); }
         }
 
-       
+
         private bool _Nothing = false;
 
         public bool Nothing
@@ -71,14 +71,14 @@ namespace BiliLite.Modules.User.UserDetail
                 SubmitArticleCanLoadMore = false;
                 LoadingSubmitArticle = true;
                 var api = userDetailAPI.SubmitArticles(mid, SubmitArticlePage, order: (SubmitArticleOrder)SelectOrder);
-                
+
                 var results = await api.Request();
                 if (results.status)
                 {
-                    var data =await results.GetData<JObject>();
+                    var data = await results.GetData<JObject>();
                     if (data.code == 0)
                     {
-                        var items = JsonConvert.DeserializeObject<ObservableCollection<SubmitArticleItemModel>>(data.data["articles"]?.ToString()??"[]");
+                        var items = JsonConvert.DeserializeObject<ObservableCollection<SubmitArticleItemModel>>(data.data["articles"]?.ToString() ?? "[]");
                         if (SubmitArticleItems == null)
                         {
                             SubmitArticleItems = items;
@@ -97,7 +97,7 @@ namespace BiliLite.Modules.User.UserDetail
 
 
 
-                        var count = data.data["count"]?.ToInt32()??0;
+                        var count = data.data["count"]?.ToInt32() ?? 0;
                         if (SubmitArticleItems.Count >= count)
                         {
                             SubmitArticleCanLoadMore = false;
@@ -160,9 +160,11 @@ namespace BiliLite.Modules.User.UserDetail
         public string title { get; set; }
         public string summary { get; set; }
         public List<string> image_urls { get; set; }
-        public string cover {
-            get {
-                return image_urls?[0]??"";
+        public string cover
+        {
+            get
+            {
+                return image_urls?[0] ?? "";
             }
         }
 
@@ -186,6 +188,6 @@ namespace BiliLite.Modules.User.UserDetail
         public long id { get; set; }
         public int parent_id { get; set; }
         public string name { get; set; }
-       
+
     }
 }

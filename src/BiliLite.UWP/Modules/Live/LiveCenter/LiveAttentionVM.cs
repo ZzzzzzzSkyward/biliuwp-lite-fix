@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace BiliLite.Modules.Live.LiveCenter
 {
-    public class LiveAttentionVM:IModules
+    public class LiveAttentionVM : IModules
     {
         readonly Api.Live.LiveCenterAPI liveCenterAPI;
         public LiveAttentionVM()

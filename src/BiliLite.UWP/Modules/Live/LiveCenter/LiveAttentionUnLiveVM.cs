@@ -60,7 +60,7 @@ namespace BiliLite.Modules.Live.LiveCenter
                 CanLoadMore = false;
                 Loading = true;
                 var api = liveCenterAPI.FollowUnLive(Page);
-              
+
                 var results = await api.Request();
                 if (results.status)
                 {
@@ -85,7 +85,7 @@ namespace BiliLite.Modules.Live.LiveCenter
                         }
 
                         var has_more = data.data["has_more"]?.ToInt32() ?? 0;
-                        if (has_more==0)
+                        if (has_more == 0)
                         {
                             CanLoadMore = false;
                         }

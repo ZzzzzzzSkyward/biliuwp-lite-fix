@@ -86,7 +86,7 @@ namespace BiliLite.Modules
                             }
 
                         }
-                        
+
                         if (Items == null)
                         {
                             Items = items;
@@ -95,8 +95,8 @@ namespace BiliLite.Modules
                         }
                         else
                         {
-                            foreach(var i in items)
-                            Items.Add(i);
+                            foreach (var i in items)
+                                Items.Add(i);
                         }
 
                     }
@@ -124,7 +124,7 @@ namespace BiliLite.Modules
 
         private void LoadBanner(RecommendItemModel banner)
         {
-            if(SettingHelper.GetValue("dontloadbanner",false)==true) { return; }
+            if (SettingHelper.GetValue("dontloadbanner", false) == true) { return; }
             try
             {
                 if (Banner == null) Banner = new ObservableCollection<RecommendBannerItemModel>();
@@ -146,7 +146,7 @@ namespace BiliLite.Modules
             catch (Exception)
             {
             }
-           
+
         }
         //TODO防止页面无限调用此方法
         private bool canloadmore = true;
@@ -360,7 +360,7 @@ namespace BiliLite.Modules
                 {
                     return desc_button.text;
                 }
-                if (card_goto=="live")
+                if (card_goto == "live")
                 {
                     return args.up_name;
                 }
@@ -376,7 +376,7 @@ namespace BiliLite.Modules
                 {
                     return desc_button.text;
                 }
-                if (card_goto=="live")
+                if (card_goto == "live")
                 {
                     return args.up_name;
                 }

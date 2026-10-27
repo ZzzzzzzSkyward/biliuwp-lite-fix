@@ -21,7 +21,7 @@ namespace BiliLite.Pages.Bangumi
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if(e.NavigationMode== NavigationMode.New)
+            if (e.NavigationMode == NavigationMode.New)
             {
                 timelineVM = new AnimeTimelineVM((AnimeType)e.Parameter);
                 this.DataContext = timelineVM;

@@ -7,13 +7,13 @@ namespace BiliLite.Controls.Dynamic
 {
     public sealed partial class DynamicItemControl : UserControl
     {
-      
+
         public DynamicItemControl()
         {
             this.InitializeComponent();
-           
+
         }
-      
+
         public DynamicItemDisplayModel Model
         {
             get { return (DynamicItemDisplayModel)GetValue(ModelProperty); }

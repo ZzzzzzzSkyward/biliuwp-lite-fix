@@ -742,7 +742,7 @@ namespace BiliLite.Modules
         {
             get
             {
-                return season_id!=0 ? season_id.ToString() : null;
+                return season_id != 0 ? season_id.ToString() : null;
             }
         }
         public DynamicCardModel2024_astat stat { get; set; }

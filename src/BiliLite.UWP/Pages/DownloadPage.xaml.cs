@@ -394,7 +394,7 @@ namespace BiliLite.Pages
         }
 
 
-    private async void SelectSubtitleButton_Click(object sender, RoutedEventArgs e) { }
+        private async void SelectSubtitleButton_Click(object sender, RoutedEventArgs e) { }
         private async void btnOpen_Click(object sender, RoutedEventArgs e)
         {
             // Create a new FileOpenPicker

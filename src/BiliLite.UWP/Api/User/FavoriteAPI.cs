@@ -77,9 +77,9 @@ namespace BiliLite.Api.User
         /// 收藏收藏夹
         /// </summary>
         /// <returns></returns>
-        public ApiModel CollectFavorite( string media_id)
+        public ApiModel CollectFavorite(string media_id)
         {
-          
+
             ApiModel api = new ApiModel()
             {
                 method = RestSharp.Method.Post,
@@ -113,7 +113,7 @@ namespace BiliLite.Api.User
         /// <param name="intro">介绍</param>
         /// <param name="isOpen">是否私密</param>
         /// <returns></returns>
-        public ApiModel CreateFavorite(string title,string intro, bool isOpen)
+        public ApiModel CreateFavorite(string title, string intro, bool isOpen)
         {
             ApiModel api = new ApiModel()
             {
@@ -132,7 +132,7 @@ namespace BiliLite.Api.User
         /// <param name="isOpen">是否私密</param>
         /// <param name="media_id">收藏夹ID</param>
         /// <returns></returns>
-        public ApiModel EditFavorite(string title, string intro, bool isOpen,string media_id)
+        public ApiModel EditFavorite(string title, string intro, bool isOpen, string media_id)
         {
             ApiModel api = new ApiModel()
             {
@@ -192,7 +192,7 @@ namespace BiliLite.Api.User
         /// 取消收藏
         /// </summary>
         /// <returns></returns>
-        public ApiModel Delete(string media_id,List<string> video_ids)
+        public ApiModel Delete(string media_id, List<string> video_ids)
         {
             var ids = "";
             foreach (var item in video_ids)
@@ -213,7 +213,7 @@ namespace BiliLite.Api.User
         /// 复制到自己的收藏夹
         /// </summary>
         /// <returns></returns>
-        public ApiModel Copy(string src_media_id, string tar_media_id, List<string> video_ids,string mid)
+        public ApiModel Copy(string src_media_id, string tar_media_id, List<string> video_ids, string mid)
         {
             var ids = "";
             foreach (var item in video_ids)

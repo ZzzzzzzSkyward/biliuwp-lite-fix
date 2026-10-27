@@ -245,7 +245,7 @@ namespace BiliLite.Controls
         /// <param name="position"></param>
         /// <param name="isLocal"></param>
         /// <returns></returns>
-        public async Task<PlayerOpenResult> PlayDashUseNative(BiliDashPlayUrlInfo dashInfo, string userAgent, string referer, double position = 0,bool isLocal=false)
+        public async Task<PlayerOpenResult> PlayDashUseNative(BiliDashPlayUrlInfo dashInfo, string userAgent, string referer, double position = 0, bool isLocal = false)
         {
             try
             {
@@ -265,18 +265,18 @@ namespace BiliLite.Controls
                 //设置播放器
                 _playerVideo = new MediaPlayer();
                 //_playerVideo.Source = MediaSource.CreateFromUri(new Uri(videoUrl.baseUrl));
-                AdaptiveMediaSource mediaSource=null;
-                MediaSource mediaSource2=null;
+                AdaptiveMediaSource mediaSource = null;
+                MediaSource mediaSource2 = null;
                 if (isLocal)
                 {
                     mediaSource2 = MediaSource.CreateFromStorageFile(dashInfo.Video.file ?? await StorageFile.GetFileFromPathAsync(dashInfo.Video.Url));
                 }
                 else
                 {
-                mediaSource = await CreateAdaptiveMediaSource(dashInfo, userAgent, referer);
+                    mediaSource = await CreateAdaptiveMediaSource(dashInfo, userAgent, referer);
 
                 }
-                if (mediaSource == null&&mediaSource2==null)
+                if (mediaSource == null && mediaSource2 == null)
                 {
                     return new PlayerOpenResult()
                     {
@@ -284,12 +284,12 @@ namespace BiliLite.Controls
                         message = "创建MediaSource失败"
                     };
                 }
-                if(mediaSource!=null)
-                _playerVideo.Source = MediaSource.CreateFromAdaptiveMediaSource(mediaSource);
+                if (mediaSource != null)
+                    _playerVideo.Source = MediaSource.CreateFromAdaptiveMediaSource(mediaSource);
                 else
-                _playerVideo.Source = mediaSource2;
+                    _playerVideo.Source = mediaSource2;
                 Buffering = true;
-              
+
                 //设置时长
                 _playerVideo.MediaOpened += new TypedEventHandler<MediaPlayer, object>(async (e, arg) =>
                 {
@@ -297,8 +297,8 @@ namespace BiliLite.Controls
                     await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                     {
                         Buffering = false;
-                        if(_playerVideo!=null)
-                        Duration = _playerVideo.PlaybackSession.NaturalDuration.TotalSeconds;
+                        if (_playerVideo != null)
+                            Duration = _playerVideo.PlaybackSession.NaturalDuration.TotalSeconds;
                         PlayMediaOpened?.Invoke(this, new EventArgs());
 
                         ////设置进度
@@ -1406,7 +1406,7 @@ namespace BiliLite.Controls
             {
                 _mediaTimelineController.Position = TimeSpan.FromSeconds(position);
             }
-            else if(_playerVideo!=null)
+            else if (_playerVideo != null)
             {
                 _playerVideo.PlaybackSession.Position = TimeSpan.FromSeconds(position);
             }
@@ -1596,7 +1596,7 @@ namespace BiliLite.Controls
                     info += $"Video Codec: {_ffmpegMSSVideo.CurrentVideoStream?.CodecName}\r\n";
                     info += $"Video Bitrate: {_ffmpegMSSVideo.CurrentVideoStream?.Bitrate}\r\n";
                     info += $"Average Frame: {((double)_ffmpegMSSVideo.CurrentVideoStream?.FramesPerSecond).ToString("0.0")}\r\n";
-                    if (PlayMediaType == PlayMediaType.Dash&&_ffmpegMSSAudio!=null)
+                    if (PlayMediaType == PlayMediaType.Dash && _ffmpegMSSAudio != null)
                     {
                         info += $"Audio Codec: {_ffmpegMSSAudio.AudioStreams[0]?.CodecName}\r\n";
                         info += $"Audio Bitrate: {_ffmpegMSSAudio.AudioStreams[0]?.Bitrate}";
@@ -1618,7 +1618,7 @@ namespace BiliLite.Controls
                         info += $"Average Frame: {_dashInfo.Video.FrameRate}\r\n";
                         info += $"Audio Codec: {_dashInfo.Audio.Codecs}\r\n";
                         info += $"Audio DataRate: {(_dashInfo.Audio.BandWidth / 1024).ToString("0.0")}Kbps\r\n";
-                        info += $"Video Host: { _dashInfo.Video.Host}\r\n";
+                        info += $"Video Host: {_dashInfo.Video.Host}\r\n";
                         info += $"Audio Host: {_dashInfo.Audio.Host}\r\n";
                     }
                     else
@@ -1736,7 +1736,7 @@ namespace BiliLite.Controls
         private MediaSourceConfig CreateFFmpegInteropConfig(string userAgent, string referer)
         {
 
-            var FFmpegType = SettingHelper.GetValue<int>("playertype", 0)==3;
+            var FFmpegType = SettingHelper.GetValue<int>("playertype", 0) == 3;
             var _ffmpegConfig = new MediaSourceConfig();
             _ffmpegConfig.FFmpegOptions.Add("allowed_extensions", "ALL");
             _ffmpegConfig.FFmpegOptions.Add("reconnect", "1");

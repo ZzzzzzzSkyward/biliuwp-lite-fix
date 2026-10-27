@@ -108,7 +108,7 @@ namespace BiliLite.Api
         public static string readcomment_old = "/reply";//2025仍然有效
         //csrf
         public static string SyncCookie(string cookie_name, string setting_name)
-            {
+        {
             var cookie_value = Cookie.ReadCookie(cookie_name, "");
             var setting_value = SettingHelper.GetValue<string>(setting_name, "");
             //没有Cookie
@@ -118,12 +118,12 @@ namespace BiliLite.Api
                 cookie_value = setting_value;
             }
             else if (!String.IsNullOrEmpty(cookie_value) && String.IsNullOrEmpty(setting_value))
-                {
+            {
                 setting_value = cookie_value;
                 SettingHelper.SetValue(setting_name, setting_value);
-                    }
+            }
             return cookie_value;
-                }
+        }
         //csrf
         public static string GetCSRF(bool isparam = false)
         {
@@ -366,14 +366,15 @@ namespace BiliLite.Api
                 return _need_refresh_cookie;
             }
             var url = "https://passport.bilibili.com/x/passport-login/web/cookie/info";
-            var api = new ApiModel() {
+            var api = new ApiModel()
+            {
                 need_cookie = true,
                 method = RestSharp.Method.Get,
                 baseUrl = url,
             };
             LoadCookieFromSetting();
             var result = await api.Request();
-            if (result.code==200)
+            if (result.code == 200)
             {
                 var j = result.GetJObject();
                 has_inited_cookie = true;
@@ -489,7 +490,8 @@ namespace BiliLite.Api
             else if (result2.code == -101)
             {
                 LogHelper.Log("刷新cookie时出现账号未登录", LogType.INFO);
-            } else if (result2.code == -111)
+            }
+            else if (result2.code == -111)
             {
                 LogHelper.Log("刷新cookie时出现csrf校验失败", LogType.INFO);
             }

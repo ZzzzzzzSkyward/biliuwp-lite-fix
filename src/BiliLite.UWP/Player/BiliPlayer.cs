@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace BiliLite.Player
 {
-    public class BiliPlayer: UserControl,IBiliPlayer
+    public class BiliPlayer : UserControl, IBiliPlayer
     {
 
         public PlayerState PlayState
@@ -88,7 +88,7 @@ namespace BiliLite.Player
         {
             PlayState = PlayerState.Pause;
         }
-        
+
 
         public virtual void Play()
         {
@@ -122,7 +122,7 @@ namespace BiliLite.Player
 
         public virtual void TakeScreenshot()
         {
-            
+
         }
 
         public virtual bool SetMedia(MediaItem media, bool autoPlay = false)

@@ -30,7 +30,7 @@
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history/toview/clear",
-                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) 
+                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true)
             };
             api.parameter += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
@@ -41,7 +41,7 @@
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history/toview/del",
-                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true)+ "&viewed=true"
+                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + "&viewed=true"
             };
             api.parameter += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;
@@ -52,7 +52,7 @@
             {
                 method = RestSharp.Method.Post,
                 baseUrl = $"{ApiHelper.API_BASE_URL}{ApiHelper.api2}/history/toview/del",
-                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + "&aid="+id
+                body = ApiHelper.MustParameter(ApiHelper.AndroidKey, true) + "&aid=" + id
             };
             api.parameter += ApiHelper.GetSign(api.body, ApiHelper.AndroidKey);
             return api;

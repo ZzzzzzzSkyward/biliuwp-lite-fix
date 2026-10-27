@@ -22,11 +22,11 @@ namespace BiliLite.Dialogs
         {
             this.InitializeComponent();
             allEpisodes = downloadItem.Episodes;
-            if (downloadItem.Type== DownloadType.Season)
+            if (downloadItem.Type == DownloadType.Season)
             {
                 checkHidePreview.Visibility = Visibility.Visible;
             }
-           
+
             this.downloadItem = downloadItem;
             playerVM = new PlayerVM(true);
             cbVideoType.SelectedIndex = SettingHelper.GetValue<int>(SettingHelper.Download.DEFAULT_VIDEO_TYPE, 1);
@@ -38,13 +38,13 @@ namespace BiliLite.Dialogs
                     LoadQuality();
                 });
             });
-          
+
             LoadQuality();
 
         }
         private async void LoadQuality()
         {
-            var episode = downloadItem.Episodes.OrderByDescending(x=>x.Index).FirstOrDefault(x=>!x.IsPreview);
+            var episode = downloadItem.Episodes.OrderByDescending(x => x.Index).FirstOrDefault(x => !x.IsPreview);
             if (episode == null)
             {
                 episode = downloadItem.Episodes.OrderByDescending(x => x.Index).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace BiliLite.Dialogs
                 play_mode = downloadItem.Type == Helpers.DownloadType.Season ? Controls.VideoPlayType.Season : Controls.VideoPlayType.Video,
                 season_id = downloadItem.SeasonID,
                 season_type = downloadItem.SeasonType,
-                area=Utils.ParseArea(downloadItem.Title,downloadItem.UpMid)
+                area = Utils.ParseArea(downloadItem.Title, downloadItem.UpMid)
             }, 0);
             if (!data.Success)
             {
@@ -95,15 +95,15 @@ namespace BiliLite.Dialogs
                     {
                         CoverUrl = downloadItem.Cover,
                         DanmakuUrl = $"{ApiHelper.API_BASE_URL}/x/v1/dm/list.so?oid=" + item.CID,
-                        EpisodeID =item.EpisodeID,
-                        CID= item.CID,
+                        EpisodeID = item.EpisodeID,
+                        CID = item.CID,
                         AVID = downloadItem.ID,
-                        SeasonID=downloadItem.SeasonID,
-                        SeasonType=downloadItem.SeasonType,
+                        SeasonID = downloadItem.SeasonID,
+                        SeasonType = downloadItem.SeasonType,
                         Title = downloadItem.Title,
                         EpisodeTitle = item.Title,
                         Type = downloadItem.Type,
-                        Index= item.Index
+                        Index = item.Index
                     };
                     //读取视频信息
                     //读取视频字幕
@@ -137,16 +137,16 @@ namespace BiliLite.Dialogs
                         item.ErrorMessage = playUrl.Message;
                         continue;
                     }
-                    
+
                     downloadInfo.QualityID = playUrl.CurrentQuality.QualityID;
                     downloadInfo.QualityName = playUrl.CurrentQuality.QualityName;
                     downloadInfo.Urls = new List<DownloadUrlInfo>();
-                    if (playUrl.CurrentQuality.PlayUrlType ==  Modules.Player.Playurl.BiliPlayUrlType.DASH)
+                    if (playUrl.CurrentQuality.PlayUrlType == Modules.Player.Playurl.BiliPlayUrlType.DASH)
                     {
                         var quality = playUrl.CurrentQuality;
                         var audio = playUrl.CurrentQuality.DashInfo.Audio;
                         var video = playUrl.CurrentQuality.DashInfo.Video;
-                       
+
                         if (audio != null)
                         {
                             downloadInfo.Urls.Add(new DownloadUrlInfo()
@@ -164,7 +164,7 @@ namespace BiliLite.Dialogs
                         }
                         else
                         {
-                         
+
                             downloadInfo.Urls.Add(new DownloadUrlInfo()
                             {
                                 FileName = "0.blv",
@@ -172,7 +172,7 @@ namespace BiliLite.Dialogs
                                 Url = video.Url
                             });
                         }
-                      
+
                     }
                     if (playUrl.CurrentQuality.PlayUrlType == Modules.Player.Playurl.BiliPlayUrlType.MultiFLV)
                     {
@@ -222,7 +222,7 @@ namespace BiliLite.Dialogs
             {
                 Utils.ShowMessageToast("有视频下载失败");
             }
-           
+
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

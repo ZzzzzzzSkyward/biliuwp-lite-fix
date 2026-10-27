@@ -121,7 +121,7 @@ namespace BiliLite.Helpers
              */
 
             var video = Utils.ExtractVideoId(url);
-            if (video>0)
+            if (video > 0)
             {
                 NavigateToPage(null, new NavigationInfo()
                 {
@@ -479,7 +479,7 @@ namespace BiliLite.Helpers
                 if (SettingHelper.GetValue<bool>(SettingHelper.UI.OPEN_URL_BROWSER, false))
                 {
                     var result = await Utils.LaunchUri(url);
-                   
+
 
                     return true;
                 }

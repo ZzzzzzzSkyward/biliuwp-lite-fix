@@ -23,13 +23,13 @@ namespace BiliLite.Dialogs
         {
             this.InitializeComponent();
             this.Loaded += SMSLoginDialog_Loaded;
-            loginVM=new LoginVM();
+            loginVM = new LoginVM();
             loginVM.OpenWebView += LoginVM_OpenWebView;
             loginVM.CloseDialog += LoginVM_CloseDialog;
             loginVM.SetWebViewVisibility += LoginVM_SetWebViewVisibility;
             _biliapp.CloseBrowserEvent += _biliapp_CloseBrowserEvent;
             _biliapp.ValidateLoginEvent += _biliapp_ValidateLoginEvent;
-           
+
         }
 
         private void LoginVM_CloseDialog(object sender, EventArgs e)
@@ -46,14 +46,14 @@ namespace BiliLite.Dialogs
         {
             this.Hide();
         }
-        private  void _biliapp_ValidateLoginEvent(object sender, string e)
+        private void _biliapp_ValidateLoginEvent(object sender, string e)
         {
             loginVM.ValidateLogin(JObject.Parse(e));
 
         }
         private void LoginVM_OpenWebView(object sender, Uri e)
         {
-            webView.Source=e;
+            webView.Source = e;
         }
 
         private void SMSLoginDialog_Loaded(object sender, RoutedEventArgs e)
@@ -74,15 +74,15 @@ namespace BiliLite.Dialogs
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            if(webView.Visibility == Visibility.Visible)
+            if (webView.Visibility == Visibility.Visible)
             {
-                webView.Visibility=Visibility.Collapsed;
+                webView.Visibility = Visibility.Collapsed;
                 args.Cancel = true;
                 return;
             }
         }
 
-       
+
 
         private void txt_Password_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -109,7 +109,7 @@ namespace BiliLite.Dialogs
         private void TryRelogin(string uri)
         {
             //手动
-            if(loginVM.LoginType == 3)
+            if (loginVM.LoginType == 3)
             {
                 Utils.ShowMessageToast(uri);
                 ManualLogin();
@@ -138,7 +138,7 @@ namespace BiliLite.Dialogs
             {
                 var access = Regex.Match(args.Uri.AbsoluteUri, "access_key=(.*?)&").Groups[1].Value;
                 var mid = Regex.Match(args.Uri.AbsoluteUri, "mid=(.*?)&").Groups[1].Value;
-                await loginVM.account.SaveLogin(access, "", 1000000, long.Parse(mid),null,null);
+                await loginVM.account.SaveLogin(access, "", 1000000, long.Parse(mid), null, null);
                 this.Hide();
                 return;
             }
@@ -161,7 +161,7 @@ namespace BiliLite.Dialogs
                 {
                     //关闭验证码
                     IsPrimaryButtonEnabled = true;
-                   
+
                     webView.Visibility = Visibility.Collapsed;
                 }
                 return;
@@ -234,8 +234,8 @@ namespace BiliLite.Dialogs
         private void RefreshURL(object sender, TextChangedEventArgs e)
         {
             var appkey = APPKEY.Text;
-            var appsec=APPSEC.Text;
-            var param=$"api={targeturl}{appsec}";
+            var appsec = APPSEC.Text;
+            var param = $"api={targeturl}{appsec}";
             var sign = Utils.ToMD5(param);
             var u = $"{thirdurl}?api={targeturl}&appkey={appkey}&sign={sign}";
             NaviURL = u;

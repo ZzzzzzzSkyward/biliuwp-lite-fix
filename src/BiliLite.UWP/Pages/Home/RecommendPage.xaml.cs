@@ -33,18 +33,18 @@ namespace BiliLite.Pages.Home
             recommendVM = new RecommendVM();
             this.DataContext = recommendVM;
         }
-        
+
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-           
-            if (e.NavigationMode== NavigationMode.New)
+
+            if (e.NavigationMode == NavigationMode.New)
             {
                 if (IsGrid)
                 {
                     RecommendGridView.ItemTemplate = (DataTemplate)this.Resources["Grid"];
                 }
-               
+
                 SetListDisplay();
                 await recommendVM.GetRecommend();
                 if (SettingHelper.GetValue<bool>("推荐右键提示", true))
@@ -54,7 +54,7 @@ namespace BiliLite.Pages.Home
                 }
             }
 
-           
+
         }
         private void SetListDisplay()
         {
@@ -71,22 +71,22 @@ namespace BiliLite.Pages.Home
                     btnList_Click(this, null);
                 }
             }
-            
+
         }
-        
+
 
         private async void RecommendGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as Modules.RecommendItemModel;
-            if (data.uri == null&&data.ad_info!=null)
+            if (data.uri == null && data.ad_info != null)
             {
                 var url = data.ad_info.creative_content.url;
-                if (!url.Contains("http://")&& !url.Contains("https://"))
+                if (!url.Contains("http://") && !url.Contains("https://"))
                 {
                     url = data.ad_info.creative_content.click_url ?? data.ad_info.creative_content.url;
                 }
                 await MessageCenter.HandleUrl(url);
-              
+
                 //MessageCenter.NavigateToPage(this, new NavigationInfo()
                 //{
                 //    icon = Symbol.World,
@@ -96,8 +96,8 @@ namespace BiliLite.Pages.Home
                 //});
                 return;
             }
-            if (data.card_goto== "new_tunnel")
-            { 
+            if (data.card_goto == "new_tunnel")
+            {
                 MessageCenter.NavigateToPage(this, new NavigationInfo()
                 {
                     icon = Symbol.Favorite,
@@ -112,31 +112,31 @@ namespace BiliLite.Pages.Home
                 return;
             }
             var browserUri = data.three_point_v2.FirstOrDefault(x => x.type == "browser")?.url ?? "";
-            if (!string.IsNullOrEmpty(browserUri)&& await MessageCenter.HandleUrl(browserUri))
+            if (!string.IsNullOrEmpty(browserUri) && await MessageCenter.HandleUrl(browserUri))
             {
                 return;
             }
         }
 
-   
+
         private void RefreshContainer_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
         {
-             recommendVM.Refresh();
+            recommendVM.Refresh();
         }
 
-     
+
         private async void BannerItem_Click(object sender, RoutedEventArgs e)
         {
             await MessageCenter.HandleUrl(((sender as HyperlinkButton).DataContext as RecommendBannerItemModel).uri);
-           
+
         }
 
         private async void ListMenu_ItemClick(object sender, ItemClickEventArgs e)
         {
             var threePoint = e.ClickedItem as RecommendThreePointV2ItemModel;
-            if (threePoint.type== "watch_later")
+            if (threePoint.type == "watch_later")
             {
-                var item= (sender as ListView).DataContext as RecommendItemModel;
+                var item = (sender as ListView).DataContext as RecommendItemModel;
                 WatchLaterVM.Instance.AddToWatchlater(item.param);
                 return;
             }
@@ -155,8 +155,8 @@ namespace BiliLite.Pages.Home
 
         private async void ListDislike_ItemClick(object sender, ItemClickEventArgs e)
         {
-           var reasons = e.ClickedItem as RecommendThreePointV2ItemReasonsModel;
-           var threePoint=  (sender as GridView).DataContext as RecommendThreePointV2ItemModel;
+            var reasons = e.ClickedItem as RecommendThreePointV2ItemReasonsModel;
+            var threePoint = (sender as GridView).DataContext as RecommendThreePointV2ItemModel;
             await recommendVM.Dislike(threePoint.idx, threePoint, reasons);
         }
 
@@ -174,7 +174,7 @@ namespace BiliLite.Pages.Home
             //设置
             SettingHelper.SetValue<int>(SettingHelper.UI.RECMEND_DISPLAY_MODE, 1);
             RecommendGridView.ItemHeight = 100;
-            RecommendGridView.DesiredWidth =500;
+            RecommendGridView.DesiredWidth = 500;
             RecommendGridView.ItemTemplate = (DataTemplate)this.Resources["List"];
         }
 
@@ -191,5 +191,5 @@ namespace BiliLite.Pages.Home
             RecommendGridView.ItemTemplate = (DataTemplate)this.Resources["Grid"];
         }
     }
-  
+
 }

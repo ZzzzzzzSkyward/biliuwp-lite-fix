@@ -16,7 +16,7 @@ namespace BiliLite.Modules
         {
             get
             {
-                return _ThemeIcon? EFontAwesomeIcon.Regular_Moon : EFontAwesomeIcon.Regular_Sun;
+                return _ThemeIcon ? EFontAwesomeIcon.Regular_Moon : EFontAwesomeIcon.Regular_Sun;
             }
             set
             {

@@ -3,11 +3,11 @@ using Windows.UI.Xaml.Data;
 
 namespace BiliLite.Converters
 {
-    public class DatetimeConvert:IValueConverter
+    public class DatetimeConvert : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value==null)
+            if (value == null)
             {
                 return "";
             }
@@ -21,7 +21,7 @@ namespace BiliLite.Converters
             TimeSpan toNow = new TimeSpan(lTime);
             DateTime dt = dtStart.Add(toNow).ToLocalTime();
             var parse = "yyyy-MM-dd HH:mm:ss";
-            if (parameter!=null)
+            if (parameter != null)
             {
                 if (parameter.ToString() == "ts")
                 {
@@ -29,7 +29,7 @@ namespace BiliLite.Converters
                 }
                 parse = parameter.ToString();
             }
-           
+
 
             return dt.ToString(parse);
         }

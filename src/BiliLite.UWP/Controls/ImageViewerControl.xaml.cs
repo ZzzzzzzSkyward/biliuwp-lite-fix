@@ -65,11 +65,12 @@ namespace BiliLite.Controls
             {
                 btnRefresh_Click(sender, e);
             }
-            else if(e.Key== VirtualKey.Add)
+            else if (e.Key == VirtualKey.Add)
             {
                 btnZoomIn_Click(sender, e);
             }
-            else if(e.Key == VirtualKey.Subtract){
+            else if (e.Key == VirtualKey.Subtract)
+            {
                 btnZoomOut_Click(sender, e);
             }
         }
@@ -84,10 +85,10 @@ namespace BiliLite.Controls
                 return;
             }
             var delta = e.GetCurrentPoint(scrollViewer).Properties.MouseWheelDelta;
-            int nextimg = delta > 0 ? index - 1 : index+ 1;
+            int nextimg = delta > 0 ? index - 1 : index + 1;
             if (nextimg >= imgs.Count) return;
             if (nextimg < 0) return;
-            ChangedImage( nextimg);
+            ChangedImage(nextimg);
             e.Handled = true;
         }
         public List<ImageInfo> imgs;
@@ -95,7 +96,7 @@ namespace BiliLite.Controls
         int index = 0;
         public void InitImage(ImageViewerParameter e)
         {
-            imgs=new List<ImageInfo>();
+            imgs = new List<ImageInfo>();
             foreach (var item in e.Images)
             {
                 imgs.Add(new ImageInfo()
@@ -110,7 +111,7 @@ namespace BiliLite.Controls
         {
             image.Source = null;
             imgs = null;
-            
+
         }
         private async void ChangedImage(int i)
         {
@@ -245,7 +246,7 @@ namespace BiliLite.Controls
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            CloseEvent?.Invoke(sender,new EventArgs());
+            CloseEvent?.Invoke(sender, new EventArgs());
         }
 
         private async void btnCopy_Click(object sender, RoutedEventArgs e)
@@ -256,14 +257,14 @@ namespace BiliLite.Controls
             var data = new DataPackage();
             InMemoryRandomAccessStream randomAccessStream = new InMemoryRandomAccessStream();
             await randomAccessStream.WriteAsync(bytes.AsBuffer());
-            randomAccessStream.Seek(0); 
+            randomAccessStream.Seek(0);
 
-          
+
 
             data.SetBitmap(RandomAccessStreamReference.CreateFromStream(randomAccessStream));
-         
+
             data.RequestedOperation = DataPackageOperation.Copy;
-           var rsult=  Clipboard.SetContentWithOptions(data,null);
+            var rsult = Clipboard.SetContentWithOptions(data, null);
             Utils.ShowMessageToast("已复制到剪切板");
         }
     }

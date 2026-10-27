@@ -92,7 +92,7 @@ namespace BiliLite.Modules.Live
                                 Items.Add(item);
                             }
                             //Items = new IncrementalLoadingCollection<LiveRecommendItemSource, LiveRecommendItemModel>(new LiveRecommendItemSource(items, SortType), 30);
-                            if (Items.Count<data["data"]["count"].ToInt32())
+                            if (Items.Count < data["data"]["count"].ToInt32())
                             {
                                 Page++;
                                 CanLoadMore = true;
@@ -192,7 +192,7 @@ namespace BiliLite.Modules.Live
             {
                 return recommends;
             }
-            
+
             return await GetRecommend(pageIndex + 1);
         }
     }
@@ -211,7 +211,7 @@ namespace BiliLite.Modules.Live
         public string uname { get; set; }
         public string face { get; set; }
         public string uid { get; set; }
-      
+
         public string pendent_ru { get; set; }
         public string pendent_ru_color { get; set; }
         public string pendent_ru_pic { get; set; }

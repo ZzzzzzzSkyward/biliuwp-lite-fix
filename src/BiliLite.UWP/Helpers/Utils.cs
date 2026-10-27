@@ -115,7 +115,7 @@ namespace BiliLite.Helpers
             sb.AppendLine(message);
             sp?.Log(sb);
         }
-        public static void ShowMessageToast(string message,string longmsg, int seconds = 10, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string filePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
+        public static void ShowMessageToast(string message, string longmsg, int seconds = 10, [System.Runtime.CompilerServices.CallerMemberName] string memberName = "", [System.Runtime.CompilerServices.CallerFilePath] string filePath = "", [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
             //当有错误时延长时间
             string cutmsg = longmsg.Length > 50 ? longmsg.Substring(longmsg.Length - 50) : longmsg;
@@ -123,8 +123,8 @@ namespace BiliLite.Helpers
             MessageToast ms = new MessageToast(errorMessage, TimeSpan.FromSeconds(seconds));
             ms.Show();
             //并且记录，如果确实是一个exception
-            if(longmsg.Length>50)
-            LogHelper.logger.Error("来自Utils的报错%s", longmsg);
+            if (longmsg.Length > 50)
+                LogHelper.logger.Error("来自Utils的报错%s", longmsg);
             //并汇报
             AddALog(message);
             AddALog(longmsg);
@@ -506,7 +506,7 @@ namespace BiliLite.Helpers
             }
             return proxyUrl;
         }
-        public static string ProcessURL(string u, int maxLength=40)
+        public static string ProcessURL(string u, int maxLength = 40)
         {
             // Remove http:// or https:// from the beginning of the URL
             if (u.StartsWith("http://"))
@@ -533,7 +533,7 @@ namespace BiliLite.Helpers
             var themeKey = requestedTheme == ElementTheme.Light ? "Light" : "Dark";
             if (themeDictionaries.TryGetValue(themeKey, out object theme))
             {
-                var t =  (ResourceDictionary)theme;
+                var t = (ResourceDictionary)theme;
                 if (t.ContainsKey(name))
                 {
                     var highLightColor = (Color)t[name];
@@ -557,21 +557,22 @@ namespace BiliLite.Helpers
          */
         public static long ExtractVideoId(string url)
         {
-            url = url.Replace("aid","av").Replace("bid","bv").Replace("avid","av");
+            url = url.Replace("aid", "av").Replace("bid", "bv").Replace("avid", "av");
             string pattern = @"(video|av|story)([/=]?)(\d+)";
             long id = 0;
             var match = Regex.Matches(url, pattern);
 
-            for(var i=0;i<match.Count;i++){
+            for (var i = 0; i < match.Count; i++)
+            {
                 var m = match[i];
                 string videoId = m.Groups[3].Value;
                 long vid;
                 // 判断视频ID是否较大
                 if (long.TryParse(videoId, out vid))
                 {
-                    if (vid >id &&vid> 10)  // 假设10为较大的ID阈值
+                    if (vid > id && vid > 10)  // 假设10为较大的ID阈值
                     {
-                        id = vid ;
+                        id = vid;
                     }
                 }
             }

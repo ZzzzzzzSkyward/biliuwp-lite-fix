@@ -171,9 +171,9 @@ namespace BiliLite.Controls
                     {
                         m = JsonConvert.DeserializeObject<dataCommentModel>(re.results);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        Utils.ShowMessageToast("解析评论失败",e.ToString());
+                        Utils.ShowMessageToast("解析评论失败", e.ToString());
                         return;
                     }
                     if (m.code == 0)
@@ -217,7 +217,7 @@ namespace BiliLite.Controls
                             {
                                 btn_LoadMore.Visibility = Visibility.Visible;
                             }
-                            cursor=m.data.cursor;
+                            cursor = m.data.cursor;
                         }
                         else
                         {
@@ -248,14 +248,14 @@ namespace BiliLite.Controls
                 }
                 else
                 {
-                    Utils.ShowMessageToast("加载评论失败" , re.results.ToString());
+                    Utils.ShowMessageToast("加载评论失败", re.results.ToString());
                 }
 
             }
             catch (Exception ex)
             {
                 string exception_string = ex.ToString();
-                Utils.ShowMessageToast("加载评论失败" , exception_string);
+                Utils.ShowMessageToast("加载评论失败", exception_string);
             }
             finally
             {
@@ -311,7 +311,7 @@ namespace BiliLite.Controls
             }
             catch (Exception e)
             {
-                Utils.ShowMessageToast("加载评论失败",e.ToString());
+                Utils.ShowMessageToast("加载评论失败", e.ToString());
                 //throw;
             }
             finally
@@ -364,7 +364,7 @@ namespace BiliLite.Controls
             }
             catch (Exception e)
             {
-                Utils.ShowMessageToast("操作失败",e.ToString());
+                Utils.ShowMessageToast("操作失败", e.ToString());
                 // throw;
             }
 
@@ -512,7 +512,7 @@ namespace BiliLite.Controls
             }
             catch (Exception e)
             {
-                Utils.ShowMessageToast("发送评论失败",e.ToString());
+                Utils.ShowMessageToast("发送评论失败", e.ToString());
                 // throw;
             }
 
@@ -569,7 +569,7 @@ namespace BiliLite.Controls
             }
             catch (Exception e)
             {
-                Utils.ShowMessageToast("发送评论失败",e.ToString());
+                Utils.ShowMessageToast("发送评论失败", e.ToString());
                 // throw;
             }
 
@@ -637,7 +637,7 @@ namespace BiliLite.Controls
             }
             catch (Exception e)
             {
-                Utils.ShowMessageToast("删除评论失败",e.ToString());
+                Utils.ShowMessageToast("删除评论失败", e.ToString());
                 // throw;
             }
 
@@ -1059,7 +1059,7 @@ namespace BiliLite.Controls
             c.count = t.Count;
             c.floor = t.Floor;
             c.ctime = t.Ctime;
-            c.replies =new ObservableCollection<CommentModel>();
+            c.replies = new ObservableCollection<CommentModel>();
             if (t.Replies != null && t.Replies.Count > 0)
             {
                 foreach (var i in t.Replies)
@@ -1078,10 +1078,12 @@ namespace BiliLite.Controls
     public class CommentContentModel
     {
         public List<NotePicture> pictures { get; set; }
-        public Visibility haspictures { 
-            get {
+        public Visibility haspictures
+        {
+            get
+            {
                 return (pictures != null && pictures.Count > 0) ? Visibility.Visible : Visibility.Collapsed;
-            } 
+            }
         }
         public string message { get; set; }
         public int plat { get; set; }

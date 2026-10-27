@@ -67,7 +67,7 @@ namespace BiliLite.Models.Dynamic
 
     public class DynamicCardDisplayTopicInfoModel
     {
-        public List<DynamicCardDisplayTopicInfoItemModel> topic_details{ get; set; }
+        public List<DynamicCardDisplayTopicInfoItemModel> topic_details { get; set; }
     }
     public class DynamicCardDisplayTopicInfoItemModel
     {

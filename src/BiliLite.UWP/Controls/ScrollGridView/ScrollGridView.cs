@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Input;
 
 namespace BiliLite.Controls
 {
-    public class ScrollGridView:GridView
+    public class ScrollGridView : GridView
     {
         public ScrollGridView()
         {
@@ -19,7 +19,7 @@ namespace BiliLite.Controls
             gridGesture = GetTemplateChild("GridGesture") as Grid;
             btnMoveLeft = GetTemplateChild("moveLeft") as Button;
             btnMoveRight = GetTemplateChild("moveRight") as Button;
-            scrollViewer= GetTemplateChild("ScrollViewer") as ScrollViewer;
+            scrollViewer = GetTemplateChild("ScrollViewer") as ScrollViewer;
             scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
             gridGesture.PointerExited += GridGesture_PointerExited;
             gridGesture.PointerEntered += GridGesture_PointerEntered;
@@ -28,10 +28,10 @@ namespace BiliLite.Controls
             base.OnApplyTemplate();
         }
 
-     
+
         private void GridGesture_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            if (e.Pointer.PointerDeviceType== Windows.Devices.Input.PointerDeviceType.Mouse)
+            if (e.Pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Mouse)
             {
                 scrollViewer.HorizontalScrollMode = ScrollMode.Disabled;
                 setButton();
@@ -124,13 +124,13 @@ namespace BiliLite.Controls
             var data = d as ScrollGridView;
             if ((bool)e.NewValue)
             {
-               
+
                 data.btnMoveLeft.Visibility = Visibility.Visible;
                 data.btnMoveRight.Visibility = Visibility.Visible;
             }
         }
 
-       
+
 
     }
 }

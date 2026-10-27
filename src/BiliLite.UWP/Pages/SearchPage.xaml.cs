@@ -26,7 +26,7 @@ namespace BiliLite.Pages
         /// <summary>
         /// 主播
         /// </summary>
-        Anchor=3,
+        Anchor = 3,
         /// <summary>
         /// 用户
         /// </summary>
@@ -73,7 +73,7 @@ namespace BiliLite.Pages
             {
                 par.keyword = e.Parameter.ToString();
             }
-            par.keyword= par.keyword.TrimStart('@');
+            par.keyword = par.keyword.TrimStart('@');
             txtKeyword.Text = par.keyword;
             foreach (var item in searchVM.SearchItems)
             {
@@ -84,7 +84,7 @@ namespace BiliLite.Pages
         }
         private async void txtKeyword_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (string.IsNullOrEmpty( txtKeyword.Text))
+            if (string.IsNullOrEmpty(txtKeyword.Text))
             {
                 Utils.ShowMessageToast("关键字不能为空啊，喂(#`O′)");
                 return;
@@ -98,12 +98,12 @@ namespace BiliLite.Pages
             foreach (var item in searchVM.SearchItems)
             {
                 item.Keyword = txtKeyword.Text;
-                item.Area= searchVM.Area.area;
+                item.Area = searchVM.Area.area;
                 item.Page = 1;
                 item.HasData = false;
             }
             searchVM.SelectItem.Refresh();
-            ChangeTitle("搜索:"+txtKeyword.Text);
+            ChangeTitle("搜索:" + txtKeyword.Text);
         }
         public void ChangeTitle(string title)
         {
@@ -142,7 +142,7 @@ namespace BiliLite.Pages
         }
         private void Search_ItemClick(object sender, ItemClickEventArgs e)
         {
-           
+
             if (e.ClickedItem is SearchVideoItem)
             {
                 var data = e.ClickedItem as SearchVideoItem;
@@ -219,7 +219,7 @@ namespace BiliLite.Pages
 
         private void cbArea_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbArea.SelectedItem!=null)
+            if (cbArea.SelectedItem != null)
             {
                 foreach (var item in searchVM.SearchItems)
                 {

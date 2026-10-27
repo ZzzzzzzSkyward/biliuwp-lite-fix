@@ -564,7 +564,7 @@ namespace BiliLite.Modules.Player.Playurl
             var grpcResult = await GetPlayUrlUseGrpc(playInfo, qualityID);
             if (false)
             {
-                if (grpcResult.Qualites.Count> webResult.Qualites.Count)
+                if (grpcResult.Qualites.Count > webResult.Qualites.Count)
                 {
                     return grpcResult;
                 }
@@ -581,7 +581,7 @@ namespace BiliLite.Modules.Player.Playurl
         {
             try
             {
-                var refresh=await ApiHelper.NeedRefreshCookie();
+                var refresh = await ApiHelper.NeedRefreshCookie();
                 if (refresh)
                 {
                     ApiHelper.RefreshCookie();

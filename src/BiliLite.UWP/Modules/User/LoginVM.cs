@@ -63,7 +63,7 @@ namespace BiliLite.Modules.User
         {
             get { return _primaryButtonEnable; }
             set { _primaryButtonEnable = value; DoPropertyChanged("PrimaryButtonEnable"); }
-        }        
+        }
         private bool _Manual = false;
 
         public bool Manual
@@ -74,7 +74,7 @@ namespace BiliLite.Modules.User
 
         public void OpenManualPage()
         {
-            var url= "https://l78z.nsapps.cn/bili_gt.html";
+            var url = "https://l78z.nsapps.cn/bili_gt.html";
             Utils.LaunchUri(url);
         }
 
@@ -137,7 +137,7 @@ namespace BiliLite.Modules.User
             {
                 if (jObject["access_token"] != null)
                 {
-                    var m = await account.SaveLogin(jObject["access_token"].ToString(), jObject["refresh_token"].ToString(), jObject["expires_in"].ToInt32(), Convert.ToInt64(jObject["mid"].ToString()), null,null);
+                    var m = await account.SaveLogin(jObject["access_token"].ToString(), jObject["refresh_token"].ToString(), jObject["expires_in"].ToInt32(), Convert.ToInt64(jObject["mid"].ToString()), null, null);
 
                     if (m)
                     {
@@ -288,10 +288,10 @@ namespace BiliLite.Modules.User
                             var uri = new Uri(data.data.recaptcha_url);
                             SetWebViewVisibility?.Invoke(this, true);
                             var newuri = new Uri("ms-appx-web:///Asset/JiYan/%E6%9E%81%E9%AA%8C.htm" + uri.Query + "&app=uwp");
-                            if(Manual)
-                            Utils.LaunchUri(newuri);
+                            if (Manual)
+                                Utils.LaunchUri(newuri);
                             else
-                            OpenWebView?.Invoke(this, newuri);
+                                OpenWebView?.Invoke(this, newuri);
                         }
                         else
                         {
@@ -557,12 +557,12 @@ namespace BiliLite.Modules.User
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
                 var result = await account.PollQRAuthInfo(qrAuthInfo.auth_code);
-                  if (result.status == LoginStatus.Success)
-                  {
-                      qrTimer.Stop();
+                if (result.status == LoginStatus.Success)
+                {
+                    qrTimer.Stop();
                     CloseDialog?.Invoke(this, null);
-                  }
-              });
+                }
+            });
         }
 
         #endregion
@@ -636,7 +636,7 @@ namespace BiliLite.Modules.User
                     {
                         Utils.LaunchUri(newuri);
                         string gt = Regex.Match(uri.Query, "gt=(.*)&").Groups[1].Value;
-                        string cha= Regex.Match(uri.Query, "challenge=(.*)&").Groups[1].Value;
+                        string cha = Regex.Match(uri.Query, "challenge=(.*)&").Groups[1].Value;
                         Utils.SetClipboard(gt + " " + cha);
                     }
                     else
@@ -686,5 +686,5 @@ namespace BiliLite.Modules.User
         public int expires_in { get; set; }
         public string refresh_token { get; set; }
     }
-   
+
 }

@@ -271,7 +271,7 @@ namespace BiliLite.Modules
                     {
                         continue;
                     }
-                  
+
                     var info = JObject.Parse(await FileIO.ReadTextAsync(infoFile));
                     //新版下载无thumb字段
                     if (!info.ContainsKey("thumb"))

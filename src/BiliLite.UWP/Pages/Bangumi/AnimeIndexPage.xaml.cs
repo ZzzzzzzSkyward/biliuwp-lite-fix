@@ -33,9 +33,9 @@ namespace BiliLite.Pages.Bangumi
                 }
                 else
                 {
-                    indexParameter=e.Parameter as SeasonIndexParameter;
+                    indexParameter = e.Parameter as SeasonIndexParameter;
                 }
-              
+
                 seasonIndexVM.Parameter = indexParameter;
                 await seasonIndexVM.LoadConditions();
                 if (seasonIndexVM.Conditions != null)
@@ -60,7 +60,7 @@ namespace BiliLite.Pages.Bangumi
         private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var combox = sender as ComboBox;
-            if (combox.SelectedItem == null || seasonIndexVM.ConditionsLoading|| seasonIndexVM.Loading)
+            if (combox.SelectedItem == null || seasonIndexVM.ConditionsLoading || seasonIndexVM.Loading)
             {
                 return;
             }
@@ -69,5 +69,5 @@ namespace BiliLite.Pages.Bangumi
         }
     }
 
-    
+
 }

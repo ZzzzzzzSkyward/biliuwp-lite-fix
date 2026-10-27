@@ -98,7 +98,7 @@ namespace BiliLite.Player
         /// <summary>
         /// 播放
         /// </summary>
-         void Play();
+        void Play();
         /// <summary>
         /// 暂停
         /// </summary>
@@ -136,7 +136,7 @@ namespace BiliLite.Player
         /// <param name="media"></param>
         /// <param name="autoPlay"></param>
         /// <returns></returns>
-        bool SetMedia(MediaItem media,bool autoPlay=false);
+        bool SetMedia(MediaItem media, bool autoPlay = false);
 
     }
     public enum MediaType

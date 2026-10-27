@@ -10,11 +10,11 @@ namespace BiliLite.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value==null)
+            if (value == null)
             {
                 return Utils.GetBrush("TextColor");
             }
-            if (value.ToString()== parameter.ToString())
+            if (value.ToString() == parameter.ToString())
             {
                 return Utils.GetBrush("HighLightColor");
             }

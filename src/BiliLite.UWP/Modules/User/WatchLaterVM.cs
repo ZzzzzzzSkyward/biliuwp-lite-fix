@@ -80,7 +80,7 @@ namespace BiliLite.Modules.User
             }
 
         }
-      
+
         private bool _loading = false;
 
         public bool Loading
@@ -88,7 +88,7 @@ namespace BiliLite.Modules.User
             get { return _loading; }
             set { _loading = value; DoPropertyChanged("Loading"); }
         }
-       
+
         private bool _Nothing = false;
         public bool Nothing
         {
@@ -96,7 +96,7 @@ namespace BiliLite.Modules.User
             set { _Nothing = value; DoPropertyChanged("Nothing"); }
         }
 
-        
+
         private ObservableCollection<WatchlaterItemModel> _videos;
         public ObservableCollection<WatchlaterItemModel> Videos
         {
@@ -108,7 +108,7 @@ namespace BiliLite.Modules.User
         {
             try
             {
-              
+
                 Loading = true;
                 Nothing = false;
                 var results = await watchLaterAPI.Watchlater().Request();
@@ -131,8 +131,8 @@ namespace BiliLite.Modules.User
                             }
                         }
                         Videos = ls;
-                       
-                      
+
+
                     }
                     else
                     {
@@ -168,7 +168,7 @@ namespace BiliLite.Modules.User
         {
             try
             {
-              
+
                 if (!await Utils.ShowDialog("清空稍后再看", "确定要清空全部视频吗?")) return;
                 var results = await watchLaterAPI.Clear().Request();
                 if (results.status)
@@ -254,7 +254,7 @@ namespace BiliLite.Modules.User
             }
         }
     }
-  
+
     public class WatchlaterItemModel
     {
         public ICommand DeleteCommand { get; set; }
@@ -267,9 +267,9 @@ namespace BiliLite.Modules.User
         public string dynamic { get; set; }
         public long cid { get; set; }
         public long add_at { get; set; }
-    
+
         public WatchlaterOwnerModel owner { get; set; }
-       
+
         public List<WatchlaterPagesModel> pages { get; set; }
 
         public int progress { get; set; }
@@ -296,7 +296,7 @@ namespace BiliLite.Modules.User
                 {
                     if (progress != 0)
                     {
-                        return "看到 "+TimeSpan.FromSeconds(progress).ToString(@"mm\:ss");
+                        return "看到 " + TimeSpan.FromSeconds(progress).ToString(@"mm\:ss");
                     }
                     else
                     {

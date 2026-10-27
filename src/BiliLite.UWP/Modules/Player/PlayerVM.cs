@@ -235,7 +235,7 @@ namespace BiliLite.Modules
         }
     }
 
-   
+
     public class PlayerInfo
     {
         /// <summary>
@@ -269,7 +269,7 @@ namespace BiliLite.Modules
         public int need_reload { get; set; }
     }
 
-   
+
 
 
     public class HasSubtitleModel

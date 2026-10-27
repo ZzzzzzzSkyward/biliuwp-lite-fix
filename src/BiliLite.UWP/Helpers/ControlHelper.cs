@@ -10,7 +10,7 @@ namespace BiliLite.Helpers
 {
     public static class ControlHelper
     {
-        public static RichTextBlock StringToRichText(string txt,JObject emote)
+        public static RichTextBlock StringToRichText(string txt, JObject emote)
         {
             string input = txt;
             try
@@ -33,7 +33,7 @@ namespace BiliLite.Helpers
                     //处理av号
                     input = HandelVideoID(input);
 
-                   
+
 
                     //生成xaml
                     var xaml = string.Format(@"<RichTextBlock HorizontalAlignment=""Stretch"" TextWrapping=""Wrap""  xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
@@ -140,7 +140,7 @@ namespace BiliLite.Helpers
             keyword = null;
             return input;
         }
-       
+
         /// <summary>
         /// 处理URL链接
         /// </summary>
@@ -161,7 +161,7 @@ namespace BiliLite.Helpers
                 var u = item.Groups[0].Value;
                 var display = Utils.ProcessURL(u);
                 var data = @"<InlineUIContainer><HyperlinkButton x:Name=""btn"" Command=""{Binding LaunchUrlCommand}""  IsEnabled=""True"" Margin=""0 -4 0 -4"" Padding=""0"" " +
-                    string.Format(@" CommandParameter=""{0}"" ><TextBlock>🔗{1}</TextBlock></HyperlinkButton></InlineUIContainer>", u,display);
+                    string.Format(@" CommandParameter=""{0}"" ><TextBlock>🔗{1}</TextBlock></HyperlinkButton></InlineUIContainer>", u, display);
                 input = input.Replace(item.Groups[0].Value, data);
             }
 
@@ -175,7 +175,7 @@ namespace BiliLite.Helpers
             //    input = input.Replace(item.Groups[0].Value, data);
             //}
 
-          
+
             //return input;
         }
     }

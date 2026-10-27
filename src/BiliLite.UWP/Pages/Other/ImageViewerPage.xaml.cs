@@ -20,7 +20,7 @@ namespace BiliLite.Pages.Other
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.NavigationMode == NavigationMode.New && e.Parameter != null && viewer.imgs==null)
+            if (e.NavigationMode == NavigationMode.New && e.Parameter != null && viewer.imgs == null)
             {
 
                 var info = e.Parameter as ImageViewerParameter;

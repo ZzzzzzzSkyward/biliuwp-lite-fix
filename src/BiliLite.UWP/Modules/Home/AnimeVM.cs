@@ -110,16 +110,17 @@ namespace BiliLite.Modules
             get { return _homeData; }
             set { _homeData = value; DoPropertyChanged("HomeData"); }
         }
-      
-        public void SeasonItemClick(object sender,ItemClickEventArgs e)
+
+        public void SeasonItemClick(object sender, ItemClickEventArgs e)
         {
             var seasonId = e.ClickedItem.GetType().GetProperty("season_id").GetValue(e.ClickedItem, null);
-            var title = e.ClickedItem.GetType().GetProperty("title").GetValue(e.ClickedItem, null)??"";
-            MessageCenter.NavigateToPage(sender,new NavigationInfo() {
-                icon= Symbol.Play,
-                page=typeof(Pages.SeasonDetailPage),
-                parameters= seasonId,
-                title= title.ToString()
+            var title = e.ClickedItem.GetType().GetProperty("title").GetValue(e.ClickedItem, null) ?? "";
+            MessageCenter.NavigateToPage(sender, new NavigationInfo()
+            {
+                icon = Symbol.Play,
+                page = typeof(Pages.SeasonDetailPage),
+                parameters = seasonId,
+                title = title.ToString()
             });
         }
         public void LinkItemClick(object sender, ItemClickEventArgs e)
@@ -141,7 +142,7 @@ namespace BiliLite.Modules
             {
                 Loading = true;
                 var api = bangumiApi.BangumiHome();
-                if (animeType== AnimeType.guochuang)
+                if (animeType == AnimeType.guochuang)
                 {
                     api = bangumiApi.GuochuangHome();
                 }
@@ -224,7 +225,7 @@ namespace BiliLite.Modules
                     {
                         AnimeFallModel.items.Add(item);
                     }
-                   
+
                 }
                 else
                 {
@@ -233,7 +234,7 @@ namespace BiliLite.Modules
             }
             catch (Exception ex)
             {
-                var handel= HandelError<List<AnimeFallItemModel>>(ex);
+                var handel = HandelError<List<AnimeFallItemModel>>(ex);
                 Utils.ShowMessageToast(handel.message);
             }
             finally
@@ -263,7 +264,7 @@ namespace BiliLite.Modules
             get { return _showMore; }
             set { _showMore = value; DoPropertyChanged("ShowMore"); DoPropertyChanged("ShowLoading"); }
         }
-     
+
         public ObservableCollection<AnimeFallItemModel> items { get; set; }
     }
     public class AnimeFallItemModel
@@ -300,7 +301,7 @@ namespace BiliLite.Modules
         }
         public string badge { get; set; }
     }
-  
+
 
 
 }

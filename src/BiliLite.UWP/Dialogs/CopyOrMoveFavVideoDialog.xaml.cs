@@ -19,7 +19,7 @@ namespace BiliLite.Dialogs
         readonly bool isMove;
         readonly List<FavoriteInfoVideoItemModel> selectItems;
         readonly FavoriteApi favoriteApi;
-        public CopyOrMoveFavVideoDialog(string fid,string mid, bool isMove, List<FavoriteInfoVideoItemModel> items)
+        public CopyOrMoveFavVideoDialog(string fid, string mid, bool isMove, List<FavoriteInfoVideoItemModel> items)
         {
             this.InitializeComponent();
             favoriteApi = new FavoriteApi();
@@ -50,7 +50,7 @@ namespace BiliLite.Dialogs
                 }
                 else
                 {
-                    results = await favoriteApi.Copy(fid, item.id, ids,mid).Request();
+                    results = await favoriteApi.Copy(fid, item.id, ids, mid).Request();
                 }
                 if (results.status)
                 {
@@ -80,7 +80,7 @@ namespace BiliLite.Dialogs
             {
                 IsPrimaryButtonEnabled = true;
             }
-           
+
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

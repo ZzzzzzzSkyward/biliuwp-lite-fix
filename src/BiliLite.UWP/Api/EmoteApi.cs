@@ -14,7 +14,7 @@
 
     public class EmoteApi
     {
-        
+
         public ApiModel UserEmote(EmoteBusiness business)
         {
             var type = business.ToString();

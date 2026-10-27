@@ -52,7 +52,8 @@ namespace BiliLite.Controls
                     VerticalAlignment = VerticalAlignment.Center,
                     Content = new TextBlock() { Text = item.Label }
                 };
-                button.Click += new RoutedEventHandler((sender, e) => {
+                button.Click += new RoutedEventHandler((sender, e) =>
+                {
                     item.Invoked?.Invoke(this, item);
                 });
                 btns.Children.Add(button);
@@ -87,9 +88,9 @@ namespace BiliLite.Controls
         private async void Fade()
         {
             // 将 Toast 的透明度从 0 渐变到 1，持续 1 秒，使用 ease-in 动画
-            
+
             EnterStoryboard.Begin();
-            
+
 
             // 等待 2 秒钟
             await Task.Delay(this.m_ShowTime);

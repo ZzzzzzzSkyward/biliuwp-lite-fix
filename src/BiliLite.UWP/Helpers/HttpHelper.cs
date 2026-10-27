@@ -65,7 +65,7 @@ namespace BiliLite.Helpers
                     }
                     if (url.Contains("bilibili.com") || url.Contains("pgc/player/") || url.Contains("x/web-interface"))
                     {
-                        if(!client.DefaultRequestHeaders.Keys.Contains("User-Agent"))
+                        if (!client.DefaultRequestHeaders.Keys.Contains("User-Agent"))
                             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/113.0");
                     }
                     Console.WriteLine(url);
@@ -473,8 +473,8 @@ namespace BiliLite.Helpers
         {
             try
             {
-            return await GetJson<ApiDataModel<T>>();
-        }
+                return await GetJson<ApiDataModel<T>>();
+            }
             catch (Exception)
             {
                 return null;
@@ -485,7 +485,7 @@ namespace BiliLite.Helpers
         {
             try
             {
-            return await GetJson<ApiResultModel<T>>();
+                return await GetJson<ApiResultModel<T>>();
             }
             catch (Exception)
             {

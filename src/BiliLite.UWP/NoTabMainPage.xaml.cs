@@ -76,7 +76,7 @@ namespace BiliLite
             }
             if (e.Content is Pages.BasePage)
             {
-                txtTitle.Text = (e.Content as BasePage).Title ;
+                txtTitle.Text = (e.Content as BasePage).Title;
             }
 
             if (frame.CanGoBack)
@@ -195,17 +195,17 @@ namespace BiliLite
         {
             var frame = new MyFrame();
             frame.Navigated += Frame_Navigated;
-          
+
             this.Children.Add(frame);
         }
 
-      
+
         private void Frame_Navigated(object sender, NavigationEventArgs e)
         {
             Navigated?.Invoke(sender, e);
         }
 
-        public bool Navigate(Type sourcePageType, object parameter=null)
+        public bool Navigate(Type sourcePageType, object parameter = null)
         {
             var frame = this.Children.Last() as Frame;
             //检查最后一个Frame中是否存在此页面
@@ -217,12 +217,12 @@ namespace BiliLite
             if (frame.Content is PlayPage)
             {
                 (frame.Content as PlayPage).Pause();
-            } 
-            
+            }
+
             //跳转页面
             (this.Children.Last() as Frame).Navigate(sourcePageType, parameter);
-           
-           
+
+
             return true;
         }
         public bool CanGoBack
@@ -247,14 +247,14 @@ namespace BiliLite
             {
                 if (this.Children.Count > 1)
                 {
-                    await frame.AnimateYAsync(0, this.ActualHeight,300);
+                    await frame.AnimateYAsync(0, this.ActualHeight, 300);
                     frame.Navigated -= Frame_Navigated;
                     frame.Close();
 
 
                     this.Children.Remove(frame);
                     //frame = this.Children.Last() as Frame;
-                    
+
                 }
             }
         }

@@ -10,9 +10,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace BiliLite.Modules
 {
-    public class FavoriteDetailVM:IModules
+    public class FavoriteDetailVM : IModules
     {
-        readonly Api.User.FavoriteApi  favoriteApi;
+        readonly Api.User.FavoriteApi favoriteApi;
         public int Page { get; set; } = 1;
         public string Keyword { get; set; } = "";
         public string Id { get; set; }
@@ -22,7 +22,7 @@ namespace BiliLite.Modules
             favoriteApi = new Api.User.FavoriteApi();
             RefreshCommand = new RelayCommand(Refresh);
             LoadMoreCommand = new RelayCommand(LoadMore);
-            CollectCommand=new RelayCommand(DoCollect);
+            CollectCommand = new RelayCommand(DoCollect);
             CancelCollectCommand = new RelayCommand(DoCancelCollect);
             SelectCommand = new RelayCommand<object>(SetSelectMode);
         }
@@ -62,7 +62,7 @@ namespace BiliLite.Modules
             }
         }
 
-        private ListViewSelectionMode _selectionMode= ListViewSelectionMode.None;
+        private ListViewSelectionMode _selectionMode = ListViewSelectionMode.None;
         public ListViewSelectionMode SelectionMode
         {
             get { return _selectionMode; }
@@ -120,7 +120,7 @@ namespace BiliLite.Modules
                 Loading = true;
                 Nothing = false;
                 var api = favoriteApi.FavoriteInfo(Id, Keyword, Page);
-                if (Type==21)
+                if (Type == 21)
                 {
                     api = favoriteApi.FavoriteSeasonInfo(Id, Keyword, Page);
                 }
@@ -139,14 +139,14 @@ namespace BiliLite.Modules
                                 ShowCollect = FavoriteInfo.fav_state != 1;
                                 ShowCancelCollect = !ShowCollect;
                             }
-                           
-                            if (data.data.medias==null|| data.data.medias.Count==0)
+
+                            if (data.data.medias == null || data.data.medias.Count == 0)
                             {
                                 Nothing = true;
                                 return;
                             }
                             Videos = data.data.medias;
-                           
+
                         }
                         else
                         {
@@ -197,7 +197,7 @@ namespace BiliLite.Modules
                     Utils.ShowMessageToast("请先登录后再操作");
                     return;
                 }
-                var results = await favoriteApi.Delete(Id, items.Select(x=>x.id).ToList()).Request();
+                var results = await favoriteApi.Delete(Id, items.Select(x => x.id).ToList()).Request();
                 if (results.status)
                 {
                     var data = await results.GetData<object>();
@@ -223,7 +223,7 @@ namespace BiliLite.Modules
                 var handel = HandelError<AnimeHomeModel>(ex);
                 Utils.ShowMessageToast(handel.message);
             }
-           
+
         }
         public async Task Clean()
         {

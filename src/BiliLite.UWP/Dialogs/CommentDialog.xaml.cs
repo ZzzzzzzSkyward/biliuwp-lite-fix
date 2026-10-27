@@ -46,7 +46,7 @@ namespace BiliLite.Dialogs
         {
             Window.Current.SizeChanged -= Current_SizeChanged;
         }
-        public void Show(string oid,int commentMode, Api.CommentApi.CommentSort commentSort)
+        public void Show(string oid, int commentMode, Api.CommentApi.CommentSort commentSort)
         {
             this.popup.IsOpen = true;
             comment.LoadComment(new Controls.LoadCommentInfo()
@@ -54,7 +54,7 @@ namespace BiliLite.Dialogs
                 CommentMode = commentMode,
                 CommentSort = commentSort,
                 Oid = oid,
-                IsDialog=true
+                IsDialog = true
             });
         }
         public async void Close()
@@ -81,7 +81,7 @@ namespace BiliLite.Dialogs
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
 
         private void Grid_Tapped(object sender, TappedRoutedEventArgs e)

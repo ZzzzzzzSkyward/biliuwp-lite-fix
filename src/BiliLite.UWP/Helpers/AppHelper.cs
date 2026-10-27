@@ -10,7 +10,7 @@ namespace BiliLite.Helpers
 {
     public static class AppHelper
     {
-        
+
         /// <summary>
         /// 透明图片
         /// </summary>
@@ -19,7 +19,7 @@ namespace BiliLite.Helpers
         public const string VERIFY_OGANIZATION_IMAGE = "ms-appx:///Assets/Icon/verify1.png";
         public const string BACKGROUND_IAMGE_URL = "ms-appx:///Assets/Image/background.jpg";
         public static List<Modules.Home.RegionItem> Regions { get; set; }
-        private static RegionAPI regionAPI=new RegionAPI();
+        private static RegionAPI regionAPI = new RegionAPI();
         public async static Task<List<Modules.Home.RegionItem>> GetDefaultRegions()
         {
             try
@@ -29,10 +29,10 @@ namespace BiliLite.Helpers
             }
             catch (Exception ex)
             {
-                LogHelper.Log("读取默认分区失败！"+ex.Message, LogType.ERROR, ex);
+                LogHelper.Log("读取默认分区失败！" + ex.Message, LogType.ERROR, ex);
                 return new List<Modules.Home.RegionItem>();
             }
-            
+
         }
         public static async Task SetRegions()
         {
@@ -70,20 +70,22 @@ namespace BiliLite.Helpers
             }
         }
 
-        public  static async Task LaunchConverter(string title,List<string> inputFiles, string outFile, List<string> subtitle,bool isDash)
+        public static async Task LaunchConverter(string title, List<string> inputFiles, string outFile, List<string> subtitle, bool isDash)
         {
-            ApplicationData.Current.LocalSettings.Values["VideoConverterInfo"] =JsonConvert.SerializeObject( new {
-                title= title,
-                inputFiles= inputFiles,
+            ApplicationData.Current.LocalSettings.Values["VideoConverterInfo"] = JsonConvert.SerializeObject(new
+            {
+                title = title,
+                inputFiles = inputFiles,
                 outFile = outFile,
-                subtitle= subtitle ,
-                isDash=isDash
+                subtitle = subtitle,
+                isDash = isDash
             });
             try
             {
                 await Windows.ApplicationModel.FullTrustProcessLauncher.LaunchFullTrustProcessForCurrentAppAsync();
             }
-            catch {
+            catch
+            {
                 Utils.ShowMessageToast("由于升级包，导出视频功能不可用");
             }
         }

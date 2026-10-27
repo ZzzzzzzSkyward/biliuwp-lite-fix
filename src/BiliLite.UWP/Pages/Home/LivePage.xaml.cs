@@ -35,8 +35,8 @@ namespace BiliLite.Pages.Home
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e); 
-            if (e.NavigationMode == NavigationMode.New&& liveVM.Banners==null)
+            base.OnNavigatedTo(e);
+            if (e.NavigationMode == NavigationMode.New && liveVM.Banners == null)
             {
                 await LoadData();
             }
@@ -73,17 +73,18 @@ namespace BiliLite.Pages.Home
         private void FollowLive_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as LiveFollowAnchorModel;
-            MessageCenter.NavigateToPage(this,new NavigationInfo() {
+            MessageCenter.NavigateToPage(this, new NavigationInfo()
+            {
                 icon = Symbol.Video,
                 page = typeof(LiveDetailPage),
-                title = data.uname+"的直播间",
+                title = data.uname + "的直播间",
                 parameters = data.roomid
             });
         }
 
         private void LiveItems_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var data=e.ClickedItem as LiveHomeItemsItemModel;
+            var data = e.ClickedItem as LiveHomeItemsItemModel;
             MessageCenter.NavigateToPage(this, new NavigationInfo()
             {
                 icon = Symbol.Video,
@@ -96,12 +97,13 @@ namespace BiliLite.Pages.Home
         private void loadMore_Click(object sender, RoutedEventArgs e)
         {
             var data = (sender as HyperlinkButton).DataContext as LiveHomeItemsModel;
-            if (data.module_info.title== "推荐直播")
+            if (data.module_info.title == "推荐直播")
             {
-                MessageCenter.NavigateToPage(this, new NavigationInfo() { 
-                    icon= Symbol.Document,
-                    page=typeof(LiveRecommendPage),
-                    title="全部直播"
+                MessageCenter.NavigateToPage(this, new NavigationInfo()
+                {
+                    icon = Symbol.Document,
+                    page = typeof(LiveRecommendPage),
+                    title = "全部直播"
                 });
             }
             if (!string.IsNullOrEmpty(data.module_info.link))
@@ -116,20 +118,20 @@ namespace BiliLite.Pages.Home
                             icon = Symbol.Document,
                             page = typeof(LiveAreaDetailPage),
                             title = data.module_info.title,
-                            parameters=new LiveAreaPar()
+                            parameters = new LiveAreaPar()
                             {
-                                parent_id= match.Groups[1].Value.ToInt32(),
-                                area_id= match.Groups[2].Value.ToInt32()
+                                parent_id = match.Groups[1].Value.ToInt32(),
+                                area_id = match.Groups[2].Value.ToInt32()
                             }
                         });
-                        
+
                     }
                 }
                 catch (Exception)
                 {
                 }
-               
-                
+
+
             }
 
         }
@@ -137,7 +139,7 @@ namespace BiliLite.Pages.Home
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var area = e.ClickedItem as LiveHomeAreaModel;
-            if (area.id== 0)
+            if (area.id == 0)
             {
                 MessageCenter.NavigateToPage(this, new NavigationInfo()
                 {

@@ -48,10 +48,10 @@ namespace BiliLite.Modules
             get { return _loading; }
             set { _loading = value; DoPropertyChanged("Loading"); }
         }
-      
+
 
         private bool CanLoadMore = true;
-      
+
 
         private bool _Conditionsloading = true;
         public bool ConditionsLoading
@@ -158,7 +158,7 @@ namespace BiliLite.Modules
             try
             {
                 if (Loading) return;
-               
+
                 if (Page == 1)
                 {
                     CanLoadMore = true;
@@ -203,7 +203,7 @@ namespace BiliLite.Modules
                         }
                         else
                         {
-                           
+
                             CanLoadMore = false;
                             Utils.ShowMessageToast("加载完了");
                         }

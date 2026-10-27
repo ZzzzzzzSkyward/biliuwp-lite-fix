@@ -204,7 +204,7 @@ namespace BiliLite.Controls.Dynamic
             }
             catch
             {
-                Utils.AddALog("无法解析动态 "+t);
+                Utils.AddALog("无法解析动态 " + t);
             }
             return null;
         }

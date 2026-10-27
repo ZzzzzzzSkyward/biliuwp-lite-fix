@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BiliLite.Modules
 {
-    public class EmoteVM:IModules
+    public class EmoteVM : IModules
     {
         readonly EmoteApi emoteApi;
         public EmoteVM()
@@ -77,7 +77,7 @@ namespace BiliLite.Modules
         public string text { get; set; }
         public string url { get; set; }
         public int type { get; set; }
-      
+
         public int attr { get; set; }
         public List<EmotePackageItemModel> emote { get; set; }
     }

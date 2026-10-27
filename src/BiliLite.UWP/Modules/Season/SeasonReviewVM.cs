@@ -13,10 +13,10 @@ namespace BiliLite.Modules.Season
     public class SeasonReviewVM : IModules
     {
         readonly Api.SeasonApi seasonApi;
-       
+
         public SeasonReviewVM()
         {
-          
+
             Items = new ObservableCollection<SeasonShortReviewItemModel>();
             seasonApi = new Api.SeasonApi();
             RefreshCommand = new RelayCommand(Refresh);
@@ -119,7 +119,7 @@ namespace BiliLite.Modules.Season
             }
             try
             {
-                var api = seasonApi.LikeReview(MediaID,item.review_id, Api.ReviewType.Short);
+                var api = seasonApi.LikeReview(MediaID, item.review_id, Api.ReviewType.Short);
                 var results = await api.Request();
                 if (results.status)
                 {
@@ -127,7 +127,7 @@ namespace BiliLite.Modules.Season
                     if (data.success)
                     {
                         item.stat.liked = data.result["status"].ToInt32();
-                        if (item.stat.liked==1)
+                        if (item.stat.liked == 1)
                         {
                             item.stat.likes += 1;
                         }
@@ -163,7 +163,7 @@ namespace BiliLite.Modules.Season
             }
             try
             {
-                var api = seasonApi.DislikeReview(MediaID,item.review_id, Api.ReviewType.Short);
+                var api = seasonApi.DislikeReview(MediaID, item.review_id, Api.ReviewType.Short);
                 var results = await api.Request();
                 if (results.status)
                 {
@@ -190,7 +190,7 @@ namespace BiliLite.Modules.Season
 
         }
 
-        public async Task<bool> SendShortReview(string content,bool share,int score)
+        public async Task<bool> SendShortReview(string content, bool share, int score)
         {
             if (!SettingHelper.Account.Logined && !await Utils.ShowLoginDialog())
             {
@@ -231,7 +231,7 @@ namespace BiliLite.Modules.Season
         }
     }
 
-   
+
     public class SeasonShortReviewItemModel
     {
         public long ctime { get; set; }

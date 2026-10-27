@@ -141,7 +141,7 @@ namespace BiliLite.Pages
                     //记录错误，不弹出通知
                     LogHelper.Log(ex.Message, LogType.ERROR, ex);
                 }
-               
+
             }
 
         }
@@ -440,7 +440,8 @@ namespace BiliLite.Pages
                     Title = liveRoomVM?.LiveInfo.anchor_info.base_info.uname + "的直播间";
                     ChangeTitle(liveRoomVM.LiveInfo.anchor_info.base_info.uname + "的直播间");
                 }
-                catch(Exception ex){
+                catch (Exception ex)
+                {
                     Utils.ShowMessageToast("直播间标题获取失败", ex.ToString());
                 }
             }
@@ -452,11 +453,11 @@ namespace BiliLite.Pages
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if (e.NavigationMode == NavigationMode.Back )
+            if (e.NavigationMode == NavigationMode.Back)
                 StopPlay();
             base.OnNavigatingFrom(e);
         }
-        
+
         private void LoadSetting()
         {
             //音量

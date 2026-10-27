@@ -26,7 +26,7 @@ namespace BiliLite.Pages.Live
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if(e.NavigationMode== NavigationMode.Back)
+            if (e.NavigationMode == NavigationMode.Back)
             {
                 this.NavigationCacheMode = NavigationCacheMode.Disabled;
             }
@@ -34,12 +34,12 @@ namespace BiliLite.Pages.Live
         }
         private async void pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (pivot.SelectedItem==null)
+            if (pivot.SelectedItem == null)
             {
                 return;
             }
-           var item= pivot.SelectedItem as LiveRecommendItem;
-            if (item.Items.Count==0&&!item.Loading)
+            var item = pivot.SelectedItem as LiveRecommendItem;
+            if (item.Items.Count == 0 && !item.Loading)
             {
                 await item.GetItems();
             }

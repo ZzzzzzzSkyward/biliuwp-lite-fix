@@ -82,8 +82,8 @@ namespace BiliLite.Modules.Live.LiveCenter
                             Nothing = true;
                         }
 
-                    
-                        if (items!=null&& items.Count>0)
+
+                        if (items != null && items.Count > 0)
                         {
                             CanLoadMore = false;
                         }

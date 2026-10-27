@@ -6,7 +6,8 @@
         private string _message;
         public string message
         {
-            get {
+            get
+            {
                 if (string.IsNullOrEmpty(_message))
                 {
                     return msg;

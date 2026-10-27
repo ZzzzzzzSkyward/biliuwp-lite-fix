@@ -35,7 +35,7 @@ namespace BiliLite.Pages.User
         private void Video_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = e.ClickedItem as HistoryItemModel;
-            if(data.business== "pgc")
+            if (data.business == "pgc")
             {
                 MessageCenter.NavigateToPage(this, new NavigationInfo()
                 {
@@ -55,7 +55,7 @@ namespace BiliLite.Pages.User
                     parameters = data.aid
                 });
             }
-            
+
         }
 
         private void removeVideoHistory_Click(object sender, RoutedEventArgs e)

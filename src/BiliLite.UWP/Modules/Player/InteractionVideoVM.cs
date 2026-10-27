@@ -9,11 +9,11 @@ using Windows.UI.Xaml.Media;
 
 namespace BiliLite.Modules.Player
 {
-    public class InteractionVideoVM:IModules
+    public class InteractionVideoVM : IModules
     {
         readonly PlayerAPI playerAPI;
         private string Aid { get; }
-        private int GraphVersion { get;  } 
+        private int GraphVersion { get; }
         public InteractionVideoVM(string avid, int graph_version)
         {
             this.Aid = avid;
@@ -66,7 +66,7 @@ namespace BiliLite.Modules.Player
                     var data = await result.GetData<InteractionEdgeInfoModel>();
                     if (data.code == 0)
                     {
-                        if(data.data.edges!=null&& data.data.edges.questions != null)
+                        if (data.data.edges != null && data.data.edges.questions != null)
                         {
                             foreach (var item in data.data.edges.questions)
                             {
@@ -77,13 +77,13 @@ namespace BiliLite.Modules.Player
                                 }
                             }
                         }
-                       
+
                         Info = data.data;
                         List = data.data.story_list;
                         Select = Info.story_list.FirstOrDefault(x => x.edge_id == Info.edge_id);
                     }
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace BiliLite.Modules.Player
         public int? is_current { get; set; }
     }
 
-  
+
     public class InteractionEdgeInfoChoiceModel
     {
         public long id { get; set; }
@@ -151,7 +151,7 @@ namespace BiliLite.Modules.Player
     {
         public string choice_image { get; set; }
         public string title_text_color { get; set; }
-        public SolidColorBrush text_color 
+        public SolidColorBrush text_color
         {
             get
             {
@@ -175,7 +175,7 @@ namespace BiliLite.Modules.Player
         public InteractionEdgeInfoSkinModel skin { get; set; }
     }
 
-  
-   
+
+
 
 }

@@ -16,7 +16,7 @@ namespace BiliLite.Modules
         {
             hotAPI = new Api.Home.HotAPI();
             RefreshCommand = new RelayCommand(Refresh);
-            LoadMoreCommand=new RelayCommand(LoadMore);
+            LoadMoreCommand = new RelayCommand(LoadMore);
         }
         public ICommand RefreshCommand { get; private set; }
         public ICommand LoadMoreCommand { get; private set; }
@@ -48,14 +48,14 @@ namespace BiliLite.Modules
             try
             {
                 Loading = true;
-            
+
                 var results = await hotAPI.Popular(idx, last_param).Request();
                 if (results.status)
                 {
-                    var data =  results.GetJObject();
-                    if (data["code"].ToInt32()==0)
+                    var data = results.GetJObject();
+                    if (data["code"].ToInt32() == 0)
                     {
-                        if (TopItems==null)
+                        if (TopItems == null)
                         {
                             TopItems = JsonConvert.DeserializeObject<List<HotTopItemModel>>(data["config"]["top_items"].ToString());
                         }
@@ -65,7 +65,7 @@ namespace BiliLite.Modules
                             if (items[i].card_goto != "av")
                                 items.Remove(items[i]);
                         }
-                        if (HotItems==null)
+                        if (HotItems == null)
                         {
                             HotItems = items;
                         }
@@ -98,7 +98,7 @@ namespace BiliLite.Modules
                 Loading = false;
             }
         }
-    
+
         public async void Refresh()
         {
             if (Loading)
@@ -115,7 +115,7 @@ namespace BiliLite.Modules
             {
                 return;
             }
-            if (HotItems==null|| HotItems.Count==0)
+            if (HotItems == null || HotItems.Count == 0)
             {
                 return;
             }
@@ -123,7 +123,7 @@ namespace BiliLite.Modules
             await GetPopular(last.idx, last.param);
         }
     }
-    public class HotTopItemModel 
+    public class HotTopItemModel
     {
         public int entrance_id { get; set; }
         public string icon { get; set; }

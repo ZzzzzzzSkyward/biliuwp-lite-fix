@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace BiliLite.Modules.User.UserDetail
 {
-    public class UserFavlistVM:IModules
+    public class UserFavlistVM : IModules
     {
         public string mid { get; set; }
         private readonly UserDetailAPI userDetailAPI;
@@ -21,7 +21,7 @@ namespace BiliLite.Modules.User.UserDetail
 
 
         }
-       
+
         private bool _Loading = true;
         public bool Loading
         {
@@ -78,7 +78,7 @@ namespace BiliLite.Modules.User.UserDetail
                                 }
                             }
                         }
-                      
+
                         if ((Items == null || Items.Count == 0))
                         {
                             Nothing = true;

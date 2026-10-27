@@ -61,7 +61,7 @@ namespace BiliLite
             try
             {
                 LogHelper.Log("程序运行出现错误", LogType.ERROR, e.Exception);
-                Utils.ShowMessageToast("程序出现一个错误，已记录",e.Exception.ToString());
+                Utils.ShowMessageToast("程序出现一个错误，已记录", e.Exception.ToString());
             }
             catch (Exception)
             {
@@ -93,12 +93,12 @@ namespace BiliLite
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             LoadTheme();
-            Navigation(e.Arguments,e.PrelaunchActivated);
-            
+            Navigation(e.Arguments, e.PrelaunchActivated);
+
         }
 
 
-        private async void Navigation(object arguments, bool prelaunch=false)
+        private async void Navigation(object arguments, bool prelaunch = false)
         {
             // We don't have ARM64 support of SYEngine.
             if (RuntimeInformation.ProcessArchitecture != Architecture.Arm64)
@@ -114,7 +114,7 @@ namespace BiliLite
             catch (Exception)
             {
             }
-          
+
             InitBili();
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -127,7 +127,7 @@ namespace BiliLite
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                
+
                 //主题颜色
                 rootFrame.RequestedTheme = (ElementTheme)SettingHelper.GetValue<int>(SettingHelper.UI.THEME, 0);
 
@@ -157,9 +157,9 @@ namespace BiliLite
                 {
                     if (arguments != null && !string.IsNullOrEmpty(arguments.ToString()))
                     {
-                       await MessageCenter.HandleUrl(arguments.ToString());
+                        await MessageCenter.HandleUrl(arguments.ToString());
                     }
-                    
+
                 }
                 // 确保当前窗口处于活动状态
                 Window.Current.Activate();
@@ -240,13 +240,13 @@ namespace BiliLite
         protected override void OnActivated(IActivatedEventArgs args)
         {
             base.OnActivated(args);
-          
+
             if (args.Kind == ActivationKind.Protocol)
             {
                 ProtocolActivatedEventArgs eventArgs = args as ProtocolActivatedEventArgs;
-                Navigation(eventArgs.Uri.AbsoluteUri ,false);
+                Navigation(eventArgs.Uri.AbsoluteUri, false);
             }
-           
+
         }
         /// <summary>
         /// 在将要挂起应用程序执行时调用。  在不知道应用程序
@@ -263,7 +263,7 @@ namespace BiliLite
             {
                 var rootFrame = Window.Current.Content as Frame;
                 var mainPage = rootFrame.Content as MainPage;
-                if (mainPage!=null&&mainPage.IsViewing())
+                if (mainPage != null && mainPage.IsViewing())
                 {
                     mainPage.CloseView();
                     e.Handled = true;

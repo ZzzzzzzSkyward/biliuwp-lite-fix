@@ -368,7 +368,7 @@ namespace BiliLite.Helpers
             /// 默认视频类型 int flv=0, dash=1,dash_hevc=2
             /// </summary>
             public const string DEFAULT_VIDEO_TYPE = "PlayerDefaultVideoType";
-            public static List<double> VideoSpeed = new List<double>() {3.0d, 2.0d, 1.5d, 1.25d, 1.0d, 0.75d, 0.5d };
+            public static List<double> VideoSpeed = new List<double>() { 3.0d, 2.0d, 1.5d, 1.25d, 1.0d, 0.75d, 0.5d };
 
             /// <summary>
             /// 默认视频类型 int 1.0
@@ -445,7 +445,7 @@ namespace BiliLite.Helpers
             /// 自动打开AI字幕
             /// </summary>
             public const string AUTO_OPEN_AI_SUBTITLE = "PlayerAutoOpenAISubtitle";
-         
+
 
             /// <summary>
             /// 替换CDN
@@ -481,7 +481,7 @@ namespace BiliLite.Helpers
             /// <summary>
             /// 自定义大陆服务器链接
             /// </summary>
-            public const string CUSTOM_SERVER_URL_CN= "RoamingCustomServerUrlCN";
+            public const string CUSTOM_SERVER_URL_CN = "RoamingCustomServerUrlCN";
 
             /// <summary>
             /// 简体中文
@@ -492,7 +492,7 @@ namespace BiliLite.Helpers
             /// </summary>
             //public const string AKAMAI_CDN = "RoamingAkamaiCDN";
 
-           
+
 
         }
         public class Download

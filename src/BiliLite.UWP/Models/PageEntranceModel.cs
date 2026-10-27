@@ -8,7 +8,7 @@ namespace BiliLite.Models
         public PageEntranceModel()
         {
         }
-        public PageEntranceModel(string name,string logo, NavigationInfo navigationInfo)
+        public PageEntranceModel(string name, string logo, NavigationInfo navigationInfo)
         {
             GUID = Guid.NewGuid().ToString();
             Logo = logo;

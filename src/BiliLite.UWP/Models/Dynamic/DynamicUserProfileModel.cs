@@ -29,7 +29,7 @@
         public int vipStatus { get; set; }
         public string vipStatusWarn { get; set; }
         public int themeType { get; set; }
-       
+
     }
 
     public class DynamicCardDescUserProfilePendantModel
@@ -64,7 +64,7 @@
         public int number { get; set; }
         public string color { get; set; }
         public string num_desc { get; set; }
-      
+
     }
     public class DynamicCardDescUserProfileModel
     {

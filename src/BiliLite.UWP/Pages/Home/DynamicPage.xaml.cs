@@ -46,16 +46,18 @@ namespace BiliLite.Pages.Home
 
         private void AdaptiveGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-           var item= e.ClickedItem as DynamicItemModel;
-            if (item.desc.type==8)
+            var item = e.ClickedItem as DynamicItemModel;
+            if (item.desc.type == 8)
             {
-                MessageCenter.NavigateToPage(this, new NavigationInfo() { 
-                    icon= Symbol.Play,
-                    page=typeof(VideoDetailPage),
-                    parameters=item.video.aid,
-                    title=item.video.title
+                MessageCenter.NavigateToPage(this, new NavigationInfo()
+                {
+                    icon = Symbol.Play,
+                    page = typeof(VideoDetailPage),
+                    parameters = item.video.aid,
+                    title = item.video.title
                 });
-            }else if (item.desc.type == 512)
+            }
+            else if (item.desc.type == 512)
             {
                 MessageCenter.NavigateToPage(this, new NavigationInfo()
                 {

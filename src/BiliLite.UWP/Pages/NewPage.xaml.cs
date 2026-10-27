@@ -30,7 +30,7 @@ namespace BiliLite.Pages
         }
         private async void SetBackground()
         {
-            var background = SettingHelper.GetValue(SettingHelper.UI.BACKGROUND_IMAGE,AppHelper.BACKGROUND_IAMGE_URL);
+            var background = SettingHelper.GetValue(SettingHelper.UI.BACKGROUND_IMAGE, AppHelper.BACKGROUND_IAMGE_URL);
             if (background == AppHelper.BACKGROUND_IAMGE_URL)
             {
                 //backgroundImage.Source = new BitmapImage(new Uri(background));
@@ -58,7 +58,7 @@ namespace BiliLite.Pages
         private void BtnOpenRank_Click(object sender, RoutedEventArgs e)
         {
             ((this.Parent as Frame).Parent as TabViewItem).Header = "排行榜";
-            ((this.Parent as Frame).Parent as TabViewItem).IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol= Symbol.FourBars };
+            ((this.Parent as Frame).Parent as TabViewItem).IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = Symbol.FourBars };
             this.Frame.Navigate(typeof(RankPage));
             //MessageCenter.NavigateToPage(this,new NavigationInfo() { 
             //    icon= Symbol.FourBars,
@@ -179,7 +179,7 @@ namespace BiliLite.Pages
                 icon = (Symbol)57755,
                 page = typeof(WebPage),
                 title = "B站",
-                parameters="https://www.bilibili.com"
+                parameters = "https://www.bilibili.com"
             });
         }
     }

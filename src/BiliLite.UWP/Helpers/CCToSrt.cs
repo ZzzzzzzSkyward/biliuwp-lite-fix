@@ -16,10 +16,10 @@ namespace BiliLite.Helpers
         /// <param name="json">CC字幕</param>
         /// <param name="toSimplified">转为简体</param>
         /// <returns></returns>
-        public string ConvertToSrt(string json,bool toSimplified=false)
+        public string ConvertToSrt(string json, bool toSimplified = false)
         {
-            SubtitleModel subtitle=JsonConvert.DeserializeObject<SubtitleModel>(json);
-            StringBuilder stringBuilder=new StringBuilder();
+            SubtitleModel subtitle = JsonConvert.DeserializeObject<SubtitleModel>(json);
+            StringBuilder stringBuilder = new StringBuilder();
             int i = 1;
             foreach (var item in subtitle.body)
             {

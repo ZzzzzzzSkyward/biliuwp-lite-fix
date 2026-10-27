@@ -18,7 +18,7 @@ namespace BiliLite.Pages.Other
         public FindMorePage()
         {
             this.InitializeComponent();
-            findMoreVM=new FindMoreVM();
+            findMoreVM = new FindMoreVM();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -34,18 +34,19 @@ namespace BiliLite.Pages.Other
             var item = e.ClickedItem as FindMoreEntranceModel;
             if (item.type == 0)
             {
-                MessageCenter.NavigateToPage(this, new NavigationInfo() { 
-                    icon =Symbol.Link,
-                    title =item.name,
-                    page=typeof(WebPage),
-                    parameters=item.link
+                MessageCenter.NavigateToPage(this, new NavigationInfo()
+                {
+                    icon = Symbol.Link,
+                    title = item.name,
+                    page = typeof(WebPage),
+                    parameters = item.link
                 });
             }
-            else if(item.type == 1)
+            else if (item.type == 1)
             {
                 await Utils.LaunchUri(new Uri(item.link));
             }
-           
+
         }
     }
 }

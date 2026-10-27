@@ -137,7 +137,7 @@ namespace BiliLite.Modules
         {
             var seasonId = e.ClickedItem.GetType().GetProperty("season_id").GetValue(e.ClickedItem, null);
             var title = e.ClickedItem.GetType().GetProperty("title").GetValue(e.ClickedItem, null) ?? "";
-            if (seasonId!=null&& seasonId.ToInt32()!=0)
+            if (seasonId != null && seasonId.ToInt32() != 0)
             {
                 MessageCenter.NavigateToPage(sender, new NavigationInfo()
                 {
@@ -149,11 +149,11 @@ namespace BiliLite.Modules
             }
             else
             {
-                var weblink = e.ClickedItem.GetType().GetProperty("link").GetValue(e.ClickedItem, null)??"";
-                var result= await MessageCenter.HandleUrl(weblink.ToString());
+                var weblink = e.ClickedItem.GetType().GetProperty("link").GetValue(e.ClickedItem, null) ?? "";
+                var result = await MessageCenter.HandleUrl(weblink.ToString());
                 if (!result) Utils.ShowMessageToast("无法打开此链接");
             }
-           
+
         }
         public void LinkItemClick(object sender, ItemClickEventArgs e)
         {

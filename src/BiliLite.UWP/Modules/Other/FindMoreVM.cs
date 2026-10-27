@@ -34,7 +34,7 @@ namespace BiliLite.Modules.Other
                 {
                     var data = await results.GetJson<List<FindMoreEntranceModel>>();
                     await Task.Delay(2000);
-                    Items=data;
+                    Items = data;
                 }
                 else
                 {

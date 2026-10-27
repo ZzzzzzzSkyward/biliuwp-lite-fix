@@ -51,7 +51,7 @@ namespace BiliLite.Controls
         {
             if (element.GetTranslateX() != x)
             {
-               // await element.Offset(offsetX: (float)element.GetTranslateX(), offsetY: 0, duration: duration, delay: 0, easingType: EasingType.Default).StartAsync();  //Offset animation can be awaited
+                // await element.Offset(offsetX: (float)element.GetTranslateX(), offsetY: 0, duration: duration, delay: 0, easingType: EasingType.Default).StartAsync();  //Offset animation can be awaited
                 await AnimateDoublePropertyAsync(element.GetCompositeTransform(), "TranslateX", element.GetTranslateX(), x, duration, easingFunction);
             }
         }
@@ -61,7 +61,7 @@ namespace BiliLite.Controls
         }
         public static int Mod(this int value, int module)
         {
-            if (module==0)
+            if (module == 0)
             {
                 return 0;
             }

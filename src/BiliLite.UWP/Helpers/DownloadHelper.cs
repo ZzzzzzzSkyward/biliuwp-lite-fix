@@ -27,7 +27,7 @@ namespace BiliLite.Helpers
         /// </summary>
         Cheese = 3
     }
-    
+
     public static class DownloadHelper
     {
         public static BackgroundTransferGroup group = BackgroundTransferGroup.CreateGroup("BiliDownlad");//下载组，方便管理
@@ -35,8 +35,8 @@ namespace BiliLite.Helpers
         {
             //读取存储文件夹
             StorageFolder folder = await GetDownloadFolder();
-            folder = await folder.CreateFolderAsync((downloadInfo.Type == DownloadType.Season ? ("ss"+ downloadInfo.SeasonID) : downloadInfo.AVID), CreationCollisionOption.OpenIfExists);
-            StorageFolder episodeFolder = await folder.CreateFolderAsync(downloadInfo.Type == DownloadType.Season?downloadInfo.EpisodeID: downloadInfo.CID, CreationCollisionOption.OpenIfExists);
+            folder = await folder.CreateFolderAsync((downloadInfo.Type == DownloadType.Season ? ("ss" + downloadInfo.SeasonID) : downloadInfo.AVID), CreationCollisionOption.OpenIfExists);
+            StorageFolder episodeFolder = await folder.CreateFolderAsync(downloadInfo.Type == DownloadType.Season ? downloadInfo.EpisodeID : downloadInfo.CID, CreationCollisionOption.OpenIfExists);
             //下载封面
             await DownloadCover(downloadInfo.CoverUrl, folder);
             //下载弹幕
@@ -49,14 +49,14 @@ namespace BiliLite.Helpers
                     await DownloadSubtitle(item, episodeFolder);
                 }
             }
-           
+
             //下载视频
             foreach (var item in downloadInfo.Urls)
             {
-                 DownloadVideo(downloadInfo,item, episodeFolder);
+                DownloadVideo(downloadInfo, item, episodeFolder);
             }
             //保存文件
-            await SaveInfo(downloadInfo,folder, episodeFolder);
+            await SaveInfo(downloadInfo, folder, episodeFolder);
         }
         private async static Task<StorageFolder> GetDownloadFolder()
         {
@@ -105,14 +105,16 @@ namespace BiliLite.Helpers
         {
             try
             {
-                DownloadSaveInfo downloadSaveInfo = new DownloadSaveInfo() { 
-                    Cover=info.CoverUrl,
-                    SeasonType=info.SeasonType,
-                    Title=info.Title,
-                    Type=info.Type,
-                    ID= info.Type== DownloadType.Season? info.SeasonID.ToString():info.AVID
+                DownloadSaveInfo downloadSaveInfo = new DownloadSaveInfo()
+                {
+                    Cover = info.CoverUrl,
+                    SeasonType = info.SeasonType,
+                    Title = info.Title,
+                    Type = info.Type,
+                    ID = info.Type == DownloadType.Season ? info.SeasonID.ToString() : info.AVID
                 };
-                DownloadSaveEpisodeInfo downloadSaveEpisodeInfo = new DownloadSaveEpisodeInfo() {
+                DownloadSaveEpisodeInfo downloadSaveEpisodeInfo = new DownloadSaveEpisodeInfo()
+                {
                     CID = info.CID,
                     DanmakuPath = "danmaku.xml",
                     EpisodeID = info.EpisodeID,
@@ -121,16 +123,17 @@ namespace BiliLite.Helpers
                     SubtitlePath = new List<DownloadSubtitleInfo>(),
                     Index = info.Index,
                     VideoPath = new List<string>(),
-                    QualityID=info.QualityID,
-                    QualityName=info.QualityName
+                    QualityID = info.QualityID,
+                    QualityName = info.QualityName
                 };
                 if (info.Subtitles != null)
                 {
                     foreach (var item in info.Subtitles)
                     {
-                        downloadSaveEpisodeInfo.SubtitlePath.Add(new DownloadSubtitleInfo() { 
-                            Name=item.Name,
-                            Url=item.Name+".json"
+                        downloadSaveEpisodeInfo.SubtitlePath.Add(new DownloadSubtitleInfo()
+                        {
+                            Name = item.Name,
+                            Url = item.Name + ".json"
                         });
                     }
                 }
@@ -138,7 +141,7 @@ namespace BiliLite.Helpers
                 {
                     downloadSaveEpisodeInfo.VideoPath.Add(item.FileName);
                 }
-                downloadSaveEpisodeInfo.IsDash= downloadSaveEpisodeInfo.VideoPath.FirstOrDefault(x => x.Contains(".m4s"))!=null;
+                downloadSaveEpisodeInfo.IsDash = downloadSaveEpisodeInfo.VideoPath.FirstOrDefault(x => x.Contains(".m4s")) != null;
                 StorageFile file = await folder.CreateFileAsync("info.json", CreationCollisionOption.ReplaceExisting);
                 await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(downloadSaveInfo));
                 StorageFile episodeFile = await episodeFolder.CreateFileAsync("info.json", CreationCollisionOption.ReplaceExisting);
@@ -147,7 +150,7 @@ namespace BiliLite.Helpers
             }
             catch (Exception ex)
             {
-                LogHelper.Log("文件保存失败:" + episodeFolder.Path, LogType.ERROR,ex);
+                LogHelper.Log("文件保存失败:" + episodeFolder.Path, LogType.ERROR, ex);
             }
         }
         private async static Task DownloadSubtitle(DownloadSubtitleInfo subtitleInfo, StorageFolder episodeFolder)
@@ -173,7 +176,7 @@ namespace BiliLite.Helpers
         private async static void DownloadVideo(DownloadInfo downloadInfo, DownloadUrlInfo url, StorageFolder episodeFolder)
         {
             BackgroundDownloader downloader = new BackgroundDownloader();
-            if (url.HttpHeader!=null)
+            if (url.HttpHeader != null)
             {
                 foreach (var item in url.HttpHeader)
                 {
@@ -195,7 +198,7 @@ namespace BiliLite.Helpers
 
 
             //创建视频文件
-           
+
             StorageFile file = await episodeFolder.CreateFileAsync(url.FileName, CreationCollisionOption.OpenIfExists);
             DownloadOperation downloadOp = downloader.CreateDownload(new Uri(url.Url), file);
             //设置下载策略
@@ -208,17 +211,18 @@ namespace BiliLite.Helpers
                 downloadOp.CostPolicy = BackgroundTransferCostPolicy.UnrestrictedOnly;
             }
             var guid = downloadOp.Guid.ToString();
-            SettingHelper.SetValue(guid, new DownloadGUIDInfo() { 
-                CID= downloadInfo.CID,
-                Path= episodeFolder.Path,
-                EpisodeTitle= downloadInfo.EpisodeTitle,
-                FileName=url.FileName,
-                Title= downloadInfo.Title,
-                GUID=guid,
-                Type= downloadInfo.Type,
-                ID = downloadInfo.Type== DownloadType.Video? downloadInfo.AVID: downloadInfo.SeasonID.ToString()
+            SettingHelper.SetValue(guid, new DownloadGUIDInfo()
+            {
+                CID = downloadInfo.CID,
+                Path = episodeFolder.Path,
+                EpisodeTitle = downloadInfo.EpisodeTitle,
+                FileName = url.FileName,
+                Title = downloadInfo.Title,
+                GUID = guid,
+                Type = downloadInfo.Type,
+                ID = downloadInfo.Type == DownloadType.Video ? downloadInfo.AVID : downloadInfo.SeasonID.ToString()
             });
-           
+
             try
             {
                 await downloadOp.StartAsync();
@@ -284,13 +288,13 @@ namespace BiliLite.Helpers
 
     public class DownloadSaveInfo
     {
-        
+
         public DownloadType Type { get; set; }
         public string ID { get; set; }
         public int SeasonType { get; set; }
         public string Title { get; set; }
         public string Cover { get; set; }
-     
+
     }
     public class DownloadSaveEpisodeInfo
     {

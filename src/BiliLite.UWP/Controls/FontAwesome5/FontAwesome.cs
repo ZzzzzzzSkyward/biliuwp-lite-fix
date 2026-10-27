@@ -74,7 +74,7 @@ namespace FontAwesome5
                 //TODO 在新窗口中存在线程问题，待解决
                 Debug.WriteLine(ex.Message);
             }
-            
+
 
         }
 

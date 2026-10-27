@@ -141,7 +141,7 @@ namespace BiliLite.Pages
                 ep_id = seasonDetailVM.Detail.user_status.progress.last_ep_id.ToString();
                 SettingHelper.SetValue<double>("ep" + ep_id, Convert.ToDouble(seasonDetailVM.Detail.user_status.progress.last_time));
             }**/
-            var selectItem = (selectPreview?seasonDetailVM.Previews: seasonDetailVM.Episodes).FirstOrDefault(x => x.id.ToString() == ep_id);
+            var selectItem = (selectPreview ? seasonDetailVM.Previews : seasonDetailVM.Episodes).FirstOrDefault(x => x.id.ToString() == ep_id);
             if (selectItem != null)
             {
                 index = (selectPreview ? seasonDetailVM.Previews : seasonDetailVM.Episodes).IndexOf(selectItem);
@@ -174,7 +174,7 @@ namespace BiliLite.Pages
                     order = i,
                     play_mode = VideoPlayType.Season,
                     title = item.title + " " + item.long_title,
-                    area = Utils.ParseArea(seasonDetailVM.Detail.title, seasonDetailVM.Detail.up_info?.mid??0)
+                    area = Utils.ParseArea(seasonDetailVM.Detail.title, seasonDetailVM.Detail.up_info?.mid ?? 0)
                 });
                 i++;
             }
@@ -205,7 +205,7 @@ namespace BiliLite.Pages
                     order = i,
                     play_mode = VideoPlayType.Season,
                     title = item.title + " " + item.long_title,
-                    area=Utils.ParseArea(seasonDetailVM.Detail.title, seasonDetailVM.Detail.up_info?.mid ?? 0)
+                    area = Utils.ParseArea(seasonDetailVM.Detail.title, seasonDetailVM.Detail.up_info?.mid ?? 0)
                 });
                 i++;
             }
@@ -219,11 +219,11 @@ namespace BiliLite.Pages
         }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            if(e.NavigationMode== NavigationMode.Back||e.SourcePageType.Name == "BlankPage")
+            if (e.NavigationMode == NavigationMode.Back || e.SourcePageType.Name == "BlankPage")
             {
                 ClosePage();
             }
-            
+
             base.OnNavigatingFrom(e);
         }
         public void ChangeTitle(string title)
@@ -257,7 +257,7 @@ namespace BiliLite.Pages
             Utils.ShowMessageToast("已复制链接到剪切板");
         }
 
-       
+
 
         private void PlayerControl_FullScreenEvent(object sender, bool e)
         {
@@ -305,7 +305,7 @@ namespace BiliLite.Pages
                 ep_id = seasonDetailVM.Episodes[e].id.ToString();
                 aid = seasonDetailVM.Episodes[e].aid;
             }
-           
+
             CreateQR();
             comment.LoadComment(new LoadCommentInfo()
             {
@@ -329,7 +329,7 @@ namespace BiliLite.Pages
                 UpdatePlayInfoToEpisode(listEpisode.SelectedIndex);
             }
             player.ChangePlayIndex(listEpisode.SelectedIndex);
-            ep_id =seasonDetailVM.Episodes[listEpisode.SelectedIndex].id.ToString();
+            ep_id = seasonDetailVM.Episodes[listEpisode.SelectedIndex].id.ToString();
             comment.LoadComment(new LoadCommentInfo()
             {
                 CommentMode = (int)Api.CommentApi.CommentType.Video,
@@ -394,7 +394,7 @@ namespace BiliLite.Pages
             var item = SeasonList.SelectedItem as SeasonDetailSeasonItemModel;
             if (item.season_id.ToString() != season_id)
             {
-                
+
                 MessageCenter.NavigateToPage(this, new NavigationInfo()
                 {
                     icon = Symbol.Play,
@@ -443,7 +443,7 @@ namespace BiliLite.Pages
 
         private async void pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (pivot.SelectedIndex == 3 && (seasonReviewVM.Items == null || seasonReviewVM.Items.Count==0))
+            if (pivot.SelectedIndex == 3 && (seasonReviewVM.Items == null || seasonReviewVM.Items.Count == 0))
             {
                 await seasonReviewVM.GetItems();
             }
@@ -451,11 +451,11 @@ namespace BiliLite.Pages
 
         private void btnReviewLike_Click(object sender, RoutedEventArgs e)
         {
-            var item= (sender as HyperlinkButton).DataContext as SeasonShortReviewItemModel;
+            var item = (sender as HyperlinkButton).DataContext as SeasonShortReviewItemModel;
             seasonReviewVM.Like(item);
         }
 
-       
+
         private void btnReviewDislike_Click(object sender, RoutedEventArgs e)
         {
             var item = (sender as HyperlinkButton).DataContext as SeasonShortReviewItemModel;
@@ -470,7 +470,7 @@ namespace BiliLite.Pages
                 Utils.ShowMessageToast("请先登录后再操作");
                 return;
             }
-            
+
             SendReviewDialog sendReviewDialog = new SendReviewDialog(seasonReviewVM.MediaID);
             await sendReviewDialog.ShowAsync();
         }
@@ -494,12 +494,12 @@ namespace BiliLite.Pages
             var downloadItem = new DownloadItem()
             {
                 Cover = seasonDetailVM.Detail.cover,
-               SeasonID= seasonDetailVM.Detail.season_id,
-               SeasonType=seasonDetailVM.Detail.type,
+                SeasonID = seasonDetailVM.Detail.season_id,
+                SeasonType = seasonDetailVM.Detail.type,
                 Episodes = new List<DownloadEpisodeItem>(),
                 Subtitle = seasonDetailVM.Detail.subtitle,
                 Title = seasonDetailVM.Detail.title,
-                UpMid=seasonDetailVM.Detail.up_info?.mid??0,
+                UpMid = seasonDetailVM.Detail.up_info?.mid ?? 0,
                 Type = DownloadType.Season
             };
             int i = 0;
@@ -522,13 +522,13 @@ namespace BiliLite.Pages
                     CID = item.cid,
                     EpisodeID = item.id.ToString(),
                     Index = i,
-                    Title = item.title+" "+ item.long_title,
+                    Title = item.title + " " + item.long_title,
                     State = state,
-                    AVID=item.aid,
-                    BVID=item.bvid,
-                    ShowBadge= item.show_badge,
-                    Badge=item.badge,
-                    IsPreview=item.IsPreview
+                    AVID = item.aid,
+                    BVID = item.bvid,
+                    ShowBadge = item.show_badge,
+                    Badge = item.badge,
+                    IsPreview = item.IsPreview
                 });
                 i++;
             }

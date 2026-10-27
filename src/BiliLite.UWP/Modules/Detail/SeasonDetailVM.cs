@@ -141,8 +141,8 @@ namespace BiliLite.Modules
                         data.result.convert(data2.result);
                         data.code = 0;
                     }
-                }             */      
-                if (data!=null)
+                }             */
+                if (data != null)
                 {
                     if (data.result.total != 0)
                     {
@@ -188,8 +188,8 @@ namespace BiliLite.Modules
                     ShowPreview = Previews.Count > 0;
                     NothingPlay = !ShowEpisodes && !ShowPreview;
                     Loaded = true;
-                }                
-                if(data==null)
+                }
+                if (data == null)
                 {
                     //Utils.ShowMessageToast(results.message);
                     ShowError = true;
@@ -214,25 +214,26 @@ namespace BiliLite.Modules
             var reulsts_web = await seasonApi.DetailWeb(season_id).Request();
             if (reulsts_web.status)
             {
-                var data= reulsts_web.GetJObject();
+                var data = reulsts_web.GetJObject();
                 if (data["code"].ToInt32() == 0)
                 {
                     var objText = data["result"].ToString();
                     //处理下会出错的字段
                     //objText = objText.Replace("\"staff\"", "staff1");
-                    var model= JsonConvert.DeserializeObject<SeasonDetailModel_Web>(objText);
+                    var model = JsonConvert.DeserializeObject<SeasonDetailModel_Web>(objText);
                     model.episodes = await Utils.DeserializeJson<List<SeasonDetailEpisodeModel>>(data["result"]["episodes"].ToString());
                     /*model.user_status = new SeasonDetailUserStatusModel()
                     {
                         follow_status=0,
                         follow=0
                     };*/
-                    return new ApiResultModel<SeasonDetailModel_Web>() { code=0,message="",result=model,};
+                    return new ApiResultModel<SeasonDetailModel_Web>() { code = 0, message = "", result = model, };
                 }
             }
-            return new ApiResultModel<SeasonDetailModel_Web>() { 
-                code=-101,
-                message="无法读取内容"
+            return new ApiResultModel<SeasonDetailModel_Web>()
+            {
+                code = -101,
+                message = "无法读取内容"
             };
         }
 
@@ -408,7 +409,7 @@ namespace BiliLite.Modules
             this.stat = sw.stat;
             //处理标签string->object
             //this.styles = new List<SeasonDetailStyleItemModel>();
-            foreach(var item in sw.styles)
+            foreach (var item in sw.styles)
             {
                 var sd = new SeasonDetailStyleItemModel();
                 sd.name = item;
@@ -441,7 +442,8 @@ namespace BiliLite.Modules
                     {
                         this.GetType().GetProperty(property.Name).SetValue(this, value);
                     }
-                    catch(Exception e) {
+                    catch (Exception e)
+                    {
                         Console.WriteLine(e.ToString());
                     }
                 }
@@ -456,7 +458,7 @@ namespace BiliLite.Modules
     }
     public class SeasonDetailUpInfoModel
     {
-        public long mid{ get; set; }
+        public long mid { get; set; }
         public string uname { get; set; }
     }
     public class SeasonDetailPaymentModel

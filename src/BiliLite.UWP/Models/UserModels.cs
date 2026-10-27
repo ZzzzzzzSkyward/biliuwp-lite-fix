@@ -51,7 +51,7 @@ namespace BiliLite.Models
         public string url { get; set; }
         public List<string> sso { get; set; }
     }
-   
+
     public class LoginTokenInfo
     {
 

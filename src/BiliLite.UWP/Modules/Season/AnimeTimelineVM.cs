@@ -30,7 +30,7 @@ namespace BiliLite.Modules
                 };
             SelectAnimeType = AnimeTypeItems.FirstOrDefault(x => x.AnimeType == type);
             animeType = type;
-            
+
         }
         private bool _loading = true;
         public bool Loading

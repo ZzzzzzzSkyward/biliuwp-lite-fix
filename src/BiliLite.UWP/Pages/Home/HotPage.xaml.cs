@@ -33,25 +33,26 @@ namespace BiliLite.Pages.Home
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.NavigationMode == NavigationMode.New&&hotVM.HotItems==null)
+            if (e.NavigationMode == NavigationMode.New && hotVM.HotItems == null)
             {
                 await hotVM.GetPopular();
             }
         }
 
 
-       
+
 
         private async void gridHot_ItemClick(object sender, ItemClickEventArgs e)
         {
             var data = (e.ClickedItem as Modules.HotDataItemModel);
-            if (data.card_goto=="av")
+            if (data.card_goto == "av")
             {
-                MessageCenter.NavigateToPage(this, new NavigationInfo() {
-                    icon= Symbol.Play,
-                    page=typeof(VideoDetailPage),
-                    title= data.title,
-                    parameters= data.param
+                MessageCenter.NavigateToPage(this, new NavigationInfo()
+                {
+                    icon = Symbol.Play,
+                    page = typeof(VideoDetailPage),
+                    title = data.title,
+                    parameters = data.param
                 });
             }
             else
@@ -80,7 +81,7 @@ namespace BiliLite.Pages.Home
 
         private void AddToWatchLater_Click(object sender, RoutedEventArgs e)
         {
-           var data=( sender as MenuFlyoutItem).DataContext as HotDataItemModel;
+            var data = (sender as MenuFlyoutItem).DataContext as HotDataItemModel;
             WatchLaterVM.Instance.AddToWatchlater(data.param);
         }
     }

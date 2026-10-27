@@ -36,7 +36,7 @@ namespace BiliLite
             //TODO MessageCenter.GoBackEvent += MessageCenter_GoBackEvent;
 
             App.Current.Suspending += Current_Suspending;
-           // Window.Current.Content.PointerPressed += Content_PointerPressed;
+            // Window.Current.Content.PointerPressed += Content_PointerPressed;
         }
         private async void Current_Suspending(object sender, Windows.ApplicationModel.SuspendingEventArgs e)
         {
@@ -69,8 +69,8 @@ namespace BiliLite
                 Window.Current.SetTitleBar(CustomDragRegion);
             }
         }
-        
-      
+
+
 
 
 
@@ -78,7 +78,7 @@ namespace BiliLite
         {
             base.OnNavigatedTo(e);
 
-            if (e.NavigationMode == NavigationMode.New && e.Parameter != null&&!string.IsNullOrEmpty(e.Parameter.ToString()))
+            if (e.NavigationMode == NavigationMode.New && e.Parameter != null && !string.IsNullOrEmpty(e.Parameter.ToString()))
             {
                 var result = await MessageCenter.HandleUrl(e.Parameter.ToString());
                 if (!result)
@@ -94,7 +94,7 @@ namespace BiliLite
         {
             if (sender == null)
             {
-            (tabView.SelectedItem as TabViewItem).Header = e;
+                (tabView.SelectedItem as TabViewItem).Header = e;
                 return;
             }
 
@@ -117,7 +117,7 @@ namespace BiliLite
             var item = new TabViewItem()
             {
                 Header = e.title,
-                MaxWidth=400,
+                MaxWidth = 400,
                 IconSource = new Microsoft.UI.Xaml.Controls.SymbolIconSource() { Symbol = e.icon }
             };
             var frame = new MyFrame();
@@ -125,10 +125,10 @@ namespace BiliLite
             frame.PointerPressed += Content_PointerPressed;
             frame.Navigate(e.page, e.parameters);
             item.Content = frame;
-           
+
             tabView.TabItems.Add(item);
             if (!e.dontGoTo)
-            tabView.SelectedItem = item;
+                tabView.SelectedItem = item;
             item.UpdateLayout();
         }
         private void Content_PointerPressed(object sender, PointerRoutedEventArgs e)
@@ -194,7 +194,7 @@ namespace BiliLite
                 page = typeof(NewPage),
                 title = "新建页面"
             });
-           
+
         }
 
         private void TabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
@@ -205,10 +205,10 @@ namespace BiliLite
         {
             var frame = tabItem.Content as MyFrame;
             ((frame.Content as Page).Content as Grid).Children.Clear();
-           
+
             frame.Close();
             //frame.Navigate(typeof(BlankPage));
-           // frame.BackStack.Clear();
+            // frame.BackStack.Clear();
             tabItem.Content = null;
             tabView.TabItems.Remove(tabItem);
             //GC.Collect();
@@ -218,7 +218,7 @@ namespace BiliLite
             var frame = new MyFrame();
 
             frame.Navigate(typeof(HomePage));
-            
+
             (tabView.TabItems[0] as TabViewItem).Content = frame;
         }
         private async void MessageCenter_ViewImageEvent(object sender, ImageViewerParameter e)
@@ -249,7 +249,7 @@ namespace BiliLite
         {
             if (((TabViewItem)tabView.SelectedItem).IsClosable)
             {
-            
+
                 ClosePage((TabViewItem)tabView.SelectedItem);
             }
             args.Handled = true;
@@ -258,7 +258,7 @@ namespace BiliLite
 
         private void tabView_TabItemsChanged(TabView sender, IVectorChangedEventArgs args)
         {
-            
+
         }
         public bool IsViewing()
         {

@@ -17,8 +17,8 @@ namespace BiliLite.Controls.Dynamic
         public DataTemplate ReserveTemplate { get; set; }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            
-           var model = item as DynamicItemDisplayModel;
+
+            var model = item as DynamicItemDisplayModel;
             switch (model.Type)
             {
                 case Dynamic.DynamicDisplayType.Reserve:
@@ -33,13 +33,13 @@ namespace BiliLite.Controls.Dynamic
                         {
                             return Photo1x1Template;
                         }
-                        if (model.ImagesInfo.Count ==4)
+                        if (model.ImagesInfo.Count == 4)
                         {
                             return Photo2x2Template;
                         }
                         return Photo3x3Template;
                     }
-                   
+
                 case Dynamic.DynamicDisplayType.ShortVideo:
                     return ShortVideoTemplate;
                 case Dynamic.DynamicDisplayType.Video:

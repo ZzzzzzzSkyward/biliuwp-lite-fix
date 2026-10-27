@@ -23,7 +23,7 @@ namespace BiliLite.Pages.Live
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if(e.NavigationMode==  NavigationMode.New&& liveAreaVM.Items == null)
+            if (e.NavigationMode == NavigationMode.New && liveAreaVM.Items == null)
             {
                 await liveAreaVM.GetItems();
             }

@@ -28,7 +28,7 @@
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"{ApiHelper.IL_BASE_URL}/api/anime/timeline",
-                parameter="type="+ type
+                parameter = "type=" + type
             };
             return api;
         }
@@ -38,11 +38,11 @@
             {
                 method = RestSharp.Method.Get,
                 baseUrl = $"{ApiHelper.IL_BASE_URL}/api/anime/bangumiFalls",
-                parameter= $"wid={wid}&cursor={cursor}"
+                parameter = $"wid={wid}&cursor={cursor}"
             };
             return api;
         }
 
-       
+
     }
 }

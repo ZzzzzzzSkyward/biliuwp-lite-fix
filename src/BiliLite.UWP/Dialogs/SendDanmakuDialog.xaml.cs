@@ -22,7 +22,7 @@ namespace BiliLite.Dialogs
         public event EventHandler<SendDanmakuModel> DanmakuSended;
 
 
-        private string cid,aid;
+        private string cid, aid;
         private int position;
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
@@ -43,9 +43,9 @@ namespace BiliLite.Dialogs
             }
             try
             {
-                
 
-               
+
+
                 int modeInt = 1;
                 if (Send_cb_Mode.SelectedIndex == 2)
                 {
@@ -55,14 +55,14 @@ namespace BiliLite.Dialogs
                 {
                     modeInt = 5;
                 }
-               var result=await playerAPI.SendDanmu(aid,cid, ((ComboBoxItem)Send_cb_Color.SelectedItem).Tag.ToString(), Send_text_Comment.Text,position).Request();
+                var result = await playerAPI.SendDanmu(aid, cid, ((ComboBoxItem)Send_cb_Color.SelectedItem).Tag.ToString(), Send_text_Comment.Text, position).Request();
                 if (!result.status)
                 {
-                    Utils.ShowMessageToast("弹幕发送失败"+result.message);
+                    Utils.ShowMessageToast("弹幕发送失败" + result.message);
                     return;
                 }
                 var obj = result.GetJObject();
-                if (obj["code"].ToInt32()==0)
+                if (obj["code"].ToInt32() == 0)
                 {
                     if (DanmakuSended != null)
                     {

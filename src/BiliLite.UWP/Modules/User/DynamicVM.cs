@@ -412,7 +412,7 @@ namespace BiliLite.Modules.User
                     var data = results.GetJObject();
                     if (data != null && (data["code"].ToInt32() == 0))
                     {
-                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel2024>>(data["data"]?["items"]?.ToString() ?? "[]",jsonSerializerSettings);
+                        var items = JsonConvert.DeserializeObject<List<DynamicCardModel2024>>(data["data"]?["items"]?.ToString() ?? "[]", jsonSerializerSettings);
                         if (items.Count > 0)
                         {
                             CanLoadMore = true;
@@ -505,7 +505,7 @@ namespace BiliLite.Modules.User
 
                 var card = JObject.Parse(item.card);
                 var extend_json = JObject.Parse(item.extend_json);
-                var display=item.display;
+                var display = item.display;
                 var data = new DynamicItemDisplayModel()
                 {
                     CommentCount = item.desc.comment,
@@ -800,11 +800,11 @@ namespace BiliLite.Modules.User
                     Liked = item.liked
                 };
                 //prefix
-                if(data.Type == DynamicDisplayType.Repost)
+                if (data.Type == DynamicDisplayType.Repost)
                 {
                     var orig = ConvertToDisplay2024(item.orig);
                     orig.IsRepost = true;
-                    data.OriginInfo =new List<DynamicItemDisplayModel> { orig };
+                    data.OriginInfo = new List<DynamicItemDisplayModel> { orig };
                 }
                 data.OneRowInfo = DynamicParse.ParseOneRowInfo2024(data, item);
                 //post fix
@@ -816,16 +816,16 @@ namespace BiliLite.Modules.User
                         i.ImageCommand = ImageCommand;
                     }
                 }
-                
+
                 data.ShowContent = false;
-                if ( item.owner!= null)
+                if (item.owner != null)
                 {
                     data.UserName = item.owner;
-                    data.Photo =item.face?.ToString();
+                    data.Photo = item.face?.ToString();
                     data.Verify = AppHelper.TRANSPARENT_IMAGE;
                     data.Mid = item.mid;
                 }
-                if (item.modules.module_author!= null)
+                if (item.modules.module_author != null)
                 {
                     var d = item.modules.module_author;
                     data.UserName = d.name;
@@ -854,7 +854,7 @@ namespace BiliLite.Modules.User
                     data.DecorateName = d.decorate?.name;
                     data.DecorateText = d.decorate?.fan?.number.ToString();
                     data.DecorateColor = d.decorate?.fan?.color;
-                    data.DecorateImage = d.decorate?.card_url ;
+                    data.DecorateImage = d.decorate?.card_url;
                 }
 
 

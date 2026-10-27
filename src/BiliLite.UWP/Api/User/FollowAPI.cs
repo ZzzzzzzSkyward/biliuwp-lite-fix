@@ -9,7 +9,7 @@
         /// <param name="status">0=全部，1=想看，2=在看，3=看过</param>
         /// <param name="pagesize">每页数量</param>
         /// <returns></returns>
-        public ApiModel MyFollowBangumi(int page=1, int status = 0,int pagesize=20)
+        public ApiModel MyFollowBangumi(int page = 1, int status = 0, int pagesize = 20)
         {
             ApiModel api = new ApiModel()
             {
@@ -73,7 +73,7 @@
         /// 设置状态
         /// </summary>
         /// <returns></returns>
-        public ApiModel SetSeasonStatus(string season_id,int status)
+        public ApiModel SetSeasonStatus(string season_id, int status)
         {
             ApiModel api = new ApiModel()
             {
@@ -85,7 +85,7 @@
             return api;
         }
 
-        
+
         /// <summary>
         /// 关注
         /// </summary>

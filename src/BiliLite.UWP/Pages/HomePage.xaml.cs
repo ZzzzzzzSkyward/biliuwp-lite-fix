@@ -333,7 +333,7 @@ namespace BiliLite.Pages
             Frame rootFrame = Window.Current.Content as Frame;
             var _theme = rootFrame.RequestedTheme;
             var savedtheme = ElementTheme.Dark;
-            var apptheme=ApplicationTheme.Dark;
+            var apptheme = ApplicationTheme.Dark;
             if (_theme == ElementTheme.Light)
             {
                 savedtheme = ElementTheme.Dark;
@@ -342,7 +342,7 @@ namespace BiliLite.Pages
             else
             {
                 savedtheme = ElementTheme.Light;
-                apptheme=ApplicationTheme.Light;
+                apptheme = ApplicationTheme.Light;
             }
             theme = savedtheme;
             SettingHelper.SetValue(SettingHelper.UI.THEME, savedtheme == ElementTheme.Light ? 1 : 2);

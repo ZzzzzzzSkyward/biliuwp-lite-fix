@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace BiliLite.Modules.Live
 {
-    public class LiveAreaVM:IModules
+    public class LiveAreaVM : IModules
     {
         readonly Api.Live.LiveAreaAPI liveAreaAPI;
         public LiveAreaVM()
         {
             liveAreaAPI = new Api.Live.LiveAreaAPI();
-            
+
         }
         private bool _loading = false;
         public bool Loading
@@ -36,7 +36,7 @@ namespace BiliLite.Modules.Live
                 var results = await liveAreaAPI.LiveAreaList().Request();
                 if (results.status)
                 {
-                    var data =await results.GetData<List<LiveAreaModel>>();
+                    var data = await results.GetData<List<LiveAreaModel>>();
                     if (data.success)
                     {
                         Items = data.data;

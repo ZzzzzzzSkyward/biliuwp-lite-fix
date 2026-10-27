@@ -45,7 +45,7 @@ namespace BiliLite.Pages.Home
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.NavigationMode == NavigationMode.New&& cinemaVM.HomeData==null)
+            if (e.NavigationMode == NavigationMode.New && cinemaVM.HomeData == null)
             {
                 await LoadData();
             }

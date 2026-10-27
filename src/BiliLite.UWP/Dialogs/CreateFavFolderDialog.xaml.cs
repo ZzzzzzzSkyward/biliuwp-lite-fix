@@ -26,7 +26,7 @@ namespace BiliLite.Dialogs
             try
             {
                 IsPrimaryButtonEnabled = false;
-                var result = await favoriteApi.CreateFavorite(txtTitle.Text,txtDesc.Text,checkPrivacy.IsChecked.Value).Request();
+                var result = await favoriteApi.CreateFavorite(txtTitle.Text, txtDesc.Text, checkPrivacy.IsChecked.Value).Request();
                 if (result.status)
                 {
                     var data = await result.GetData<object>();

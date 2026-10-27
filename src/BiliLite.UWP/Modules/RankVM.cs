@@ -34,7 +34,7 @@ namespace BiliLite.Modules
             get { return _RegionItems; }
             set { _RegionItems = value; DoPropertyChanged("RegionItems"); }
         }
-        public  void LoadRankRegion(int rid = 0)
+        public void LoadRankRegion(int rid = 0)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace BiliLite.Modules
                     new RankRegionModel(155,"时尚"),
                     new RankRegionModel(5,"娱乐"),
                     new RankRegionModel(181,"影视"),
-                   
+
                 };
                 Current = RegionItems.FirstOrDefault(x => x.rid == rid);
                 //    }
@@ -149,7 +149,7 @@ namespace BiliLite.Modules
     }
     public class RankRegionModel : IModules
     {
-        public RankRegionModel(int id, string rname, RankRegionType type= RankRegionType.all)
+        public RankRegionModel(int id, string rname, RankRegionType type = RankRegionType.all)
         {
             this.rid = id;
             this.name = rname;
@@ -157,7 +157,7 @@ namespace BiliLite.Modules
         }
         public string name { get; set; }
         public int rid { get; set; }
-        private string _tooltip="";
+        private string _tooltip = "";
 
         public string ToolTip
         {
@@ -190,12 +190,12 @@ namespace BiliLite.Modules
         public int state { get; set; }
         public int duration { get; set; }
         public int mission_id { get; set; }
-       
+
         public RankItemOwnerModel owner { get; set; }
         public RankItemStatModel stat { get; set; }
         public string dynamic { get; set; }
         public long cid { get; set; }
-       
+
         public string bvid { get; set; }
         public int score { get; set; }
     }

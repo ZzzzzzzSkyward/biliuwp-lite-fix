@@ -248,7 +248,7 @@ namespace BiliLite.Pages
                 {
                     SettingHelper.SetValue("dontloadbanner", swHideBanner.IsOn);
                 });
-            }); 
+            });
             //背景动态
             swShowBGOnDynamic.IsOn = SettingHelper.GetValue("showbgondynamic", false);
             swShowBGOnDynamic.Loaded += new RoutedEventHandler((sender, e) =>
@@ -428,8 +428,8 @@ FallbackColor=""#ffffff"" />
             {
                 var id = i.ToInt32();
                 videofmt.Add(id);
-                var item=swLiveVideoFormat.Items[id] as ListViewItem;
-                if (item!=null)
+                var item = swLiveVideoFormat.Items[id] as ListViewItem;
+                if (item != null)
                 {
                     item.IsSelected = true;
                 }
@@ -661,7 +661,8 @@ FallbackColor=""#ffffff"" />
         {
             InitApi();
         }
-        private void InitApi() { 
+        private void InitApi()
+        {
             var lst = new List<string>();
 
             lst.Add(appkey_android_1.Text);
@@ -1025,7 +1026,8 @@ FallbackColor=""#ffffff"" />
             }
         }
 
-        private async void BGImage_Click(object sender, RoutedEventArgs e) {
+        private async void BGImage_Click(object sender, RoutedEventArgs e)
+        {
             FileOpenPicker fileOpenPicker = new FileOpenPicker();
             fileOpenPicker.FileTypeFilter.Add(".png");
             fileOpenPicker.FileTypeFilter.Add(".jpg");
@@ -1116,10 +1118,11 @@ FallbackColor=""#ffffff"" />
             }
             return base64String;
         }
-        private async void DoLogin(object sender, RoutedEventArgs e) {
+        private async void DoLogin(object sender, RoutedEventArgs e)
+        {
             var user = dbguser.Text;
             var password = dbgpwd.Text;
-            var val=dbgval.Text;
+            var val = dbgval.Text;
             var cap = dbgcap.Text;
             var challenge = dbgch.Text;
             if (string.IsNullOrEmpty(val))
@@ -1142,7 +1145,7 @@ FallbackColor=""#ffffff"" />
             {
                 //带验证码登录
                 var pwd = await EncryptedPassword(password);
-                var results = await api.Login2023(user, pwd,challenge,cap,val).Request();
+                var results = await api.Login2023(user, pwd, challenge, cap, val).Request();
                 if (results.status)
                 {
                     var data = await results.GetData<LoginResultModel>();
@@ -1171,7 +1174,7 @@ FallbackColor=""#ffffff"" />
                 case LoginStatus.NeedCaptcha:
                     string gt = Regex.Match(uri.Query, "gee_gt=(.*?)&").Groups[1].Value;
                     string cha = Regex.Match(uri.Query, "gee_challenge=(.*?)&").Groups[1].Value;
-                    string cap= Regex.Match(uri.Query, "recaptcha_token=(.*?)&").Groups[1].Value;
+                    string cap = Regex.Match(uri.Query, "recaptcha_token=(.*?)&").Groups[1].Value;
                     dbggt.Text = gt;
                     dbgch.Text = cha;
                     dbgcap.Text = cap;
@@ -1199,7 +1202,7 @@ FallbackColor=""#ffffff"" />
                     Utils.ShowMessageToast("无法打开Themes文件夹");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Utils.ShowMessageToast("找不到Themes文件夹");
             }
@@ -1209,15 +1212,15 @@ FallbackColor=""#ffffff"" />
         {
 
         }
-        public List<int> videofmt = new List<int> {0 };//flv and ts/m3u8 is not supported by ffmpeg 
-        public static List<string> videofmtnames = new List<string>{ "FLV", "TS", "MP4" };
+        public List<int> videofmt = new List<int> { 0 };//flv and ts/m3u8 is not supported by ffmpeg
+        public static List<string> videofmtnames = new List<string> { "FLV", "TS", "MP4" };
         public static string videotextfmt = "已选择格式为{0}";
         public string videotext
         {
             get
             {
                 var videostrs = new List<string>();
-                foreach(var i in videofmt)
+                foreach (var i in videofmt)
                 {
                     videostrs.Add(videofmtnames[i]);
                 }
@@ -1227,7 +1230,7 @@ FallbackColor=""#ffffff"" />
         private void swLiveVideoFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var l = new List<int>();
-            foreach(var item in swLiveVideoFormat.SelectedItems)
+            foreach (var item in swLiveVideoFormat.SelectedItems)
             {
                 var o = item as ListViewItem;
                 l.Add(o.AccessKey.ToInt32());
@@ -1236,7 +1239,7 @@ FallbackColor=""#ffffff"" />
             {
                 videofmt.Clear();
                 videofmt.AddRange(l);
-                SettingHelper.SetValue("livevideoformat", string.Join(",",videofmt));
+                SettingHelper.SetValue("livevideoformat", string.Join(",", videofmt));
                 OnPropertyChanged(nameof(videotext));
             }
         }

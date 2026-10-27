@@ -18,8 +18,8 @@ namespace BiliLite.Modules
             isAnime = _isAnime;
             RefreshCommand = new RelayCommand(Refresh);
             LoadMoreCommand = new RelayCommand(LoadMore);
-            StatusCommand= new RelayCommand<object>(ChangeStatus);
-            CancelFollowCommand=new RelayCommand<object>(CancelFollow);
+            StatusCommand = new RelayCommand<object>(ChangeStatus);
+            CancelFollowCommand = new RelayCommand<object>(CancelFollow);
             SetWantWatchCommand = new RelayCommand<object>(SetWantWatch);
             SetWatchedCommand = new RelayCommand<object>(SetWatched);
             SetWatchingCommand = new RelayCommand<object>(SetWatching);
@@ -32,7 +32,7 @@ namespace BiliLite.Modules
         public ICommand SetWantWatchCommand { get; set; }
         public ICommand SetWatchedCommand { get; set; }
         public ICommand SetWatchingCommand { get; set; }
-        
+
 
         private bool _loading = false;
         public bool Loading
@@ -110,7 +110,7 @@ namespace BiliLite.Modules
                             return;
                         }
                         var ls = await data.result["follow_list"].ToString().DeserializeJson<ObservableCollection<FollowSeasonModel>>();
-                        if (ls != null&&ls.Count!=0)
+                        if (ls != null && ls.Count != 0)
                         {
                             foreach (var item in ls)
                             {
@@ -132,7 +132,7 @@ namespace BiliLite.Modules
                                 }
                             }
                             Page++;
-                            
+
                         }
                     }
                     else
@@ -181,8 +181,8 @@ namespace BiliLite.Modules
 
         public async void ChangeStatus(object value)
         {
-            var result= Convert.ToInt32(value);
-            if (result==Status)
+            var result = Convert.ToInt32(value);
+            if (result == Status)
             {
                 return;
             }
@@ -197,7 +197,7 @@ namespace BiliLite.Modules
                 Utils.ShowMessageToast("请先登录后再操作");
                 return;
             }
-            var item= par as FollowSeasonModel;
+            var item = par as FollowSeasonModel;
             try
             {
                 var api = followAPI.CancelFollowSeason(item.season_id.ToString());
@@ -239,11 +239,11 @@ namespace BiliLite.Modules
 
 
         }
-   
+
         private async void SetWantWatch(object par)
         {
             var item = par as FollowSeasonModel;
-            await SetSeasonStatus(item,1);
+            await SetSeasonStatus(item, 1);
         }
         private async void SetWatched(object par)
         {
@@ -255,7 +255,7 @@ namespace BiliLite.Modules
             var item = par as FollowSeasonModel;
             await SetSeasonStatus(item, 2);
         }
-        private async Task SetSeasonStatus(FollowSeasonModel item,int status)
+        private async Task SetSeasonStatus(FollowSeasonModel item, int status)
         {
             if (!SettingHelper.Account.Logined && !await Utils.ShowLoginDialog())
             {
@@ -264,7 +264,7 @@ namespace BiliLite.Modules
             }
             try
             {
-                var api = followAPI.SetSeasonStatus(item.season_id.ToString(),status);
+                var api = followAPI.SetSeasonStatus(item.season_id.ToString(), status);
                 var results = await api.Request();
                 if (results.status)
                 {
@@ -294,7 +294,7 @@ namespace BiliLite.Modules
                 Utils.ShowMessageToast(handel.message);
             }
         }
-    
+
     }
     public class FollowSeasonModel
     {
@@ -304,7 +304,7 @@ namespace BiliLite.Modules
         public ICommand SetWatchingCommand { get; set; }
 
         public int status { get; set; }
-       public bool show_watched
+        public bool show_watched
         {
             get
             {
@@ -322,7 +322,7 @@ namespace BiliLite.Modules
         {
             get
             {
-                return status !=1;
+                return status != 1;
             }
         }
         public bool show_badge

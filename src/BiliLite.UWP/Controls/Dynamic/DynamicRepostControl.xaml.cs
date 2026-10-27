@@ -10,7 +10,7 @@ namespace BiliLite.Controls
         public readonly DynamicRepostVM dynamicRepostVM;
         public DynamicRepostControl()
         {
-            this.InitializeComponent(); 
+            this.InitializeComponent();
             dynamicRepostVM = new DynamicRepostVM();
         }
         public async void LoadData(string id)
@@ -18,6 +18,6 @@ namespace BiliLite.Controls
             dynamicRepostVM.ID = id;
             await dynamicRepostVM.GetDynamicItems();
         }
-        
+
     }
 }

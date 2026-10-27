@@ -94,7 +94,7 @@ namespace BiliLite.Modules.Live
             if (ws.State != WebSocketState.Open && ws.State != WebSocketState.Connecting)
                 //连接
                 await ws.ConnectAsync(new Uri(ServerUrl), cancellationToken);
-            else 
+            else
                 return;
             //进房
             await JoinRoomAsync(roomID, uid);
@@ -113,13 +113,13 @@ namespace BiliLite.Modules.Live
                 }
                 catch (Exception ex)
                 {
-                    if(ex is OperationCanceledException)
+                    if (ex is OperationCanceledException)
                     {
                         return;
                     }
                     LogHelper.Log("直播接收包出错", LogType.ERROR, ex);
                 }
-               
+
             }
         }
 
@@ -132,14 +132,14 @@ namespace BiliLite.Modules.Live
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
-        private async Task JoinRoomAsync(long roomId,long uid=0)
+        private async Task JoinRoomAsync(long roomId, long uid = 0)
         {
             if (ws.State == WebSocketState.Open)
             {
                 await ws.SendAsync(EncodeData(JsonConvert.SerializeObject(new
                 {
                     roomid = roomId,
-                    uid= uid
+                    uid = uid
                 }), 7), WebSocketMessageType.Binary, true, CancellationToken.None);
             }
         }
@@ -206,7 +206,7 @@ namespace BiliLite.Modules.Live
             {
                 var obj = JObject.Parse(jsonMessage);
                 var cmd = obj["cmd"].ToString();
-                if (cmd .Contains("DANMU_MSG"))
+                if (cmd.Contains("DANMU_MSG"))
                 {
                     var msg = new DanmuMsgModel();
                     if (obj["info"] != null && obj["info"].ToArray().Length != 0)
@@ -320,22 +320,22 @@ namespace BiliLite.Modules.Live
                     }
                     return;
                 }
-                if (cmd == "SUPER_CHAT_MESSAGE" )
+                if (cmd == "SUPER_CHAT_MESSAGE")
                 {
                     SuperChatMsgModel msg = new SuperChatMsgModel();
                     if (obj["data"] != null)
                     {
                         msg.background_bottom_color = obj["data"]["background_bottom_color"].ToString();
-                        msg.background_color= obj["data"]["background_color"].ToString();
-                        msg.background_image= obj["data"]["background_image"].ToString();
-                        msg.end_time= obj["data"]["end_time"].ToInt32();
+                        msg.background_color = obj["data"]["background_color"].ToString();
+                        msg.background_image = obj["data"]["background_image"].ToString();
+                        msg.end_time = obj["data"]["end_time"].ToInt32();
                         msg.start_time = obj["data"]["start_time"].ToInt32();
-                        msg.time= obj["data"]["time"].ToInt32();
+                        msg.time = obj["data"]["time"].ToInt32();
                         msg.max_time = msg.end_time - msg.start_time;
                         msg.face = obj["data"]["user_info"]["face"].ToString();
                         msg.face_frame = obj["data"]["user_info"]["face_frame"].ToString();
                         msg.font_color = obj["data"]["message_font_color"].ToString();
-                        msg.message= obj["data"]["message"].ToString();
+                        msg.message = obj["data"]["message"].ToString();
                         msg.price = obj["data"]["price"].ToInt32();
                         msg.username = obj["data"]["user_info"]["uname"].ToString();
                         NewMessage?.Invoke(MessageType.SuperChat, msg);
@@ -422,7 +422,7 @@ namespace BiliLite.Modules.Live
         {
             heartBeatTimer?.Stop();
             heartBeatTimer?.Dispose();
-            ws.Dispose(); 
+            ws.Dispose();
         }
     }
 

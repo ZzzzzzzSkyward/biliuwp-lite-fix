@@ -26,7 +26,7 @@ namespace BiliLite.Pages.Bangumi
             base.OnNavigatedTo(e);
             if (e.NavigationMode == NavigationMode.New)
             {
-                 seasonRankVM.LoadRankRegion((int)e.Parameter);
+                seasonRankVM.LoadRankRegion((int)e.Parameter);
             }
         }
 
